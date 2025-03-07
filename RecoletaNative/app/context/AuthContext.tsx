@@ -11,15 +11,16 @@ interface AuthProps {
     onLogout?: () => Promise<any>;
 }
 
-const TOKEN_KEY = 'reoleta-jwt';
-export const API_URL = 'https://recoletaapi.onrender.com/api';
+const TOKEN_KEY = 'recoleta-jwt';
+const ID_KEY = "user-id";
+const API_URL = 'https://recoletaapi.onrender.com/api';
 const AuthContext = createContext<AuthProps>({});
 
 export const useAuth = () => {
     return useContext(AuthContext);
 };
 
-export const AuthProvider = ({Children}: any) => {
+export const AuthProvider = ({children}: any) => {
     
     //handling state
     const [authState, setAuthState] = useState<{
@@ -37,11 +38,14 @@ export const AuthProvider = ({Children}: any) => {
             
             try{
                 let token;
+                let id;
                 if(Platform.OS === "web"){
                     token = await AsyncStorage.getItem(TOKEN_KEY);
+                    id = await AsyncStorage.getItem(ID_KEY);
                 }
                 else{
                     token = await SecureStore.getItemAsync(TOKEN_KEY);
+                    id = await SecureStore.getItemAsync(ID_KEY);
                 }
 
                 if (token) {
@@ -64,6 +68,8 @@ export const AuthProvider = ({Children}: any) => {
         try{
             const result = await axios.post(`${API_URL}/auth/login`, {email, password});
 
+            console.log(result.data)
+
             setAuthState({
                 token: result.data.accessToken,
                 authenticated: true
@@ -73,10 +79,14 @@ export const AuthProvider = ({Children}: any) => {
 
             if (Platform.OS === "web") {
                 await AsyncStorage.setItem(TOKEN_KEY, result.data.accessToken);
+                await AsyncStorage.setItem(ID_KEY, result.data._id);
             }
             else{
                 await SecureStore.setItemAsync(TOKEN_KEY, result.data.accessToken);
+                await SecureStore.setItemAsync(ID_KEY, result.data._id);
             }
+
+            
         
             return result;
 
@@ -100,9 +110,11 @@ export const AuthProvider = ({Children}: any) => {
             //delete token from storage
             if (Platform.OS === "web") {
                 await AsyncStorage.removeItem(TOKEN_KEY);
+                await AsyncStorage.removeItem(ID_KEY);
             }
             else{
                 await SecureStore.deleteItemAsync(TOKEN_KEY);
+                await SecureStore.deleteItemAsync(ID_KEY);
             }
 
             //update Headers
@@ -125,5 +137,5 @@ export const AuthProvider = ({Children}: any) => {
         authState
     };
 
-    return <AuthContext.Provider value={value}>{Children}</AuthContext.Provider>;
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
