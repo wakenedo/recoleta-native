@@ -1,10 +1,10 @@
 import {StatusBar} from 'expo-status-bar';
 import {Button, StyleSheet, Text, View} from 'react-native';
-import { AuthProvider, useAuth } from '../context/AuthContext';
+import { AuthProvider, useAuth } from './app/context/AuthContext';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from '../test_screens/Home';
-import Login from '../test_screens/Login';
+import Home from './app/test_screens/Home';
+import Login from './app/test_screens/Login';
 
 const Stack = createNativeStackNavigator();
 

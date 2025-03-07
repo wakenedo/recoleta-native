@@ -1,6 +1,8 @@
 import {Children, createContext, useContext, useEffect, useState} from 'react';
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Platform} from 'react-native';
 
 interface AuthProps {
     authState?: {token: string | null; authenticated: boolean | null};
@@ -32,15 +34,26 @@ export const AuthProvider = ({Children}: any) => {
     //loading data
     useEffect(() => {
         const loadToken = async () => {
-            const token = await SecureStore.getItemAsync(TOKEN_KEY);
+            
+            try{
+                let token;
+                if(Platform.OS === "web"){
+                    token = await AsyncStorage.getItem(TOKEN_KEY);
+                }
+                else{
+                    token = await SecureStore.getItemAsync(TOKEN_KEY);
+                }
 
-            if (token) {
-                axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
-
-                setAuthState({
-                    token: token,
-                    authenticated: true
-                });
+                if (token) {
+                    axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
+    
+                    setAuthState({
+                        token: token,
+                        authenticated: true
+                    });
+                }
+            } catch (e) {
+                console.error(e);
             }
         };
         loadToken();
@@ -58,8 +71,13 @@ export const AuthProvider = ({Children}: any) => {
 
             axios.defaults.headers.common['authorization'] = `Bearer ${result.data.accessToken}`;
 
-            await SecureStore.setItemAsync(TOKEN_KEY, result.data.accessToken);
-
+            if (Platform.OS === "web") {
+                await AsyncStorage.setItem(TOKEN_KEY, result.data.accessToken);
+            }
+            else{
+                await SecureStore.setItemAsync(TOKEN_KEY, result.data.accessToken);
+            }
+        
             return result;
 
         } catch(e) {
@@ -78,17 +96,26 @@ export const AuthProvider = ({Children}: any) => {
 
     //logout
     const logout = async () => {
-        //delete token from storage
-        await SecureStore.deleteItemAsync(TOKEN_KEY);
+        try {
+            //delete token from storage
+            if (Platform.OS === "web") {
+                await AsyncStorage.removeItem(TOKEN_KEY);
+            }
+            else{
+                await SecureStore.deleteItemAsync(TOKEN_KEY);
+            }
 
-        //update Headers
-        axios.defaults.headers.common['authorization'] = '';
+            //update Headers
+            axios.defaults.headers.common['authorization'] = '';
 
-        //reset auth state
-        setAuthState({
-            token: null,
-            authenticated: false
-        });
+            //reset auth state
+            setAuthState({
+                token: null,
+                authenticated: false
+            });
+        } catch (e) {
+            console.error(e);
+        }     
     };
 
     const value = {
