@@ -12,7 +12,6 @@ interface AuthProps {
 }
 
 const TOKEN_KEY = 'recoleta-jwt';
-const ID_KEY = "user-id";
 const API_URL = 'https://recoletaapi.onrender.com/api';
 const AuthContext = createContext<AuthProps>({});
 
@@ -41,11 +40,9 @@ export const AuthProvider = ({children}: any) => {
                 let id;
                 if(Platform.OS === "web"){
                     token = await AsyncStorage.getItem(TOKEN_KEY);
-                    id = await AsyncStorage.getItem(ID_KEY);
                 }
                 else{
                     token = await SecureStore.getItemAsync(TOKEN_KEY);
-                    id = await SecureStore.getItemAsync(ID_KEY);
                 }
 
                 if (token) {
@@ -79,11 +76,9 @@ export const AuthProvider = ({children}: any) => {
 
             if (Platform.OS === "web") {
                 await AsyncStorage.setItem(TOKEN_KEY, result.data.accessToken);
-                await AsyncStorage.setItem(ID_KEY, result.data._id);
             }
             else{
                 await SecureStore.setItemAsync(TOKEN_KEY, result.data.accessToken);
-                await SecureStore.setItemAsync(ID_KEY, result.data._id);
             }
 
             
@@ -110,11 +105,9 @@ export const AuthProvider = ({children}: any) => {
             //delete token from storage
             if (Platform.OS === "web") {
                 await AsyncStorage.removeItem(TOKEN_KEY);
-                await AsyncStorage.removeItem(ID_KEY);
             }
             else{
                 await SecureStore.deleteItemAsync(TOKEN_KEY);
-                await SecureStore.deleteItemAsync(ID_KEY);
             }
 
             //update Headers

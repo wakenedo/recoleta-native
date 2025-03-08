@@ -5,14 +5,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
 const TOKEN_KEY = 'recoleta-jwt';
-const ID_KEY = "user-id";
 const API_URL = 'https://recoletaapi.onrender.com/api';
 
 const Home = () => {
 
     const [user, setUser] = useState<{ firstName: string; lastName: string; userType: string } | null>(null);
     const [token, setToken] = useState<string | null>(null);
-    const [id, setId] = useState<string | null>(null);
 
     useEffect(() => {
 
@@ -20,13 +18,8 @@ const Home = () => {
             const storedToken = Platform.OS === "web"
                 ? await AsyncStorage.getItem(TOKEN_KEY)
                 : await SecureStore.getItemAsync(TOKEN_KEY);
-            
-            const storedId = Platform.OS === "web"
-                ? await AsyncStorage.getItem(ID_KEY)
-                : await SecureStore.getItemAsync(ID_KEY);
-            
+               
             setToken(storedToken);
-            setId(storedId);
         };
 
         fetchCredentials();
@@ -34,10 +27,10 @@ const Home = () => {
 
     useEffect(() => {
         const LoadUser = async () => {
-            if (!token || !id) return; // Aguarda os valores serem carregados
+            if (!token) return; // Aguarda os valores serem carregados
 
             try {
-                const result = await axios.get(`${API_URL}/users/find/${id}`, {
+                const result = await axios.get(`${API_URL}/user`, {
                     headers: {
                         authorization: `Bearer ${token}`
                     }
@@ -49,7 +42,7 @@ const Home = () => {
         };
 
         LoadUser();
-    }, [token, id]); // Executa quando `token` e `id` forem atualizados
+    }, [token]);
 
     return (
         <View>
