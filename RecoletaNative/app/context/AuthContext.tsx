@@ -11,7 +11,7 @@ interface AuthProps {
     onLogout?: () => Promise<any>;
 }
 
-const TOKEN_KEY = 'recoleta-jwt';
+const TOKEN_KEY = 'user-jwt';
 const API_URL = 'https://recoletaapi.onrender.com/api';
 const AuthContext = createContext<AuthProps>({});
 
@@ -37,7 +37,6 @@ export const AuthProvider = ({children}: any) => {
             
             try{
                 let token;
-                let id;
                 if(Platform.OS === "web"){
                     token = await AsyncStorage.getItem(TOKEN_KEY);
                 }

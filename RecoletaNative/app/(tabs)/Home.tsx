@@ -4,7 +4,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
-const TOKEN_KEY = 'recoleta-jwt';
+const TOKEN_KEY = 'user-jwt';
 const API_URL = 'https://recoletaapi.onrender.com/api';
 
 const Home = () => {
