@@ -1,8 +1,9 @@
 import { Button } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import "../../global.css"
 import Home from './Home';
-import Login from './Login';
+import App from './Login';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,7 +21,7 @@ export const Layout = () => {
                     }}
                 />
             ) : (
-                <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="Login" component={App} />
             )}
         </Stack.Navigator>
     );
