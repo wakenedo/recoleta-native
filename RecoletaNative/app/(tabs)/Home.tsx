@@ -4,6 +4,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
 import { Text } from "@/components/ui/text";
+import { WasteManagementInterface } from "@/components/custom/WasteManagementInterface";
 
 const TOKEN_KEY = "user-jwt";
 const API_URL = "https://recoletaapi.onrender.com/api";
@@ -49,12 +50,15 @@ const Home = () => {
   }, [token]);
 
   return (
-    <View>
-      <Text>Home</Text>
-      {user && (
-        <Text>{`${user.firstName} ${user.lastName} ${user.userType}`}</Text>
-      )}
-    </View>
+    <>
+      <View>
+        <Text>Home</Text>
+        {user && (
+          <Text>{`${user.firstName} ${user.lastName} ${user.userType}`}</Text>
+        )}
+      </View>
+      <WasteManagementInterface />
+    </>
   );
 };
 
