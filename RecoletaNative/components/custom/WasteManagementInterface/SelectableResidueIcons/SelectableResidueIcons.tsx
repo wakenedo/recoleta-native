@@ -35,7 +35,7 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
               <Text
                 className={`${isSelected ? "font-bold text-blue-500" : ""}`}
               >
-                {card.title}
+                {card.name}
               </Text>
             </Card>
           );

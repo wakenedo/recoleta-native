@@ -3,37 +3,37 @@ const PACKAGE_OPTIONS = ["Caixa de Papelão", "Saco de Lixo", "Solto"];
 const RESIDUE_CARDS = [
   {
     id: "1",
-    title: "Papel",
+    name: "Papel",
     image: "https://via.placeholder.com/150",
     alt: "Papel",
   },
   {
     id: "2",
-    title: "Plástico",
+    name: "Plástico",
     image: "https://via.placeholder.com/150",
     alt: "Plástico",
   },
   {
     id: "3",
-    title: "Vidro",
+    name: "Vidro",
     image: "https://via.placeholder.com/150",
     alt: "Vidro",
   },
   {
     id: "4",
-    title: "Eletrônico",
+    name: "Eletrônico",
     image: "https://via.placeholder.com/150",
     alt: "Vidro",
   },
   {
     id: "5",
-    title: "Orgânico",
+    name: "Orgânico",
     image: "https://via.placeholder.com/150",
     alt: "Orgânico",
   },
   {
     id: "6",
-    title: "Metal",
+    name: "Metal",
     image: "https://via.placeholder.com/150",
     alt: "Metal",
   },

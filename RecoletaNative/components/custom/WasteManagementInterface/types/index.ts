@@ -15,7 +15,7 @@ type QuantityInputProps = {
 
 type Residue = {
   id: string;
-  title: string;
+  name: string;
   image: string;
   alt: string;
 };
