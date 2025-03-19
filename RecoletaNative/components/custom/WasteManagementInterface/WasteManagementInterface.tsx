@@ -38,7 +38,7 @@ const WasteManagementInterface = () => {
     if (!isFormValid) return null;
 
     return {
-      residueId: selectedResidue.id, // Send only ID (or title if needed)
+      residueName: selectedResidue.name, // Send only ID (or title if needed)
       quantity,
       condition: selectedCondition,
       packageType: selectedPackage,
