@@ -10,32 +10,30 @@ import {
 import { VStack } from "@/components/ui/vstack";
 import React from "react";
 import { View } from "react-native";
+import { PackageAvailableSelectorProps } from "../types";
+import { PACKAGE_OPTIONS } from "../utils/enum";
 
-const PackageAvailableSelector = () => {
-  const [values, setValues] = React.useState("Limpo");
+const PackageAvailableSelector: React.FC<PackageAvailableSelectorProps> = ({
+  selectedPackage,
+  setSelectedPackage,
+}) => {
   return (
     <View>
       <Heading size="xs">Embalagem Disponível</Heading>
-      <RadioGroup className="mt-2" value={values} onChange={setValues}>
+      <RadioGroup
+        className="mt-2"
+        value={selectedPackage}
+        onChange={setSelectedPackage}
+      >
         <VStack space="sm">
-          <Radio value="Limpo">
-            <RadioIndicator className=" border-zinc-300 rounded-md">
-              <RadioIcon as={CircleIcon} />
-            </RadioIndicator>
-            <RadioLabel>Caixa de Papelão</RadioLabel>
-          </Radio>
-          <Radio value="Sujo">
-            <RadioIndicator className=" border-zinc-300 rounded-md">
-              <RadioIcon as={CircleIcon} />
-            </RadioIndicator>
-            <RadioLabel>Saco de Lixo</RadioLabel>
-          </Radio>
-          <Radio value="Misto">
-            <RadioIndicator className=" border-zinc-300 rounded-md">
-              <RadioIcon as={CircleIcon} />
-            </RadioIndicator>
-            <RadioLabel>Solto</RadioLabel>
-          </Radio>
+          {PACKAGE_OPTIONS.map((option) => (
+            <Radio key={option} value={option}>
+              <RadioIndicator className="border-zinc-300 rounded-md">
+                <RadioIcon as={CircleIcon} />
+              </RadioIndicator>
+              <RadioLabel>{option}</RadioLabel>
+            </Radio>
+          ))}
         </VStack>
       </RadioGroup>
     </View>

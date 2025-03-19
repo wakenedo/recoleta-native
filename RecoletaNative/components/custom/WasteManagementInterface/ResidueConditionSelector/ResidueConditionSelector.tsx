@@ -10,34 +10,34 @@ import {
 import { VStack } from "@/components/ui/vstack";
 import React from "react";
 import { View } from "react-native";
-const ResidueConditionSelector = () => {
-  const [values, setValues] = React.useState("Limpo");
+import { ResidueConditionSelectorProps } from "../types";
+import { RESIDUE_CONDITIONS } from "../utils/enum";
+
+const ResidueConditionSelector: React.FC<ResidueConditionSelectorProps> = ({
+  selectedCondition,
+  setSelectedCondition,
+}) => {
   return (
     <View>
       <Heading size="xs">Condição do Resído</Heading>
-      <RadioGroup className="mt-2" value={values} onChange={setValues}>
+      <RadioGroup
+        className="mt-2"
+        value={selectedCondition}
+        onChange={setSelectedCondition}
+      >
         <VStack space="sm">
-          <Radio value="Limpo">
-            <RadioIndicator className=" border-zinc-300">
-              <RadioIcon as={CircleIcon} />
-            </RadioIndicator>
-            <RadioLabel>Limpo</RadioLabel>
-          </Radio>
-          <Radio value="Sujo">
-            <RadioIndicator className=" border-zinc-300">
-              <RadioIcon as={CircleIcon} />
-            </RadioIndicator>
-            <RadioLabel>Sujo</RadioLabel>
-          </Radio>
-          <Radio value="Misto">
-            <RadioIndicator className=" border-zinc-300">
-              <RadioIcon as={CircleIcon} />
-            </RadioIndicator>
-            <RadioLabel>Misto</RadioLabel>
-          </Radio>
+          {RESIDUE_CONDITIONS.map((condition) => (
+            <Radio key={condition} value={condition}>
+              <RadioIndicator className="border-zinc-300">
+                <RadioIcon as={CircleIcon} />
+              </RadioIndicator>
+              <RadioLabel>{condition}</RadioLabel>
+            </Radio>
+          ))}
         </VStack>
       </RadioGroup>
     </View>
   );
 };
+
 export default ResidueConditionSelector;
