@@ -12,13 +12,15 @@
       "supportsTablet": true,
       "config": {
         "usesNonExemptEncryption": false
-      }
+      },
+      "bundleIdentifier": "com.anonymous.RecoletaNative"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.RecoletaNative"
     },
     "web": {
       "bundler": "metro",
@@ -40,6 +42,17 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "45b0aaeb-8787-487b-918d-0d79d0a8288d"
+      },
+      "WEB_CLIENT_ID": "560029034956-rhqjiqk8clkg3nhh33au5oob7q0f9dqf.apps.googleusercontent.com",
+      "ANDROID_CLIENT_ID": "560029034956-aofctgaqk352nvol1ffk3liu4318dch5.apps.googleusercontent.com",
+      "IOS_CLIENT_ID": "560029034956-chk119o9ht44stb8dvnqd2ubs32sqlf3.apps.googleusercontent.com"
     }
   }
 }

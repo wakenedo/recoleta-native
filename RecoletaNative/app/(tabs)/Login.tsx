@@ -9,7 +9,7 @@ const Login = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userType, setUserType] = useState("");
-  const { onLogin, onRegister } = useAuth();
+  const { onLogin, onRegister, onGoogleLogin } = useAuth();
 
   const login = async () => {
     const result = await onLogin!(email, password);
@@ -68,6 +68,7 @@ const Login = () => {
               value={password}
             />
             <Button onPress={login} title="Sign in" />
+            <Button title="Login com Google" onPress={onGoogleLogin} />
           </>
         }
       />
