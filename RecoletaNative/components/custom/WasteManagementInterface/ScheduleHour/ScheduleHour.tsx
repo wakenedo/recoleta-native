@@ -1,8 +1,13 @@
-import React from "react";
+import React, { FC } from "react";
 import { Heading } from "@/components/ui/heading";
+import { ScheduleHourProps } from "../types";
 import { Platform, View } from "react-native";
 
-const ScheduleHour = () => {
+
+const ScheduleHour: FC<ScheduleHourProps> = ({
+  selectedHour,
+  setSelectedHour,
+}) => {
   return (
     <View className={`${Platform.OS != "windows" ? "mt-6" : ""}`}>
       <Heading size="xs">Hora Preferida para Coleta</Heading>
