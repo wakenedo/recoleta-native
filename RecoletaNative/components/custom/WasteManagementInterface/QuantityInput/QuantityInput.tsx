@@ -1,6 +1,6 @@
 import React from "react";
 import { Heading } from "@/components/ui/heading";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 import { Input, InputField } from "@/components/ui/input";
 import { QuantityInputProps } from "../types";
 
@@ -16,7 +16,7 @@ const QuantityInput: React.FC<QuantityInputProps> = ({
   };
 
   return (
-    <View>
+    <View className={`${Platform.OS != "windows" ? "mt-6" : ""}`}>
       <Heading size="xs">Quantidade (em Kg)</Heading>
       <Input
         variant="outline"
