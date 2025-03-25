@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/radio";
 import { VStack } from "@/components/ui/vstack";
 import React from "react";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 import { PackageAvailableSelectorProps } from "../types";
 import { PACKAGE_OPTIONS } from "../utils/enum";
 
@@ -18,7 +18,7 @@ const PackageAvailableSelector: React.FC<PackageAvailableSelectorProps> = ({
   setSelectedPackage,
 }) => {
   return (
-    <View>
+    <View className={`${Platform.OS === "android" ? "mt-6" : ""}`}>
       <Heading size="xs">Embalagem Disponível</Heading>
       <RadioGroup
         className="mt-2"

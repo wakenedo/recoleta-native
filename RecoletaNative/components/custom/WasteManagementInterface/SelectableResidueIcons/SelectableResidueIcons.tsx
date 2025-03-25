@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Heading } from "@/components/ui/heading";
 import { Image } from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 import { SelectableResidueIconsProps } from "../types";
 import { RESIDUE_CARDS } from "../utils/enum";
 
@@ -14,14 +14,16 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
   return (
     <View>
       <Heading size="xs">Tipo de Resído</Heading>
-      <View className="flex-row flex-wrap justify-between mt-2">
+      <View className={`flex-row flex-wrap justify-between  mt-2`}>
         {RESIDUE_CARDS.map((card) => {
           const isSelected = selectedResidue?.id === card.id;
           return (
             <Card
               onTouchStart={() => setSelectedResidue(card)}
               key={card.id}
-              className={`items-center my-2 border w-[150px] h-fit p-2 rounded-lg 
+              className={`items-center my-2 border ${
+                Platform.OS === "android" ? "w-[165px]" : "w-[150px]"
+              } h-fit p-2 rounded-lg 
                   ${isSelected ? "border-blue-500" : "border-zinc-300"}`}
             >
               <Image
@@ -30,7 +32,9 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
                   height: 250,
                   width: 250,
                 }}
-                className="  w-[100px] h-[125px]"
+                className={` ${
+                  Platform.OS === "android" ? "h-[145]" : "w-[100px] h-[125px]"
+                }  `}
               />
               <Text
                 className={`${isSelected ? "font-bold text-blue-500" : ""}`}

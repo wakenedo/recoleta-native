@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/radio";
 import { VStack } from "@/components/ui/vstack";
 import React from "react";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 import { ResidueConditionSelectorProps } from "../types";
 import { RESIDUE_CONDITIONS } from "../utils/enum";
 
@@ -18,7 +18,7 @@ const ResidueConditionSelector: React.FC<ResidueConditionSelectorProps> = ({
   setSelectedCondition,
 }) => {
   return (
-    <View>
+    <View className={`${Platform.OS != "windows" ? "mt-6" : ""}`}>
       <Heading size="xs">Condição do Resído</Heading>
       <RadioGroup
         className="mt-2"
