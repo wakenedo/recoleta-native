@@ -10,7 +10,6 @@ export default function App() {
     <AuthProvider>
       <Layout></Layout>
       <Toast />
-
     </AuthProvider>
   );
 }
