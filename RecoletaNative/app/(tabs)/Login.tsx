@@ -26,7 +26,6 @@ import { TextInput } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import Toast from "react-native-toast-message";
 
-// Schema de validação com discriminated union
 const authSchema = z.discriminatedUnion("isRegistering", [
   z.object({
     isRegistering: z.literal(true),
@@ -88,8 +87,24 @@ const AuthScreen = () => {
   });
 
   const toggleAuthMode = () => {
-    setIsRegistering(!isRegistering);
-    reset();
+    const newValue = !isRegistering;
+    setIsRegistering(newValue);
+    if (newValue) {
+      reset({
+        isRegistering: true,
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        userType: undefined,
+      });
+    } else {
+      reset({
+        isRegistering: false,
+        email: "",
+        password: "",
+      });
+    }
   };
 
   const handleAuth = async (data: AuthFormData) => {
