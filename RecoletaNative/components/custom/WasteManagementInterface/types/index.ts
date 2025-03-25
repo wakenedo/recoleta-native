@@ -25,7 +25,25 @@ type SelectableResidueIconsProps = {
   setSelectedResidue: (residue: Residue) => void;
 };
 
+type AvailableDateProps = {
+  selectedDate: Date | null;
+  setSelectedDate: (date: Date) => void;
+};
+
+type ScheduleHourProps = {
+  selectedHour: string | null;
+  setSelectedHour: (hour: string) => void;
+};
+
+type TakeResiduePhotoProps = {
+  photo: string | null;
+  setPhoto: (photo: string) => void;
+};
+
 export {
+  TakeResiduePhotoProps,
+  ScheduleHourProps,
+  AvailableDateProps,
   ResidueConditionSelectorProps,
   PackageAvailableSelectorProps,
   QuantityInputProps,

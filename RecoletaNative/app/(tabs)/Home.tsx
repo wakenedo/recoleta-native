@@ -5,6 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
 import { Text } from "@/components/ui/text";
 import { WasteManagementInterface } from "@/components/custom/WasteManagementInterface";
+import { FlowProvider } from "../context/FlowContext";
 
 const TOKEN_KEY = "user-jwt";
 const API_URL = "https://recoletaapi.onrender.com/api";
@@ -57,7 +58,9 @@ const Home = () => {
           <Text>{`${user.firstName} ${user.lastName} ${user.userType}`}</Text>
         )}
       </View>
-      <WasteManagementInterface />
+      <FlowProvider>
+        <WasteManagementInterface />
+      </FlowProvider>
     </>
   );
 };
