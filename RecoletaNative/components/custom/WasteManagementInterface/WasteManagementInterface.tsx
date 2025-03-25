@@ -12,8 +12,7 @@ import { ScheduleHour } from "./ScheduleHour";
 import { TakeResiduePhoto } from "./TakeResiduePhoto";
 import { FormControl } from "@/components/ui/form-control";
 import { Button, ButtonText } from "@/components/ui/button";
-import { Residue } from "./types";
-import { useFlow } from "@/app/context/FlowContext";
+import { useResidue } from "@/hooks/useResidue";
 
 const WasteManagementInterface = () => {
   const {
@@ -24,8 +23,15 @@ const WasteManagementInterface = () => {
     selectedDate,
     selectedHour,
     photo,
-    setFlowData,
-  } = useFlow();
+    setResidue,
+    setQuantity,
+    setCondition,
+    setPackage,
+    setDate,
+    setHour,
+    setPhoto,
+    isResidueValid,
+  } = useResidue();
 
   const isFormValid = !!(
     (selectedResidue?.id && quantity && selectedCondition && selectedPackage)
@@ -43,7 +49,7 @@ const WasteManagementInterface = () => {
 
   return (
     <ScrollView className="px-2">
-      <Card className="border border-zinc-300 color-slate-900">
+      <Card className="border border-zinc-300 text-slate-900">
         <View className="mb-6">
           <Heading size="xs">Detalhes do Resíduo para Descarte</Heading>
           <Text size="xs" className="mt-2">
@@ -53,44 +59,35 @@ const WasteManagementInterface = () => {
         <FormControl className="space-y-6">
           <SelectableResidueIcons
             selectedResidue={selectedResidue}
-            setSelectedResidue={(residue) =>
-              setFlowData({ selectedResidue: residue })
-            }
+            setSelectedResidue={setResidue}
           />
-          <QuantityInput
-            quantity={quantity}
-            setQuantity={(q) => setFlowData({ quantity: q })}
-          />
+          <QuantityInput quantity={quantity} setQuantity={setQuantity} />
           <ResidueConditionSelector
             selectedCondition={selectedCondition}
-            setSelectedCondition={(condition) =>
-              setFlowData({ selectedCondition: condition })
-            }
+            setSelectedCondition={setCondition}
           />
           <PackageAvailableSelector
             selectedPackage={selectedPackage}
-            setSelectedPackage={(pkg) => setFlowData({ selectedPackage: pkg })}
+            setSelectedPackage={setPackage}
           />
           <AvailableDate
             selectedDate={selectedDate}
-            setSelectedDate={(date) => setFlowData({ selectedDate: date })}
+            setSelectedDate={setDate}
           />
-          <ScheduleHour
-            selectedHour={selectedHour}
-            setSelectedHour={(hour) => setFlowData({ selectedHour: hour })}
-          />
-          <TakeResiduePhoto
-            photo={photo || null}
-            setPhoto={(p) => setFlowData({ photo: p })}
-          />
+          <ScheduleHour selectedHour={selectedHour} setSelectedHour={setHour} />
+          <TakeResiduePhoto photo={photo} setPhoto={setPhoto} />
 
           <Button
-            className="w-fit self-end mt-4 color-slate-50 bg-slate-900"
+            className={`w-fit self-end mt-4  ${
+              isResidueValid ? "bg-slate-900  " : "bg-gray-400 opacity-50"
+            }`}
             isDisabled={!isFormValid} // ✅ Dynamically disable button
             size="sm"
             onPress={handleSubmit}
           >
-            <ButtonText>Continuar</ButtonText>
+            <ButtonText className={`${isResidueValid ? "text-slate-50" : ""} `}>
+              Continuar
+            </ButtonText>
           </Button>
         </FormControl>
       </Card>
