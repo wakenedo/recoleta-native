@@ -1,8 +1,12 @@
-import React from "react";
+import React, { FC } from "react";
 import { Heading } from "@/components/ui/heading";
 import { View } from "react-native";
+import { ScheduleHourProps } from "../types";
 
-const ScheduleHour = () => {
+const ScheduleHour: FC<ScheduleHourProps> = ({
+  selectedHour,
+  setSelectedHour,
+}) => {
   return (
     <View>
       <Heading size="xs">Hora Preferida para Coleta</Heading>

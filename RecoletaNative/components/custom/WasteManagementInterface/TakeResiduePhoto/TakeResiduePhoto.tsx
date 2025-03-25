@@ -1,8 +1,9 @@
 import { Heading } from "@/components/ui/heading";
-import React from "react";
+import React, { FC } from "react";
 import { View } from "react-native";
+import { TakeResiduePhotoProps } from "../types";
 
-const TakeResiduePhoto = () => {
+const TakeResiduePhoto: FC<TakeResiduePhotoProps> = ({ photo, setPhoto }) => {
   return (
     <View>
       <Heading size="xs">Adicione Foto do Resido</Heading>

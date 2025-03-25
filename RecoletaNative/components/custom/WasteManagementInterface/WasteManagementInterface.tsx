@@ -13,19 +13,19 @@ import { TakeResiduePhoto } from "./TakeResiduePhoto";
 import { FormControl } from "@/components/ui/form-control";
 import { Button, ButtonText } from "@/components/ui/button";
 import { Residue } from "./types";
+import { useFlow } from "@/app/context/FlowContext";
 
 const WasteManagementInterface = () => {
-  const [selectedResidue, setSelectedResidue] = React.useState<Residue | null>(
-    null
-  );
-  const [quantity, setQuantity] = React.useState<string>("");
-  const [selectedCondition, setSelectedCondition] =
-    React.useState<string>("Limpo");
-  const [selectedPackage, setSelectedPackage] =
-    React.useState<string>("Caixa de Papelão");
-  const [selectedDate, setSelectedDate] = React.useState<string | null>(null);
-  const [selectedHour, setSelectedHour] = React.useState<string | null>(null);
-  const [photo, setPhoto] = React.useState<string | null>(null);
+  const {
+    selectedResidue,
+    quantity,
+    selectedCondition,
+    selectedPackage,
+    selectedDate,
+    selectedHour,
+    photo,
+    setFlowData,
+  } = useFlow();
 
   const isFormValid = !!(
     (selectedResidue?.id && quantity && selectedCondition && selectedPackage)
@@ -34,37 +34,11 @@ const WasteManagementInterface = () => {
     //selectedHour
   );
 
-  const generatePayload = () => {
-    if (!isFormValid) return null;
-
-    return {
-      residueName: selectedResidue.name, // Send only ID (or title if needed)
-      quantity,
-      condition: selectedCondition,
-      packageType: selectedPackage,
-      availableDate: selectedDate,
-      scheduleHour: selectedHour,
-      photo: photo || null, // Optional
-    };
-  };
-
   const handleSubmit = () => {
-    const payload = generatePayload();
-    if (payload) {
-      console.log("Submitting Data:", payload);
-      // Send data to the backend or further processing here
+    if (!isFormValid) return console.log("Invalid Form Data");
 
-      // ✅ Clear form after successful submission
-      setSelectedResidue(null);
-      setQuantity("");
-      setSelectedCondition("Limpo");
-      setSelectedPackage("Caixa de Papelão");
-      setSelectedDate(null);
-      setSelectedHour(null);
-      setPhoto(null);
-    } else {
-      console.log("Invalid Form Data");
-    }
+    console.log("Residue Data Saved. Moving to Address Step...");
+    // Here, navigate to the Address step instead of resetting
   };
 
   return (
@@ -79,20 +53,36 @@ const WasteManagementInterface = () => {
         <FormControl className="space-y-6">
           <SelectableResidueIcons
             selectedResidue={selectedResidue}
-            setSelectedResidue={setSelectedResidue}
+            setSelectedResidue={(residue) =>
+              setFlowData({ selectedResidue: residue })
+            }
           />
-          <QuantityInput quantity={quantity} setQuantity={setQuantity} />
+          <QuantityInput
+            quantity={quantity}
+            setQuantity={(q) => setFlowData({ quantity: q })}
+          />
           <ResidueConditionSelector
             selectedCondition={selectedCondition}
-            setSelectedCondition={setSelectedCondition}
+            setSelectedCondition={(condition) =>
+              setFlowData({ selectedCondition: condition })
+            }
           />
           <PackageAvailableSelector
             selectedPackage={selectedPackage}
-            setSelectedPackage={setSelectedPackage}
+            setSelectedPackage={(pkg) => setFlowData({ selectedPackage: pkg })}
           />
-          <AvailableDate />
-          <ScheduleHour />
-          <TakeResiduePhoto />
+          <AvailableDate
+            selectedDate={selectedDate}
+            setSelectedDate={(date) => setFlowData({ selectedDate: date })}
+          />
+          <ScheduleHour
+            selectedHour={selectedHour}
+            setSelectedHour={(hour) => setFlowData({ selectedHour: hour })}
+          />
+          <TakeResiduePhoto
+            photo={photo || null}
+            setPhoto={(p) => setFlowData({ photo: p })}
+          />
 
           <Button
             className="w-fit self-end mt-4 color-slate-50 bg-slate-900"

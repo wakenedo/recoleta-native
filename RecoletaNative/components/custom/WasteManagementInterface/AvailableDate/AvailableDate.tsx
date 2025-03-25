@@ -1,8 +1,12 @@
-import React from "react";
+import React, { FC } from "react";
 import { Heading } from "@/components/ui/heading";
 import { View } from "react-native";
+import { AvailableDateProps } from "../types";
 
-const AvailableDate = () => {
+const AvailableDate: FC<AvailableDateProps> = ({
+  selectedDate,
+  setSelectedDate,
+}) => {
   return (
     <View>
       <Heading size="xs">Data Preferida para Coleta</Heading>
