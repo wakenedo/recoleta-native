@@ -367,7 +367,6 @@ const AuthScreen = () => {
   );
 };
 
-// Estilos mantidos iguais com pequenos ajustes
 const styles = StyleSheet.create({
   container: {
     flex: 1,
