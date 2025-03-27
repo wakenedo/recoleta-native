@@ -61,7 +61,7 @@ const AuthScreen = () => {
   const [isRegistering, setIsRegistering] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showUserTypePicker, setShowUserTypePicker] = useState(false);
-  const { onLogin, onRegister } = useAuth();
+  const { onLogin, onRegister, onGoogleLogin } = useAuth();
 
   const {
     control,
@@ -346,6 +346,20 @@ const AuthScreen = () => {
               ) : (
                 <Text style={styles.buttonText}>
                   {isRegistering ? "Registrar" : "Login"}
+                </Text>
+              )}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.button, isLoading && styles.buttonDisabled]}
+              onPress={onGoogleLogin}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text style={styles.buttonText}>
+                  {"Login com o Google"}
                 </Text>
               )}
             </TouchableOpacity>
