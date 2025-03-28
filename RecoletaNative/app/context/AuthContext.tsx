@@ -49,8 +49,9 @@ export const AuthProvider = ({ children }: any) => {
   });
 
   const redirectUri = AuthSession.makeRedirectUri({
-    native: 'com.mayrom.RecoletaNative:/oauth2redirect'
+    //native: 'com.mayrom.RecoletaNative:/oauth2redirect'
     //path: "oauth2redirect",
+    useProxy: true,
   });
   
   const [request, response, promptAsync] = Google.useAuthRequest({

@@ -1,5 +1,7 @@
 {
   "expo": {
+    "host": "localhost",
+    "platforms": ["ios", "android", "web"],
     "name": "RecoletaNative",
     "slug": "RecoletaNative",
     "version": "1.0.0",
