@@ -61,7 +61,7 @@ const AuthScreen = () => {
   const [isRegistering, setIsRegistering] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showUserTypePicker, setShowUserTypePicker] = useState(false);
-  const { onLogin, onRegister } = useAuth();
+  const { onLogin, onRegister, onGoogleLogin } = useAuth();
 
   const {
     control,
@@ -355,6 +355,11 @@ const AuthScreen = () => {
                 {isRegistering ? "Já tem uma conta?" : "Não tem uma conta?"}
               </Text>
               <TouchableOpacity onPress={toggleAuthMode}>
+                <Text style={styles.switchButton}>
+                  {isRegistering ? "Fazer login" : "Cadastre-se"}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={onGoogleLogin}>
                 <Text style={styles.switchButton}>
                   {isRegistering ? "Fazer login" : "Cadastre-se"}
                 </Text>

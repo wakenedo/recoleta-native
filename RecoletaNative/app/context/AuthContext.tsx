@@ -9,6 +9,8 @@ import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import auth from "@react-native-firebase/auth";
 
 interface AuthProps {
   authState?: { token: string | null; authenticated: boolean | null };
@@ -20,6 +22,7 @@ interface AuthProps {
     userType: string
   ) => Promise<any>;
   onLogin?: (email: string, password: string) => Promise<any>;
+  onGoogleLogin?: () => Promise<any>;
   onLogout?: () => Promise<any>;
 }
 
@@ -99,6 +102,29 @@ export const AuthProvider = ({ children }: any) => {
     }
   };
 
+  const googleSignIn = async () => {
+    try {
+      // Get the user's Google account info
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+
+      if (userInfo.data === null) return;
+
+      // Get the Google credential
+      const googleCredential = auth.GoogleAuthProvider.credential(
+        userInfo.data.idToken
+      );
+
+      // Sign in with the Google credential
+      const userCredential = await auth().signInWithCredential(
+        googleCredential
+      );
+      console.log(userCredential.user);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   //register
   const register = async (
     firstName: string,
@@ -147,6 +173,7 @@ export const AuthProvider = ({ children }: any) => {
     onRegister: register,
     onLogin: login,
     onLogout: logout,
+    onGoogleSignIn: googleSignIn,
     authState,
   };
 

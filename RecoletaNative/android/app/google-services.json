@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "842813696305",
+    "project_id": "recoleta-native",
+    "storage_bucket": "recoleta-native.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:842813696305:android:41d8767c06273285dd6810",
+        "android_client_info": {
+          "package_name": "com.recoleta.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "842813696305-9slrvre3cl1rm7tnuq3irveija65ieta.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.recoleta.android",
+            "certificate_hash": "5a5fc7e6b309f3204f566a0ac95985bf0ba9ff81"
+          }
+        },
+        {
+          "client_id": "842813696305-vo4kued9niaqfo8nr5umb17gb5e3qpj1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDl5DCIx2-wTTucgdkZaWoJtv3ecIeDCqc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "842813696305-vo4kued9niaqfo8nr5umb17gb5e3qpj1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "842813696305-fsblr7o5gso46kgbq061vefgvd4fl4gc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.recoleta.native"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
