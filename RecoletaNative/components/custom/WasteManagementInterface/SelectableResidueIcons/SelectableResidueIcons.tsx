@@ -23,24 +23,25 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
               key={card.id}
               className={`items-center my-2 border ${
                 Platform.OS === "android" ? "w-[165px]" : "w-[150px]"
-              } h-fit p-2 rounded-lg 
-                  ${isSelected ? "border-blue-500" : "border-zinc-300"}`}
+              } 
+              ${isSelected ? "border-blue-500" : "border-zinc-300"}`}
             >
               <Image
                 source={{ uri: card.image }}
                 style={{
-                  height: 250,
-                  width: 250,
+                  width: "100%",
+                  aspectRatio: 1,
+                  resizeMode: "contain",
                 }}
-                className={` ${
-                  Platform.OS === "android" ? "h-[145]" : "w-[100px] h-[125px]"
-                }  `}
+                className="h-24"
               />
-              <Text
-                className={`${isSelected ? "font-bold text-blue-500" : ""}`}
-              >
-                {card.name}
-              </Text>
+              <View className="mt-5">
+                <Text
+                  className={`${isSelected ? "font-bold text-blue-500" : ""}`}
+                >
+                  {card.name}
+                </Text>
+              </View>
             </Card>
           );
         })}
