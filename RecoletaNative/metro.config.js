@@ -1,8 +1,9 @@
 const { getDefaultConfig } = require('expo/metro-config');
+const { withNativeWind } = require('nativewind/metro');
 
 const config = getDefaultConfig(__dirname);
 
-// Ensure JSON files are included in the asset extensions
+// Modify asset extensions BEFORE passing to NativeWind
 config.resolver.assetExts.push('json');
 
-module.exports = config;
+module.exports = withNativeWind(config, { input: './global.css' });
