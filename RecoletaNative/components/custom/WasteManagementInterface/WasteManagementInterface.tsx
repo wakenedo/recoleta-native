@@ -12,20 +12,26 @@ import { ScheduleHour } from "./ScheduleHour";
 import { TakeResiduePhoto } from "./TakeResiduePhoto";
 import { FormControl } from "@/components/ui/form-control";
 import { Button, ButtonText } from "@/components/ui/button";
-import { Residue } from "./types";
+import { useResidue } from "@/hooks/useResidue";
 
 const WasteManagementInterface = () => {
-  const [selectedResidue, setSelectedResidue] = React.useState<Residue | null>(
-    null
-  );
-  const [quantity, setQuantity] = React.useState<string>("");
-  const [selectedCondition, setSelectedCondition] =
-    React.useState<string>("Limpo");
-  const [selectedPackage, setSelectedPackage] =
-    React.useState<string>("Caixa de Papelão");
-  const [selectedDate, setSelectedDate] = React.useState<string | null>(null);
-  const [selectedHour, setSelectedHour] = React.useState<string | null>(null);
-  const [photo, setPhoto] = React.useState<string | null>(null);
+  const {
+    selectedResidue,
+    quantity,
+    selectedCondition,
+    selectedPackage,
+    selectedDate,
+    selectedHour,
+    photo,
+    setResidue,
+    setQuantity,
+    setCondition,
+    setPackage,
+    setDate,
+    setHour,
+    setPhoto,
+    isResidueValid,
+  } = useResidue();
 
   const isFormValid = !!(
     (selectedResidue?.id && quantity && selectedCondition && selectedPackage)
@@ -34,42 +40,16 @@ const WasteManagementInterface = () => {
     //selectedHour
   );
 
-  const generatePayload = () => {
-    if (!isFormValid) return null;
-
-    return {
-      residueName: selectedResidue.name, // Send only ID (or title if needed)
-      quantity,
-      condition: selectedCondition,
-      packageType: selectedPackage,
-      availableDate: selectedDate,
-      scheduleHour: selectedHour,
-      photo: photo || null, // Optional
-    };
-  };
-
   const handleSubmit = () => {
-    const payload = generatePayload();
-    if (payload) {
-      console.log("Submitting Data:", payload);
-      // Send data to the backend or further processing here
+    if (!isFormValid) return console.log("Invalid Form Data");
 
-      // ✅ Clear form after successful submission
-      setSelectedResidue(null);
-      setQuantity("");
-      setSelectedCondition("Limpo");
-      setSelectedPackage("Caixa de Papelão");
-      setSelectedDate(null);
-      setSelectedHour(null);
-      setPhoto(null);
-    } else {
-      console.log("Invalid Form Data");
-    }
+    console.log("Residue Data Saved. Moving to Address Step...");
+    // Here, navigate to the Address step instead of resetting
   };
 
   return (
     <ScrollView className="px-2">
-      <Card className="border border-zinc-300 color-slate-900">
+      <Card className="border border-zinc-300 text-slate-900">
         <View className="mb-6">
           <Heading size="xs">Detalhes do Resíduo para Descarte</Heading>
           <Text size="xs" className="mt-2">
@@ -79,28 +59,35 @@ const WasteManagementInterface = () => {
         <FormControl className="space-y-6">
           <SelectableResidueIcons
             selectedResidue={selectedResidue}
-            setSelectedResidue={setSelectedResidue}
+            setSelectedResidue={setResidue}
           />
           <QuantityInput quantity={quantity} setQuantity={setQuantity} />
           <ResidueConditionSelector
             selectedCondition={selectedCondition}
-            setSelectedCondition={setSelectedCondition}
+            setSelectedCondition={setCondition}
           />
           <PackageAvailableSelector
             selectedPackage={selectedPackage}
-            setSelectedPackage={setSelectedPackage}
+            setSelectedPackage={setPackage}
           />
-          <AvailableDate />
-          <ScheduleHour />
-          <TakeResiduePhoto />
+          <AvailableDate
+            selectedDate={selectedDate}
+            setSelectedDate={setDate}
+          />
+          <ScheduleHour selectedHour={selectedHour} setSelectedHour={setHour} />
+          <TakeResiduePhoto photo={photo} setPhoto={setPhoto} />
 
           <Button
-            className="w-fit self-end mt-4 color-slate-50 bg-slate-900"
+            className={`w-fit self-end mt-4  ${
+              isResidueValid ? "bg-slate-900  " : "bg-gray-400 opacity-50"
+            }`}
             isDisabled={!isFormValid} // ✅ Dynamically disable button
             size="sm"
             onPress={handleSubmit}
           >
-            <ButtonText>Continuar</ButtonText>
+            <ButtonText className={`${isResidueValid ? "text-slate-50" : ""} `}>
+              Continuar
+            </ButtonText>
           </Button>
         </FormControl>
       </Card>
