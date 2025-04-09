@@ -13,7 +13,7 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import {
   Eye,
   EyeOff,
@@ -350,6 +350,18 @@ const AuthScreen = () => {
               )}
             </TouchableOpacity>
 
+            <TouchableOpacity
+              style={styles.googleButton}
+              onPress={() => console.log("Google login")}
+              accessibilityLabel="Entrar com o Google"
+            >
+              <Image
+                source={require("@/assets/images/google-icon.png")}
+                style={styles.googleIcon}
+              />
+              <Text style={styles.googleButtonText}>Entrar com o Google</Text>
+            </TouchableOpacity>
+
             <View style={styles.switchContainer}>
               <Text style={styles.switchText}>
                 {isRegistering ? "Já tem uma conta?" : "Não tem uma conta?"}
@@ -486,6 +498,27 @@ const styles = StyleSheet.create({
     color: "#4BD609",
     fontWeight: "bold",
     marginLeft: 8,
+  },
+  googleButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 48,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#D1D5DB",
+    marginTop: 12,
+    backgroundColor: "#FFFFFF",
+  },
+  googleIcon: {
+    width: 20,
+    height: 20,
+    marginRight: 8,
+  },
+  googleButtonText: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#374151",
   },
 });
 

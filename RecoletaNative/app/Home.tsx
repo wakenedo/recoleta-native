@@ -4,12 +4,14 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
 import { Text } from "@/components/ui/text";
-import { WasteManagementInterface } from "@/components/custom/WasteManagementInterface";
+import { useAuth } from "@/context/AuthContext";
+import { Button } from "react-native";
 
 const TOKEN_KEY = "user-jwt";
 const API_URL = "https://recoletaapi.onrender.com/api";
 
 const Home = () => {
+  const { onLogout } = useAuth();
   const [user, setUser] = useState<{
     firstName: string;
     lastName: string;
@@ -56,8 +58,8 @@ const Home = () => {
         {user && (
           <Text>{`${user.firstName} ${user.lastName} ${user.userType}`}</Text>
         )}
+        <Button title="Logout" onPress={onLogout} />
       </View>
-      <WasteManagementInterface />
     </>
   );
 };

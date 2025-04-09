@@ -1,14 +1,9 @@
-import React, {
-  Children,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
+import Constants from "expo-constants";
 
 interface AuthProps {
   authState?: { token: string | null; authenticated: boolean | null };
@@ -23,13 +18,13 @@ interface AuthProps {
   onLogout?: () => Promise<any>;
 }
 
-const TOKEN_KEY = "user-jwt";
-const API_URL = "https://recoletaapi.onrender.com/api";
 const AuthContext = createContext<AuthProps>({});
 
 export const useAuth = () => {
   return useContext(AuthContext);
 };
+
+const { API_URL, TOKEN_KEY } = Constants.expoConfig?.extra || {};
 
 export const AuthProvider = ({ children }: any) => {
   //handling state
@@ -48,9 +43,9 @@ export const AuthProvider = ({ children }: any) => {
       try {
         let token;
         if (Platform.OS === "web") {
-          token = await AsyncStorage.getItem(TOKEN_KEY);
+          token = await AsyncStorage.getItem("user-jwt");
         } else {
-          token = await SecureStore.getItemAsync(TOKEN_KEY);
+          token = await SecureStore.getItemAsync("user-jwt");
         }
 
         if (token) {
@@ -70,6 +65,7 @@ export const AuthProvider = ({ children }: any) => {
 
   //login
   const login = async (email: string, password: string) => {
+    console.log(TOKEN_KEY);
     try {
       const result = await axios.post(`${API_URL}/auth/login`, {
         email,
@@ -138,6 +134,7 @@ export const AuthProvider = ({ children }: any) => {
         token: null,
         authenticated: false,
       });
+      console.log(authState);
     } catch (e) {
       console.error(e);
     }
