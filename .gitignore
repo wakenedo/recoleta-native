@@ -15,6 +15,9 @@ android/app/google-services.json
 .env
 *.env.d.ts
 
+# Android
+android/
+
 # Expo
 .expo/
 dist/
