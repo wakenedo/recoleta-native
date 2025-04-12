@@ -17,6 +17,7 @@ interface AuthProps {
   ) => Promise<any>;
   onLogin?: (email: string, password: string) => Promise<any>;
   onLogout?: () => Promise<any>;
+  onGoogleLogin?: () => Promise<any>;
 }
 
 const AuthContext = createContext<AuthProps>({});
@@ -25,7 +26,7 @@ export const useAuth = () => {
   return useContext(AuthContext);
 };
 
-const { API_URL, TOKEN_KEY, WEB_CLIENT_ID, LOCAL_API_URL } =
+const { API_URL, TOKEN_KEY, GOOGLE_CLIENT_ID } =
   Constants.expoConfig?.extra || {};
 
 export const AuthProvider = ({ children }: any) => {
@@ -68,7 +69,7 @@ export const AuthProvider = ({ children }: any) => {
 
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: Constants.expoConfig?.extra?.WEB_CLIENT_ID,
+      webClientId: GOOGLE_CLIENT_ID,
       offlineAccess: true, // Optional but good to keep
       forceCodeForRefreshToken: false,
     });
@@ -78,12 +79,12 @@ export const AuthProvider = ({ children }: any) => {
   const login = async (email: string, password: string) => {
     console.log(TOKEN_KEY);
     try {
-      const result = await axios.post(`${LOCAL_API_URL}/auth/login`, {
+      const result = await axios.post(`${API_URL}/auth/login`, {
         email,
         password,
       });
 
-      console.log(result.data);
+      console.log("login", result.data);
 
       setAuthState({
         token: result.data.accessToken,
@@ -101,8 +102,12 @@ export const AuthProvider = ({ children }: any) => {
       }
 
       return result;
-    } catch (e) {
-      return { error: true, msg: (e as any).response.data.msg };
+    } catch (e: any) {
+      const errorMsg =
+        (axios.isAxiosError(e) && e.response?.data?.msg) ||
+        e.message ||
+        "Algo deu errado. Tente novamente.";
+      return { error: true, msg: errorMsg };
     }
   };
 
@@ -114,8 +119,15 @@ export const AuthProvider = ({ children }: any) => {
     password: string,
     userType: string
   ) => {
+    console.log("register", {
+      firstName,
+      lastName,
+      email,
+      password,
+      userType,
+    });
     try {
-      return await axios.post(`${LOCAL_API_URL}/auth/register`, {
+      return await axios.post(`${API_URL}/auth/register`, {
         firstName,
         lastName,
         email,
@@ -146,8 +158,12 @@ export const AuthProvider = ({ children }: any) => {
         authenticated: false,
       });
       console.log(authState);
-    } catch (e) {
-      console.error(e);
+    } catch (e: any) {
+      const errorMsg =
+        (axios.isAxiosError(e) && e.response?.data?.msg) ||
+        e.message ||
+        "Algo deu errado. Tente novamente.";
+      return { error: true, msg: errorMsg };
     }
   };
 
@@ -157,11 +173,11 @@ export const AuthProvider = ({ children }: any) => {
         showPlayServicesUpdateDialog: true,
       });
       const userInfo = await GoogleSignin.signIn();
-      const idToken = userInfo.idToken;
+      const idToken = userInfo?.data?.idToken;
 
       if (!idToken) throw new Error("Missing Google ID token");
 
-      const response = await axios.post(`${LOCAL_API_URL}/auth/google-login`, {
+      const response = await axios.post(`${API_URL}/auth/google-login`, {
         idToken,
       });
 
@@ -182,9 +198,11 @@ export const AuthProvider = ({ children }: any) => {
       }
 
       return response;
-    } catch (error) {
-      console.error("Google login error:", error.message);
-      return { error: true, msg: "Google sign-in failed." };
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : "Google sign-in failed.";
+      console.error("Google login error:", message);
+      return { error: true, msg: message };
     }
   };
 
