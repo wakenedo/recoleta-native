@@ -1,19 +1,16 @@
 import React, { useState } from "react";
-import { Text, View, Button } from "react-native";
+import { Text, View, Button, ScrollView } from "react-native";
 
 import { WasteManagementInterface } from "../WasteManagementInterface";
 import { User } from "@/app/Home";
+import { Scroll } from "lucide-react-native";
 
 interface UserActionsInterfaceProps {
   user: User;
 }
 
 export const UserActionsInterface = ({ user }: UserActionsInterfaceProps) => {
-  const [showWasteManager, setShowWasteManager] = useState(false);
-
-  if (showWasteManager) {
-    return <WasteManagementInterface />;
-  }
+  const [showModal, setShowModal] = useState(false);
 
   const userType = user.userType;
   return (
@@ -23,12 +20,13 @@ export const UserActionsInterface = ({ user }: UserActionsInterfaceProps) => {
       </Text>
 
       {userType === "PRODUCES_WASTE" && (
-        <View>
-          <Button
-            title="Gerenciar Resíduos"
-            onPress={() => setShowWasteManager(true)}
+        <ScrollView>
+          <Button title="Criar Coleta" onPress={() => setShowModal(true)} />
+          <WasteManagementInterface
+            visible={showModal}
+            onClose={() => setShowModal(false)}
           />
-        </View>
+        </ScrollView>
       )}
 
       {userType === "COLLECTS_WASTE" && (
