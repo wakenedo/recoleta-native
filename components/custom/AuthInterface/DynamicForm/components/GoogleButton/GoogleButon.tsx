@@ -1,20 +1,50 @@
 import { useAuth } from "@/context/AuthContext";
-import React from "react";
-import { Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import React, { useState } from "react";
+import {
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 
 const GoogleButton = () => {
   const { onGoogleLogin } = useAuth();
+  const [loading, setLoading] = useState(false);
+
+  const handlePress = async () => {
+    try {
+      setLoading(true);
+      if (onGoogleLogin) {
+        await onGoogleLogin();
+      } else {
+        console.error("onGoogleLogin is undefined");
+      }
+    } catch (err) {
+      console.error("Google login failed", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <TouchableOpacity
-      style={styles.googleButton}
-      onPress={onGoogleLogin}
+      style={[styles.googleButton, loading && styles.disabled]}
+      onPress={handlePress}
       accessibilityLabel="Entrar com o Google"
+      disabled={loading}
     >
-      <Image
-        source={require("@/assets/images/google-icon.png")}
-        style={styles.googleIcon}
-      />
-      <Text style={styles.googleButtonText}>Entrar com o Google</Text>
+      {loading ? (
+        <ActivityIndicator size="small" color="#374151" />
+      ) : (
+        <>
+          <Image
+            source={require("@/assets/images/google-icon.png")}
+            style={styles.googleIcon}
+          />
+          <Text style={styles.googleButtonText}>Entrar com o Google</Text>
+        </>
+      )}
     </TouchableOpacity>
   );
 };
@@ -30,6 +60,9 @@ const styles = StyleSheet.create({
     borderColor: "#D1D5DB",
     marginTop: 12,
     backgroundColor: "#FFFFFF",
+  },
+  disabled: {
+    opacity: 0.7,
   },
   googleIcon: {
     width: 20,

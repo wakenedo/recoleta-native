@@ -82,21 +82,21 @@ const AuthInterface = () => {
           source={require("@/assets/images/Logo.png")}
           accessibilityLabel="Logo do aplicativo"
         />
+        <DynamicForm
+          key={isRegistering ? "register" : "login"}
+          isRegistering={isRegistering}
+          control={control}
+          errors={errors}
+          isLoading={isLoading}
+          showUserTypePicker={showUserTypePicker}
+          setShowUserTypePicker={setShowUserTypePicker}
+          handleSubmit={handleSubmit}
+          showPassword={showPassword}
+          setShowPassword={setShowPassword}
+          toggleAuthMode={handleToggle}
+          handleAuth={createHandleAuth}
+        />
       </ScrollView>
-      <DynamicForm
-        key={isRegistering ? "register" : "login"}
-        isRegistering={isRegistering}
-        control={control}
-        errors={errors}
-        isLoading={isLoading}
-        showUserTypePicker={showUserTypePicker}
-        setShowUserTypePicker={setShowUserTypePicker}
-        handleSubmit={handleSubmit}
-        showPassword={showPassword}
-        setShowPassword={setShowPassword}
-        toggleAuthMode={handleToggle}
-        handleAuth={createHandleAuth}
-      />
     </KeyboardAvoidingView>
   );
 };
