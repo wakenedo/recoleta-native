@@ -3,7 +3,7 @@ import { Text, View, Button, ScrollView } from "react-native";
 
 import { WasteManagementInterface } from "../WasteManagementInterface";
 import { User } from "@/app/Home";
-import { Scroll } from "lucide-react-native";
+import { CollectFlowProvider } from "@/context/CollectFlowContext";
 
 interface UserActionsInterfaceProps {
   user: User;
@@ -22,10 +22,12 @@ export const UserActionsInterface = ({ user }: UserActionsInterfaceProps) => {
       {userType === "PRODUCES_WASTE" && (
         <ScrollView>
           <Button title="Criar Coleta" onPress={() => setShowModal(true)} />
-          <WasteManagementInterface
-            visible={showModal}
-            onClose={() => setShowModal(false)}
-          />
+          <CollectFlowProvider>
+            <WasteManagementInterface
+              visible={showModal}
+              onClose={() => setShowModal(false)}
+            />
+          </CollectFlowProvider>
         </ScrollView>
       )}
 
