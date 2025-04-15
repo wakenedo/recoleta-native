@@ -142,6 +142,10 @@ export const AuthProvider = ({ children }: any) => {
   //logout
   const logout = async () => {
     try {
+      if (GoogleSignin.hasPreviousSignIn()) {
+        await GoogleSignin.signOut();
+      }
+
       //delete token from storage
       if (Platform.OS === "web") {
         await AsyncStorage.removeItem(TOKEN_KEY);
