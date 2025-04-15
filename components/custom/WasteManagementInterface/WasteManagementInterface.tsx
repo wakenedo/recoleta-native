@@ -133,6 +133,7 @@ const WasteManagementInterface: React.FC<WasteManagementInterfaceProps> = ({
                     />
                     <ScheduleHour
                       selectedHour={selectedHour}
+                      selectedDate={selectedDate}
                       setSelectedHour={setHour}
                     />
                     <TakeResiduePhoto
