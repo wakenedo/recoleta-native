@@ -32,6 +32,7 @@ type AvailableDateProps = {
 
 type ScheduleHourProps = {
   selectedHour: string | null;
+  selectedDate: Date | null;
   setSelectedHour: (hour: string) => void;
 };
 
