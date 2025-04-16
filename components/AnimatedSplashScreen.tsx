@@ -13,29 +13,18 @@ const AnimatedSplashScreen = ({ onFinish }: { onFinish: () => void }) => {
   useEffect(() => {
     const runSplash = async () => {
       try {
-        console.log("[Splash] Checking if user has seen splash...");
-
         const hasSeenSplash = await AsyncStorage.getItem("hasSeenSplash");
-        console.log("[Splash] hasSeenSplash:", hasSeenSplash);
 
         const devForceSplash = __DEV__ && true;
 
         if (hasSeenSplash && !devForceSplash) {
-          console.log("[Splash] Skipping animation");
           await hideSplashAndFinish();
           return;
         }
 
-        console.log("[Splash] Playing animation");
         animationRef.current?.play();
-        console.log("animationRef.current", animationRef.current);
-        console.log(
-          "Splash Lottie source",
-          require("../assets/animation/RecoletaSplashScreenConfig.json")
-        );
 
         await waitForAnimation(3000); // Adjust to match your Lottie length
-        console.log("[Splash] Animation done, fading out...");
 
         await AsyncStorage.setItem("hasSeenSplash", "true");
 
@@ -53,20 +42,17 @@ const AnimatedSplashScreen = ({ onFinish }: { onFinish: () => void }) => {
     new Promise((resolve) => setTimeout(resolve, ms));
 
   const fadeOutSplash = () => {
-    console.log("[Splash] Starting fade out...");
     Animated.timing(opacity, {
       toValue: 0,
       duration: 500,
       easing: Easing.out(Easing.ease),
       useNativeDriver: true,
     }).start(async () => {
-      console.log("[Splash] Fade out complete. Hiding native splash.");
       await hideSplashAndFinish();
     });
   };
 
   const hideSplashAndFinish = async () => {
-    console.log("[Splash] Hiding splash and calling onFinish");
     await SplashScreen.hideAsync();
     onFinish();
   };

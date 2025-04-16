@@ -77,14 +77,11 @@ export const AuthProvider = ({ children }: any) => {
 
   //login
   const login = async (email: string, password: string) => {
-    console.log(TOKEN_KEY);
     try {
       const result = await axios.post(`${API_URL}/auth/login`, {
         email,
         password,
       });
-
-      console.log("login", result.data);
 
       setAuthState({
         token: result.data.accessToken,
@@ -161,7 +158,6 @@ export const AuthProvider = ({ children }: any) => {
         token: null,
         authenticated: false,
       });
-      console.log(authState);
     } catch (e: any) {
       const errorMsg =
         (axios.isAxiosError(e) && e.response?.data?.msg) ||
@@ -209,6 +205,8 @@ export const AuthProvider = ({ children }: any) => {
       return { error: true, msg: message };
     }
   };
+
+  console.log("Auth state:", authState);
 
   const value = {
     onRegister: register,
