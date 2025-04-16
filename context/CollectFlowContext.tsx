@@ -3,7 +3,7 @@ import { Residue } from "@/components/custom/WasteManagementInterface/types";
 
 interface CollectFlowState {
   selectedResidue: Residue | null;
-  quantity: string;
+  weight: string;
   selectedCondition: string;
   selectedPackage: string;
   selectedDate: Date | null;
@@ -11,14 +11,26 @@ interface CollectFlowState {
   photo: string | null;
 
   // Address Information
-  address: string;
+  neighborhood: string;
+  state: string;
+  street: string;
+  number: string;
+  complement: string;
   city: string;
   postalCode: string;
-  additionalInfo: string;
+  latitude?: number | string;
+  longitude?: number | string;
 
   // Methods
   setCollectFlowData: (data: Partial<CollectFlowState>) => void;
   resetCollectFlow: () => void;
+  getResiduePayload: () => {
+    name: string;
+    weight: string;
+    condition: string;
+    pkg: string;
+    photo: string | null;
+  } | null;
 }
 
 const CollectFlowContext = createContext<CollectFlowState | undefined>(
@@ -28,24 +40,27 @@ const CollectFlowContext = createContext<CollectFlowState | undefined>(
 export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [state, setState] = useState<CollectFlowState>({
-    // Residue default values
+  const [state, setState] = useState<
+    Omit<
+      CollectFlowState,
+      "setCollectFlowData" | "resetCollectFlow" | "getResiduePayload"
+    >
+  >({
     selectedResidue: null,
-    quantity: "",
+    weight: "",
     selectedCondition: "Limpo",
     selectedPackage: "Caixa de Papelão",
     selectedDate: null,
     selectedHour: null,
     photo: null,
 
-    // Address default values
-    address: "",
     city: "",
+    neighborhood: "",
+    state: "",
+    street: "",
+    number: "",
+    complement: "",
     postalCode: "",
-    additionalInfo: "",
-
-    setCollectFlowData: () => {},
-    resetCollectFlow: () => {},
   });
 
   const setCollectFlowData = (data: Partial<CollectFlowState>) => {
@@ -55,26 +70,45 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
   const resetCollectFlow = () => {
     setState({
       selectedResidue: null,
-      quantity: "",
+      weight: "",
       selectedCondition: "Limpo",
       selectedPackage: "Caixa de Papelão",
       selectedDate: null,
       selectedHour: null,
       photo: null,
 
-      address: "",
       city: "",
+      neighborhood: "",
+      state: "",
+      street: "",
+      number: "",
+      complement: "",
       postalCode: "",
-      additionalInfo: "",
-
-      setCollectFlowData,
-      resetCollectFlow,
     });
   };
 
+  const getResiduePayload = () => {
+    if (!state.selectedResidue) return null;
+
+    return {
+      name: state.selectedResidue.name,
+      weight: state.weight,
+      condition: state.selectedCondition,
+      pkg: state.selectedPackage,
+      photo: state.photo,
+    };
+  };
+
+  console.log("CollectFlowProvider state:", state);
+
   return (
     <CollectFlowContext.Provider
-      value={{ ...state, setCollectFlowData, resetCollectFlow }}
+      value={{
+        ...state,
+        setCollectFlowData,
+        resetCollectFlow,
+        getResiduePayload, // 👈 exposed here
+      }}
     >
       {children}
     </CollectFlowContext.Provider>
@@ -84,7 +118,7 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
 export const useCollectFlow = () => {
   const context = useContext(CollectFlowContext);
   if (!context) {
-    throw new Error("useFlow must be used within a FlowProvider");
+    throw new Error("useCollectFlow must be used within a CollectFlowProvider");
   }
   return context;
 };

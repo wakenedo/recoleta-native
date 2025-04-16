@@ -4,14 +4,11 @@ import { Platform, View } from "react-native";
 import { Input, InputField } from "@/components/ui/input";
 import { QuantityInputProps } from "../types";
 
-const QuantityInput: React.FC<QuantityInputProps> = ({
-  quantity,
-  setQuantity,
-}) => {
+const QuantityInput: React.FC<QuantityInputProps> = ({ weight, setWeight }) => {
   const handleChange = (text: string) => {
     // Only allow numbers and a single dot (for decimal values)
     if (/^\d*\.?\d*$/.test(text) || text === "") {
-      setQuantity(text);
+      setWeight(text);
     }
   };
 
@@ -26,7 +23,7 @@ const QuantityInput: React.FC<QuantityInputProps> = ({
         <InputField
           placeholder="Ex 5.5"
           keyboardType="numeric"
-          value={quantity}
+          value={weight}
           onChangeText={handleChange}
         />
       </Input>
