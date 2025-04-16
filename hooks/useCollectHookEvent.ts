@@ -2,6 +2,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useCollectFlow } from "@/context/CollectFlowContext";
 import { useCallback, useState } from "react";
 import axios from "axios";
+import Constants from "expo-constants";
 
 export const useCollectEvent = () => {
   const { authState } = useAuth();
@@ -19,9 +20,9 @@ export const useCollectEvent = () => {
     resetCollectFlow,
   } = useCollectFlow();
 
+  const { API_URL } = Constants.expoConfig?.extra || {};
+
   const [loading, setLoading] = useState(false);
-  console.log("useCollectEvent authState", authState);
-  console.log("useCollectEvent authState.token", authState?.token);
 
   const handleSubmit = useCallback(async () => {
     try {
@@ -62,13 +63,10 @@ export const useCollectEvent = () => {
       };
 
       console.log("📍 Checking for existing address:", addressPayload);
-      const existingAddressRes = await axios.get(
-        `http://192.168.0.38:5000/api/address/search`,
-        {
-          params: addressPayload,
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const existingAddressRes = await axios.get(`${API_URL}/address/search`, {
+        params: addressPayload,
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       let addressId;
       if (
@@ -81,7 +79,7 @@ export const useCollectEvent = () => {
       } else {
         console.log("➕ Creating new address...");
         const createAddressRes = await axios.post(
-          `http://192.168.0.38:5000/api/address`,
+          `${API_URL}/address`,
           addressPayload,
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -91,7 +89,7 @@ export const useCollectEvent = () => {
 
       console.log("🧪 Creating residue (no search):", residuePayload);
       const createResidueRes = await axios.post(
-        `http://192.168.0.38:5000/api/residues`,
+        `${API_URL}/residues`,
         residuePayload,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -108,7 +106,7 @@ export const useCollectEvent = () => {
       });
 
       const res = await axios.post(
-        `http://192.168.0.38:5000/api/collect-event/create`,
+        `${API_URL}/collect-event/create`,
         {
           residueIds: [finalResidueId],
           addressId,
