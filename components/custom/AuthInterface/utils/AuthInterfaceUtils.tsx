@@ -65,8 +65,6 @@ const handleAuth = (
         response = await onLogin?.(data.email, data.password);
       }
 
-      console.log("📥 Auth response:", response);
-
       if (!response || response.error) {
         throw new Error(response?.msg || "Resposta inválida do servidor");
       }

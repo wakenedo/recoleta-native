@@ -17,10 +17,18 @@ const ScheduleHour: FC<ScheduleHourProps> = ({
   const onChange = (_: any, selected: Date | undefined) => {
     setShow(false);
 
+    // Basic validation for empty or invalid selected date/time
     if (!selectedDate || !selected) {
       setSelectedHour("");
       setInvalidTime(true);
       console.warn("No selected date or time. Aborting.");
+      return;
+    }
+
+    if (!isValid(selectedDate)) {
+      setSelectedHour("");
+      setInvalidTime(true);
+      console.warn("❌ selectedDate is invalid.");
       return;
     }
 
@@ -30,30 +38,32 @@ const ScheduleHour: FC<ScheduleHourProps> = ({
 
     const isToday = selectedDate.toDateString() === now.toDateString();
 
-    // Set the hours and minutes based on the selected time
-    const fullSelectedTime = new Date(selectedDate);
-    fullSelectedTime.setHours(selected.getHours());
-    fullSelectedTime.setMinutes(selected.getMinutes());
-    fullSelectedTime.setSeconds(0);
-    fullSelectedTime.setMilliseconds(0);
+    const hours = selected.getHours();
+    const minutes = selected.getMinutes();
 
-    // Use isValid to check if the date is valid
-    if (!isValid(fullSelectedTime)) {
+    if (isNaN(hours) || isNaN(minutes)) {
       setSelectedHour("");
       setInvalidTime(true);
-      console.warn("❌ Invalid selected time.");
+      console.warn("❌ Selected time has invalid hours or minutes.");
       return;
     }
 
-    console.log("🕓 Current time:", now.toISOString());
-    console.log("📆 Selected date:", selectedDate.toISOString());
-    console.log("🕒 Selected time:", fullSelectedTime.toISOString());
+    const fullSelectedTime = new Date(selectedDate);
+    fullSelectedTime.setHours(hours);
+    fullSelectedTime.setMinutes(minutes);
+    fullSelectedTime.setSeconds(0);
+    fullSelectedTime.setMilliseconds(0);
 
-    // Rule 1: For today, time must be strictly in the future
+    if (!isValid(fullSelectedTime)) {
+      setSelectedHour("");
+      setInvalidTime(true);
+      console.warn("❌ Invalid fullSelectedTime.");
+      return;
+    }
+
+    // Check if the time is in the past (if today)
     if (isToday) {
-      // Only compare the time portion (not date)
-      const selectedTime =
-        fullSelectedTime.getHours() * 60 + fullSelectedTime.getMinutes();
+      const selectedTime = hours * 60 + minutes;
       const currentTime = now.getHours() * 60 + now.getMinutes();
 
       if (selectedTime <= currentTime) {
@@ -64,19 +74,18 @@ const ScheduleHour: FC<ScheduleHourProps> = ({
       }
     }
 
-    // Rule 2: Block times >= 24:00 (which shouldn't happen, but just in case)
-    if (fullSelectedTime.getHours() >= 24) {
+    // Check if the time exceeds valid hours (24:00+)
+    if (hours >= 24) {
       setSelectedHour("");
       setInvalidTime(true);
       console.warn("❌ Selected time exceeds 23:59.");
       return;
     }
 
-    // If valid, format and set the selected hour
     try {
       const formattedTime = format(fullSelectedTime, "HH:mm");
       setSelectedHour(formattedTime);
-      setInvalidTime(false);
+      setInvalidTime(false); // Reset invalid time flag
       console.log("✅ Valid time selected:", formattedTime);
     } catch (error) {
       console.error("⛔ Failed to format time:", error);
@@ -86,7 +95,7 @@ const ScheduleHour: FC<ScheduleHourProps> = ({
   };
 
   const displayText = invalidTime
-    ? "Não foi possível agendar esse horário"
+    ? "Algo deu errado ao agendar o horário"
     : !selectedDate
     ? "Escolha uma data antes de escolher o horário"
     : selectedHour || "Selecionar Hora";
