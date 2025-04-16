@@ -9,8 +9,8 @@ type PackageAvailableSelectorProps = {
 };
 
 type QuantityInputProps = {
-  quantity: string;
-  setQuantity: (value: string) => void;
+  weight: string;
+  setWeight: (value: string) => void;
 };
 
 type Residue = {

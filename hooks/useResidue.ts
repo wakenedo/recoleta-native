@@ -4,18 +4,19 @@ import { useCollectFlow } from "@/context/CollectFlowContext";
 export const useResidue = () => {
   const {
     selectedResidue,
-    quantity,
+    weight,
     selectedCondition,
     selectedPackage,
     selectedDate,
     selectedHour,
     photo,
     setCollectFlowData,
+    getResiduePayload,
   } = useCollectFlow();
 
   const setResidue = (residue: Residue | null) =>
     setCollectFlowData({ selectedResidue: residue });
-  const setQuantity = (q: string) => setCollectFlowData({ quantity: q });
+  const setWeight = (w: string) => setCollectFlowData({ weight: w });
   const setCondition = (condition: string) =>
     setCollectFlowData({ selectedCondition: condition });
   const setPackage = (pkg: string) =>
@@ -27,23 +28,29 @@ export const useResidue = () => {
   const setPhoto = (p: string | null) => setCollectFlowData({ photo: p });
 
   const isResidueValid =
-    !!selectedResidue?.id && quantity && selectedCondition && selectedPackage;
+    !!selectedResidue?.name &&
+    weight &&
+    selectedCondition &&
+    selectedPackage &&
+    selectedHour &&
+    selectedDate;
 
   return {
     selectedResidue,
-    quantity,
+    weight,
     selectedCondition,
     selectedPackage,
     selectedDate,
     selectedHour,
     photo,
     setResidue,
-    setQuantity,
+    setWeight,
     setCondition,
     setPackage,
     setDate,
     setHour,
     setPhoto,
     isResidueValid,
+    payloadResidue: getResiduePayload(), // 🔥 easy
   };
 };
