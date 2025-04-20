@@ -16,6 +16,7 @@ export const useCollectEvent = () => {
     number,
     complement,
     postalCode,
+    previousRegisteredAddressSelectedId,
     getResiduePayload,
     resetCollectFlow,
   } = useCollectFlow();
@@ -30,18 +31,13 @@ export const useCollectEvent = () => {
       console.log("📦 Starting collect event creation flow");
 
       const token = authState?.token;
-      console.log("🔑 Token:", token);
       if (!token) {
         console.error("❌ Token missing");
         throw new Error("Usuário não autenticado");
       }
-      console.log("🔑 Using token:", token);
 
       const residuePayload = getResiduePayload?.();
       if (!residuePayload) throw new Error("Resíduo incompleto");
-
-      console.log("📅 Selected date:", selectedDate);
-      console.log("🕒 Selected hour:", selectedHour);
 
       const newDate = new Date(selectedDate || "");
       const [hour, minute] = (selectedHour || "00:00").split(":").map(Number);
@@ -50,44 +46,54 @@ export const useCollectEvent = () => {
       }
       newDate.setHours(hour, minute);
       const isoDateTime = newDate.toISOString();
-      console.log("📆 Final datetime (ISO):", isoDateTime);
 
-      const addressPayload = {
-        city,
-        neighborhood,
-        state,
-        street,
-        number,
-        complement,
-        postalCode,
-      };
+      let addressId: string;
 
-      console.log("📍 Checking for existing address:", addressPayload);
-      const existingAddressRes = await axios.get(`${API_URL}/address/search`, {
-        params: addressPayload,
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      let addressId;
-      if (
-        existingAddressRes.data &&
-        Array.isArray(existingAddressRes.data) &&
-        existingAddressRes.data.length > 0
-      ) {
-        addressId = existingAddressRes.data[0]._id;
-        console.log("✅ Found existing address:", addressId);
+      // ✅ Use previously selected address if available
+      if (previousRegisteredAddressSelectedId) {
+        addressId = previousRegisteredAddressSelectedId;
+        console.log("📍 Using previously selected address ID:", addressId);
       } else {
-        console.log("➕ Creating new address...");
-        const createAddressRes = await axios.post(
-          `${API_URL}/address`,
-          addressPayload,
-          { headers: { Authorization: `Bearer ${token}` } }
+        // 🔍 Try to find an existing address first
+        const addressPayload = {
+          city,
+          neighborhood,
+          state,
+          street,
+          number,
+          complement,
+          postalCode,
+        };
+
+        console.log("📍 Searching for existing address:", addressPayload);
+        const existingAddressRes = await axios.get(
+          `${API_URL}/address/search`,
+          {
+            params: addressPayload,
+            headers: { Authorization: `Bearer ${token}` },
+          }
         );
-        addressId = createAddressRes.data._id;
-        console.log("✅ Created new address:", addressId);
+
+        if (
+          existingAddressRes.data &&
+          Array.isArray(existingAddressRes.data) &&
+          existingAddressRes.data.length > 0
+        ) {
+          addressId = existingAddressRes.data[0]._id;
+          console.log("✅ Found existing address:", addressId);
+        } else {
+          console.log("➕ Creating new address...");
+          const createAddressRes = await axios.post(
+            `${API_URL}/address`,
+            addressPayload,
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+          addressId = createAddressRes.data._id;
+          console.log("✅ Created new address:", addressId);
+        }
       }
 
-      console.log("🧪 Creating residue (no search):", residuePayload);
+      // 🧪 Create residue
       const createResidueRes = await axios.post(
         `${API_URL}/residues`,
         residuePayload,
@@ -98,13 +104,7 @@ export const useCollectEvent = () => {
       const finalResidueId = createResidueRes.data._id;
       console.log("✅ Created residue:", finalResidueId);
 
-      console.log("📤 Creating collect event with:");
-      console.log({
-        residueIds: [finalResidueId],
-        addressId,
-        dateTime: isoDateTime,
-      });
-
+      // 🗓 Create collect event
       const res = await axios.post(
         `${API_URL}/collect-event/create`,
         {
@@ -144,7 +144,10 @@ export const useCollectEvent = () => {
     number,
     complement,
     postalCode,
+    previousRegisteredAddressSelectedId,
     getResiduePayload,
+    resetCollectFlow,
+    API_URL,
   ]);
 
   return { handleSubmit, loading };

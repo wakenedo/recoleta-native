@@ -17,6 +17,7 @@ import { AddressInterface } from "../AddressInterface";
 import { useResidue } from "@/hooks/useResidue";
 import { useAddress } from "@/hooks/useAddress";
 import { useCollectEvent } from "@/hooks/useCollectHookEvent";
+import { useCollectFlow } from "@/context/CollectFlowContext";
 
 interface ResidueModalFlowProps {
   visible: boolean;
@@ -31,7 +32,7 @@ const ResidueModalFlow: React.FC<ResidueModalFlowProps> = ({
   const { isResidueValid, payloadResidue } = useResidue();
   const { isAddressValid } = useAddress();
   const { handleSubmit, loading } = useCollectEvent();
-
+  const { previousRegisteredAddressSelectedId } = useCollectFlow();
   const handleClose = () => {
     setStep(1);
     onClose();
@@ -44,6 +45,8 @@ const ResidueModalFlow: React.FC<ResidueModalFlowProps> = ({
   const handleBack = () => {
     if (step === 2) setStep(1);
   };
+
+  const canSubmit = isAddressValid || !!previousRegisteredAddressSelectedId;
 
   console.log("Residue Payload", payloadResidue);
 
@@ -120,9 +123,9 @@ const ResidueModalFlow: React.FC<ResidueModalFlowProps> = ({
                       if (success) handleClose();
                     }}
                     className={`px-4 py-2 rounded-lg ${
-                      isAddressValid ? "bg-blue-600" : "bg-gray-300"
+                      canSubmit ? "bg-blue-600" : "bg-gray-300"
                     }`}
-                    disabled={!isAddressValid || loading}
+                    disabled={!canSubmit || loading}
                   >
                     <Text className="text-white">
                       {loading ? "Salvando..." : "Confirmar"}

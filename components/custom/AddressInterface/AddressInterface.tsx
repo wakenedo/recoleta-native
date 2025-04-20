@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { useAddress } from "@/hooks/useAddress";
 import { Card } from "@/components/ui/card";
@@ -7,11 +7,19 @@ import { Text } from "@/components/ui/text";
 import { InterfaceSwitch } from "../InterfaceSwitch";
 import AddNewAddress from "./AddNewAddress/AddNewAddress";
 import { ChosenResidueCard } from "./AddNewAddress/ChosenResidueCard";
-import RegisteredAddresses from "./RegisteredAddresses/RegisteredAdresses";
+import { RegisteredAddresses } from "./RegisteredAddresses";
+import Constants from "expo-constants";
+import { Address } from "./types";
+import axios from "axios";
+import { useAuth } from "@/context/AuthContext";
+import { useCollectFlow } from "@/context/CollectFlowContext";
 
-interface AddressInterfaceProps {}
-
-const AddressInterface: React.FC<AddressInterfaceProps> = ({}) => {
+const AddressInterface: React.FC = ({}) => {
+  const [hasRegisteredAddresses, setHasRegisteredAddresses] = useState(false);
+  const [toggleDefault, setToggleDefault] = useState(false);
+  const { authState } = useAuth();
+  const { API_URL } = Constants.expoConfig?.extra || {};
+  const { setCollectFlowData, resetAddressData } = useCollectFlow();
   const {
     latitude,
     longitude,
@@ -33,6 +41,37 @@ const AddressInterface: React.FC<AddressInterfaceProps> = ({}) => {
     setPostalCode,
   } = useAddress();
 
+  useEffect(() => {
+    const checkUserAddresses = async () => {
+      try {
+        const res = await axios.get<Address[]>(`${API_URL}/address/user`, {
+          headers: {
+            Authorization: `Bearer ${authState?.token}`,
+          },
+        });
+        if (res.data.length > 0) {
+          setHasRegisteredAddresses(!hasRegisteredAddresses);
+          setToggleDefault(hasRegisteredAddresses); // start on left (registered addresses)
+        } else {
+          setHasRegisteredAddresses(hasRegisteredAddresses);
+          setToggleDefault(!hasRegisteredAddresses); // no addresses, start on right (add new)
+        }
+      } catch (error) {
+        console.error("Erro ao verificar endereços:", error);
+      }
+    };
+
+    checkUserAddresses();
+  }, []);
+
+  const handleSwitchChange = (isToggled: boolean) => {
+    if (isToggled) {
+      // switched to "Novo Endereço"
+      setCollectFlowData({ previousRegisteredAddressSelectedId: null });
+      resetAddressData();
+    }
+  };
+
   return (
     <Card className="border border-zinc-300">
       <View className="mb-6">
@@ -52,7 +91,8 @@ const AddressInterface: React.FC<AddressInterfaceProps> = ({}) => {
       <InterfaceSwitch
         rightLabel="Novo Endereço"
         leftLabel="Endereços Cadastrados"
-        defaultValue={true}
+        defaultValue={toggleDefault}
+        onToggleChange={handleSwitchChange}
         leftComponent={<RegisteredAddresses />}
         rightComponent={
           <AddNewAddress

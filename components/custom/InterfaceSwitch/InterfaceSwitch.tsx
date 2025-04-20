@@ -7,6 +7,7 @@ interface InterfaceSwitchProps {
   rightComponent: ReactNode;
   leftComponent: ReactNode;
   defaultValue?: boolean;
+  onToggleChange?: (value: boolean) => void;
 }
 
 const InterfaceSwitch: React.FC<InterfaceSwitchProps> = ({
@@ -15,8 +16,14 @@ const InterfaceSwitch: React.FC<InterfaceSwitchProps> = ({
   rightComponent,
   leftComponent,
   defaultValue = false, // Default state
+  onToggleChange,
 }) => {
   const [isToggled, setIsToggled] = useState(defaultValue);
+
+  const handleToggle = (value: boolean) => {
+    setIsToggled(value);
+    onToggleChange?.(value);
+  };
 
   return (
     <>
@@ -25,7 +32,7 @@ const InterfaceSwitch: React.FC<InterfaceSwitchProps> = ({
         {/* Left Button (Inactive/Active) */}
         <Pressable
           style={[styles.button, !isToggled && styles.activeButton]}
-          onPress={() => setIsToggled(false)}
+          onPress={() => handleToggle(false)}
         >
           <Text style={[styles.buttonText, !isToggled && styles.activeText]}>
             {leftLabel}
@@ -35,7 +42,7 @@ const InterfaceSwitch: React.FC<InterfaceSwitchProps> = ({
         {/* Right Button (Active/Inactive) */}
         <Pressable
           style={[styles.button, isToggled && styles.activeButton]}
-          onPress={() => setIsToggled(true)}
+          onPress={() => handleToggle(true)}
         >
           <Text style={[styles.buttonText, isToggled && styles.activeText]}>
             {rightLabel}
