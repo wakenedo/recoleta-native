@@ -7,11 +7,9 @@ import { Text } from "@/components/ui/text";
 import { InterfaceSwitch } from "../InterfaceSwitch";
 import AddNewAddress from "./AddNewAddress/AddNewAddress";
 import { ChosenResidueCard } from "./AddNewAddress/ChosenResidueCard";
-import RegisteredAddresses from "./RegisteredAddresses/RegisteredAdresses";
+import { RegisteredAddresses } from "./RegisteredAddresses";
 
-interface AddressInterfaceProps {}
-
-const AddressInterface: React.FC<AddressInterfaceProps> = ({}) => {
+const AddressInterface: React.FC = ({}) => {
   const {
     latitude,
     longitude,
