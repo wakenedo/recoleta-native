@@ -22,8 +22,10 @@ interface CollectFlowState {
   longitude?: number | string;
 
   // Methods
+  previousRegisteredAddressSelectedId: string | null;
   setCollectFlowData: (data: Partial<CollectFlowState>) => void;
   resetCollectFlow: () => void;
+  resetAddressData: () => void;
   getResiduePayload: () => {
     name: string;
     weight: string;
@@ -43,7 +45,10 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
   const [state, setState] = useState<
     Omit<
       CollectFlowState,
-      "setCollectFlowData" | "resetCollectFlow" | "getResiduePayload"
+      | "setCollectFlowData"
+      | "resetCollectFlow"
+      | "getResiduePayload"
+      | "resetAddressData"
     >
   >({
     selectedResidue: null,
@@ -53,6 +58,7 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
     selectedDate: null,
     selectedHour: null,
     photo: null,
+    previousRegisteredAddressSelectedId: null,
 
     city: "",
     neighborhood: "",
@@ -76,6 +82,7 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
       selectedDate: null,
       selectedHour: null,
       photo: null,
+      previousRegisteredAddressSelectedId: null,
 
       city: "",
       neighborhood: "",
@@ -85,6 +92,22 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
       complement: "",
       postalCode: "",
     });
+  };
+  // Resets only address-related fields (and clears a previously selected address)
+  const resetAddressData = () => {
+    setState((prev) => ({
+      ...prev,
+      previousRegisteredAddressSelectedId: null,
+      city: "",
+      neighborhood: "",
+      state: "",
+      street: "",
+      number: "",
+      complement: "",
+      postalCode: "",
+      latitude: undefined,
+      longitude: undefined,
+    }));
   };
 
   const getResiduePayload = () => {
@@ -107,7 +130,8 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
         ...state,
         setCollectFlowData,
         resetCollectFlow,
-        getResiduePayload, // 👈 exposed here
+        getResiduePayload,
+        resetAddressData, // 👈 exposed here
       }}
     >
       {children}

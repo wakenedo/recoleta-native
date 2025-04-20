@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import Constants from "expo-constants";
 import { Address } from "../types";
 import RegisteredAddressCard from "./RegisteredAddressCard/RegisterdAddressCard";
+import { useCollectFlow } from "@/context/CollectFlowContext";
 
 const RegisteredAddresses = () => {
   const { authState } = useAuth();
@@ -12,7 +13,14 @@ const RegisteredAddresses = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { API_URL } = Constants.expoConfig?.extra || {};
+  const { previousRegisteredAddressSelectedId, setCollectFlowData } =
+    useCollectFlow();
 
+  const handleSelectAddress = (id: string) => {
+    setCollectFlowData({ previousRegisteredAddressSelectedId: id });
+  };
+
+  console.log("Selected Address ID:", previousRegisteredAddressSelectedId);
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
@@ -54,7 +62,12 @@ const RegisteredAddresses = () => {
         <Text className="text-gray-500">Nenhum endereço cadastrado ainda.</Text>
       ) : (
         addresses.map((item) => (
-          <RegisteredAddressCard item={item} key={item._id} />
+          <RegisteredAddressCard
+            item={item}
+            key={item._id}
+            onSelect={handleSelectAddress}
+            selected={previousRegisteredAddressSelectedId === item._id}
+          />
         ))
       )}
     </ScrollView>
