@@ -96,7 +96,7 @@ const WasteProducerUserResidues: FC<WasteProducerUserResiduesProps> = ({
                 </Text>
               ) : (
                 uniqueResidues.map((item) => (
-                  <UserRegisteredResidueCard item={item} key={item.image} />
+                  <UserRegisteredResidueCard item={item} key={item._id} />
                 ))
               )}
             </View>

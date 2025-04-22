@@ -19,6 +19,7 @@ type Residue = {
   image: string;
   alt: string;
   weight?: number;
+  _id?: string;
 };
 
 type SelectableResidueIconsProps = {
