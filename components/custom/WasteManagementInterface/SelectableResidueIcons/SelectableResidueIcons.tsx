@@ -38,7 +38,7 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
   if (loading) {
     return (
       <View className="items-center justify-center h-48">
-        <ActivityIndicator size="large" color="#3B82F6" />
+        <ActivityIndicator size="large" color="#4B9CD3" />
         <Text className="mt-2">Carregando imagens...</Text>
       </View>
     );

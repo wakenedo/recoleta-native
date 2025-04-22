@@ -3,16 +3,16 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
-import { Text } from "@/components/ui/text";
 import { useAuth } from "@/context/AuthContext";
-import { Button } from "react-native";
 import Constants from "expo-constants";
 import { UserTypePicker } from "@/components/custom/UserTypePicker";
-import { UserActionsInterface } from "@/components/custom/UserActionsInterface";
+import { UserInterface } from "@/components/custom/UserInterface";
 
 const { API_URL, TOKEN_KEY } = Constants.expoConfig?.extra || {};
 
 export interface User {
+  email?: string;
+  photo?: string;
   firstName: string;
   lastName: string;
   userType: string;
@@ -106,23 +106,12 @@ const Home = () => {
   }
 
   return (
-    <View className="flex-auto items-center justify-center m-2">
+    <View className="flex-auto items-center justify-center mx-2">
       {needsUserType ? (
         <UserTypePicker onSelect={handleUserTypeSelect} />
       ) : (
-        <View className="rounded-sm items-center border-2 border-gray-300 justify-center p-4 w-full h-full">
-          <Text className="text-xl font-semibold mb-2">Home</Text>
-          {user && (
-            <View>
-              <Text className="mb-4">
-                {user.firstName} {user.lastName} ({user.userType})
-              </Text>
-              <UserActionsInterface user={user} />
-            </View>
-          )}
-          <View className="mt-4">
-            <Button title="Logout" onPress={onLogout} />
-          </View>
+        <View className="rounded-sm items-center justify-center p-4 w-full h-full">
+          {user && <UserInterface user={user} onLogout={onLogout} />}
         </View>
       )}
     </View>
