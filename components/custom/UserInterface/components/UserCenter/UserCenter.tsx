@@ -1,6 +1,5 @@
 import React, { FC, useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import { Settings } from "lucide-react-native";
+import { View, Text } from "react-native";
 import { User } from "@/app/Home";
 import { WasteProducerCenterInterface } from "./components/WasteProducerCenterInterface";
 import { UseCenterGearMenu } from "./components/UserCenterGearMenu";
@@ -18,26 +17,6 @@ const UserCenter: FC<UserCenterProps> = ({ user, onLogout }) => {
   const [showActions, setShowActions] = useState(false);
 
   const testVerification = false;
-
-  const formatteduserType = (userType: string) => {
-    switch (userType) {
-      case "PRODUCES_WASTE":
-        return "GERADOR";
-      case "COLLECTS_WASTE":
-        return "COLETOR";
-      default:
-        return userType;
-    }
-  };
-
-  const handleGearColor = () => {
-    if (isProducesWaste && !isCollectsWaste) {
-      return "#c2410c"; // Orange color
-    } else if (!isProducesWaste && isCollectsWaste) {
-      return "#15803d"; // Green color
-    }
-    return "#000"; // Default color
-  };
 
   return (
     <View className="w-full">
