@@ -66,7 +66,7 @@ const WasteProducerUserAddresses: FC<WasteProducerUserAddressesProps> = ({
               {error && <Text className="text-red-500 mb-4">{error}</Text>}
               {loading ? (
                 <View className="justify-center items-center my-6">
-                  <ActivityIndicator size="large" />
+                  <ActivityIndicator size="large" color="#4B9CD3" />
                 </View>
               ) : addresses.length === 0 ? (
                 <Text className="text-gray-500">
