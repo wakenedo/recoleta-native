@@ -77,7 +77,6 @@ const WasteProducerUserCollects: FC<WasteProducerUserCollectsProps> = ({
             getItemLayout={getItemLayout}
             showsVerticalScrollIndicator={false}
             onScroll={handleScroll}
-            ListEmptyComponent={<Text>Nenhuma Coleta Encontrada</Text>}
             contentContainerStyle={{ paddingBottom: 10 }}
             className="flex-1"
           />
