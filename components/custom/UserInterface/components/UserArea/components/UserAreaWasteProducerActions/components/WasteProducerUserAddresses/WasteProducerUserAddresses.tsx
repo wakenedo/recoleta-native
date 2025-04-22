@@ -1,7 +1,6 @@
-import { Address } from "@/components/custom/AddressInterface/types";
+import React, { FC } from "react";
 import { BlurView } from "expo-blur";
 import { X } from "lucide-react-native";
-import React, { FC } from "react";
 import {
   ActivityIndicator,
   Keyboard,
@@ -14,16 +13,9 @@ import {
   View,
 } from "react-native";
 import { UserRegisteredAddressCard } from "./components/UserRegisteredAddressCard";
+import { WasteProducerUserAddressesProps } from "../../types";
 
-interface WasteCollectorUserAddressProps {
-  addresses: Address[];
-  visible: boolean;
-  onClose: () => void;
-  loading?: boolean;
-  error: string | null;
-}
-
-const WasteCollectorUserAddress: FC<WasteCollectorUserAddressProps> = ({
+const WasteProducerUserAddresses: FC<WasteProducerUserAddressesProps> = ({
   addresses,
   visible,
   onClose,
@@ -92,4 +84,4 @@ const WasteCollectorUserAddress: FC<WasteCollectorUserAddressProps> = ({
     </Modal>
   );
 };
-export default WasteCollectorUserAddress;
+export default WasteProducerUserAddresses;

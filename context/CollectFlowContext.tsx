@@ -1,39 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-import { Residue } from "@/components/custom/WasteManagementInterface/types";
-
-interface CollectFlowState {
-  selectedResidue: Residue | null;
-  weight: string;
-  selectedCondition: string;
-  selectedPackage: string;
-  selectedDate: Date | null;
-  selectedHour: string | null;
-  photo: string | null;
-
-  // Address Information
-  neighborhood: string;
-  state: string;
-  street: string;
-  number: string;
-  complement: string;
-  city: string;
-  postalCode: string;
-  latitude?: number | string;
-  longitude?: number | string;
-
-  // Methods
-  previousRegisteredAddressSelectedId: string | null;
-  setCollectFlowData: (data: Partial<CollectFlowState>) => void;
-  resetCollectFlow: () => void;
-  resetAddressData: () => void;
-  getResiduePayload: () => {
-    name: string;
-    weight: string;
-    condition: string;
-    pkg: string;
-    photo: string | null;
-  } | null;
-}
+import { CollectFlowState } from "./types";
 
 const CollectFlowContext = createContext<CollectFlowState | undefined>(
   undefined

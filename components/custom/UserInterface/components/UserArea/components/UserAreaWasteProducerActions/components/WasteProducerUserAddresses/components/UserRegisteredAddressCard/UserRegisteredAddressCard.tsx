@@ -1,10 +1,6 @@
-import { Address } from "@/components/custom/AddressInterface/types";
 import React, { FC } from "react";
 import { Text, View } from "react-native";
-
-interface UserRegisteredAddressCardProps {
-  item: Address;
-}
+import { UserRegisteredAddressCardProps } from "../../../../types";
 
 const UserRegisteredAddressCard: FC<UserRegisteredAddressCardProps> = ({
   item,
