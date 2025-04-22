@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { Settings } from "lucide-react-native";
 import { User } from "@/app/Home";
 import { WasteProducerCenterInterface } from "./components/WasteProducerCenterInterface";
+import { UseCenterGearMenu } from "./components/UserCenterGearMenu";
+import { UserCenterHeading } from "./components/UserCenterHeading";
 
 interface UserCenterProps {
   user: User;
@@ -46,71 +48,21 @@ const UserCenter: FC<UserCenterProps> = ({ user, onLogout }) => {
           !isProducesWaste && isCollectsWaste ? "bg-green-100" : ""
         } rounded p-4 mb-4`}
       >
-        {/* Gear icon */}
-        <View
-          className={`flex flex-row-reverse justify-between items-center mb-2 border-b ${
-            isProducesWaste && !isCollectsWaste ? "border-orange-700" : ""
-          } ${!isProducesWaste && isCollectsWaste ? "border-green-700" : ""}`}
-        >
-          <TouchableOpacity
-            className="mb-1"
-            onPress={() => setShowActions(!showActions)}
-          >
-            <Settings size={20} color={handleGearColor()} />
-          </TouchableOpacity>
-          <View className="mb-1">
-            <Text
-              className={`text-sm font-bold ${
-                isProducesWaste && !isCollectsWaste ? "text-orange-700" : ""
-              } ${
-                !isProducesWaste && isCollectsWaste ? "text-green-700" : ""
-              } `}
-            >
-              {formatteduserType(user.userType)}
-            </Text>
-          </View>
-        </View>
+        {/* Header with gear button and user type text */}
+        <UserCenterHeading
+          isProducesWaste={isProducesWaste}
+          isCollectsWaste={isCollectsWaste}
+          setShowActions={setShowActions}
+          userType={user.userType}
+          showActions={showActions}
+        />
 
         {/* Floating dropdown */}
         {showActions && (
-          <View className="absolute top-10 right-4 bg-white p-2 rounded shadow z-10">
-            <TouchableOpacity
-              className="py-1"
-              onPress={() => {
-                console.log("Edit Profile");
-                setShowActions(false);
-              }}
-            >
-              <Text>Meu Perfil</Text>
-              <TouchableOpacity
-                className="py-1"
-                onPress={() => {
-                  console.log("Edit Profile");
-                  setShowActions(false);
-                }}
-              >
-                <Text>Estatísticas da Conta</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                className="py-1"
-                onPress={() => {
-                  console.log("Edit Profile");
-                  setShowActions(false);
-                }}
-              >
-                <Text>Histórico de Coletas</Text>
-              </TouchableOpacity>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className="py-1"
-              onPress={() => {
-                setShowActions(false);
-                onLogout?.();
-              }}
-            >
-              <Text className="text-red-500">Sair</Text>
-            </TouchableOpacity>
-          </View>
+          <UseCenterGearMenu
+            setShowActions={setShowActions}
+            onLogout={onLogout}
+          />
         )}
 
         {isProducesWaste && (
