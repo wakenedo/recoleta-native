@@ -68,6 +68,7 @@ const WasteProducerUserCollects: FC<WasteProducerUserCollectsProps> = ({
           </Text>
 
           {error && <Text className="text-red-500 mt-2">{error}</Text>}
+          {loading && <ActivityIndicator size="large" color="#4B9CD3" />}
 
           <FlatList
             data={collects}
@@ -76,15 +77,7 @@ const WasteProducerUserCollects: FC<WasteProducerUserCollectsProps> = ({
             getItemLayout={getItemLayout}
             showsVerticalScrollIndicator={false}
             onScroll={handleScroll}
-            ListEmptyComponent={
-              <View>
-                {loading ? (
-                  <ActivityIndicator size="large" color="#000" />
-                ) : (
-                  <Text>Nenhuma Coleta Encontrada</Text>
-                )}
-              </View>
-            }
+            ListEmptyComponent={<Text>Nenhuma Coleta Encontrada</Text>}
             contentContainerStyle={{ paddingBottom: 10 }}
             className="flex-1"
           />

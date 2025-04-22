@@ -56,7 +56,7 @@ const RegisteredAddresses = () => {
 
       {loading ? (
         <View className="justify-center items-center my-6">
-          <ActivityIndicator size="large" />
+          <ActivityIndicator size="large" color="#4B9CD3" />
         </View>
       ) : addresses.length === 0 ? (
         <Text className="text-gray-500">Nenhum endereço cadastrado ainda.</Text>
