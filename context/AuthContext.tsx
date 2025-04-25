@@ -5,6 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
 import Constants from "expo-constants";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { jwtDecode } from "jwt-decode";
 
 interface AuthProps {
   authState?: { token: string | null; authenticated: boolean | null };
@@ -53,17 +54,33 @@ export const AuthProvider = ({ children }: any) => {
         }
 
         if (token) {
-          axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+          const decoded: any = jwtDecode(token);
+          const now = Date.now() / 1000;
 
-          setAuthState({
-            token: token,
-            authenticated: true,
-          });
+          if (decoded.exp && decoded.exp > now) {
+            axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+            setAuthState({
+              token,
+              authenticated: true,
+            });
+          } else {
+            console.log("Token expired, logging out...");
+            if (Platform.OS === "web") {
+              await AsyncStorage.removeItem("user-jwt");
+            } else {
+              await SecureStore.deleteItemAsync("user-jwt");
+            }
+            setAuthState({
+              token: null,
+              authenticated: false,
+            });
+          }
         }
       } catch (e) {
-        console.error(e);
+        console.error("Token loading failed:", e);
       }
     };
+
     loadToken();
   }, []);
 
