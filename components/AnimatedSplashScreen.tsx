@@ -13,25 +13,14 @@ const AnimatedSplashScreen = ({ onFinish }: { onFinish: () => void }) => {
   useEffect(() => {
     const runSplash = async () => {
       try {
-        const hasSeenSplash = await AsyncStorage.getItem("hasSeenSplash");
+        animationRef.current?.play(); // Start the Lottie animation
 
-        const devForceSplash = __DEV__ && true;
+        await waitForAnimation(3000); // Wait 3 seconds (or match your animation time)
 
-        if (hasSeenSplash && !devForceSplash) {
-          await hideSplashAndFinish();
-          return;
-        }
-
-        animationRef.current?.play();
-
-        await waitForAnimation(3000); // Adjust to match your Lottie length
-
-        await AsyncStorage.setItem("hasSeenSplash", "true");
-
-        fadeOutSplash();
+        fadeOutSplash(); // Fade out splash and reveal app
       } catch (error) {
         console.error("[Splash] Error during splash:", error);
-        await hideSplashAndFinish();
+        await hideSplashAndFinish(); // Fallback if anything goes wrong
       }
     };
 
