@@ -1,3 +1,4 @@
+import { Address } from "@/components/custom/AddressInterface/types";
 import { Residue } from "@/components/custom/WasteManagementInterface/types";
 
 interface AuthProps {
@@ -48,8 +49,21 @@ interface CollectFlowState {
   } | null;
 }
 
+interface WasteProducerContextProps {
+  addresses: Address[];
+  residues: any[];
+  collects: any[];
+  loading: boolean;
+  error: string | null;
+  fetchAddresses: () => Promise<void>;
+  fetchResidues: () => Promise<void>;
+  fetchCollects: () => Promise<void>;
+  resetError: () => void;
+}
+
 export {
   AuthProps,
   CollectFlowState,
+  WasteProducerContextProps,
   // Add other types here as needed
 };
