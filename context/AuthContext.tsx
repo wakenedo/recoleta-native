@@ -6,20 +6,7 @@ import { Platform } from "react-native";
 import Constants from "expo-constants";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { jwtDecode } from "jwt-decode";
-
-interface AuthProps {
-  authState?: { token: string | null; authenticated: boolean | null };
-  onRegister?: (
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-    userType: string
-  ) => Promise<any>;
-  onLogin?: (email: string, password: string) => Promise<any>;
-  onLogout?: () => Promise<any>;
-  onGoogleLogin?: () => Promise<any>;
-}
+import { AuthProps } from "./types";
 
 const AuthContext = createContext<AuthProps>({});
 
