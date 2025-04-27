@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { Pressable, View, Text, StyleSheet } from "react-native";
 
 interface InterfaceSwitchProps {
@@ -6,7 +6,7 @@ interface InterfaceSwitchProps {
   leftLabel: string;
   rightComponent: ReactNode;
   leftComponent: ReactNode;
-  defaultValue?: boolean;
+  value: boolean; // Controlled value
   onToggleChange?: (value: boolean) => void;
 }
 
@@ -15,43 +15,39 @@ const InterfaceSwitch: React.FC<InterfaceSwitchProps> = ({
   leftLabel,
   rightComponent,
   leftComponent,
-  defaultValue = false, // Default state
+  value,
   onToggleChange,
 }) => {
-  const [isToggled, setIsToggled] = useState(defaultValue);
-
-  const handleToggle = (value: boolean) => {
-    setIsToggled(value);
-    onToggleChange?.(value);
+  const handleToggle = (newValue: boolean) => {
+    if (onToggleChange) {
+      onToggleChange(newValue);
+    }
   };
 
   return (
     <>
       {/* Custom Toggle Buttons */}
       <View style={styles.switchContainer}>
-        {/* Left Button (Inactive/Active) */}
         <Pressable
-          style={[styles.button, !isToggled && styles.activeButton]}
+          style={[styles.button, !value && styles.activeButton]}
           onPress={() => handleToggle(false)}
         >
-          <Text style={[styles.buttonText, !isToggled && styles.activeText]}>
+          <Text style={[styles.buttonText, !value && styles.activeText]}>
             {leftLabel}
           </Text>
         </Pressable>
 
-        {/* Right Button (Active/Inactive) */}
         <Pressable
-          style={[styles.button, isToggled && styles.activeButton]}
+          style={[styles.button, value && styles.activeButton]}
           onPress={() => handleToggle(true)}
         >
-          <Text style={[styles.buttonText, isToggled && styles.activeText]}>
+          <Text style={[styles.buttonText, value && styles.activeText]}>
             {rightLabel}
           </Text>
         </Pressable>
       </View>
 
-      {/* Show Different Components Based on State */}
-      {isToggled ? rightComponent : leftComponent}
+      {value ? rightComponent : leftComponent}
     </>
   );
 };
@@ -76,8 +72,12 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   activeButton: {
+    borderRadius: 4,
+    height: 27,
     backgroundColor: "#ffffff", // Active color
-    shadowOffset: { width: 0, height: 1.5 },
+    elevation: 0.5,
+    paddingHorizontal: 1.5,
+
     shadowColor: "#000",
     shadowOpacity: 0.1,
   },

@@ -65,8 +65,9 @@ const AddressInterface: React.FC = ({}) => {
   }, []);
 
   const handleSwitchChange = (isToggled: boolean) => {
+    setToggleDefault(isToggled); // Update state based on user action
+
     if (isToggled) {
-      // switched to "Novo Endereço"
       setCollectFlowData({ previousRegisteredAddressSelectedId: null });
       resetAddressData();
     }
@@ -88,35 +89,59 @@ const AddressInterface: React.FC = ({}) => {
         <ChosenResidueCard />
       </View>
 
-      <InterfaceSwitch
-        rightLabel="Novo Endereço"
-        leftLabel="Endereços Cadastrados"
-        defaultValue={toggleDefault}
-        onToggleChange={handleSwitchChange}
-        leftComponent={<RegisteredAddresses />}
-        rightComponent={
-          <AddNewAddress
-            latitude={latitude}
-            longitude={longitude}
-            neighborhood={neighborhood}
-            state={state}
-            street={street}
-            number={number}
-            complement={complement}
-            city={city}
-            postalCode={postalCode}
-            setLatitude={setLatitude}
-            setLongitude={setLongitude}
-            setNeighborhood={setNeighborhood}
-            setState={setState}
-            setStreet={setStreet}
-            setNumber={setNumber}
-            setComplement={setComplement}
-            setCity={setCity}
-            setPostalCode={setPostalCode}
-          />
-        }
-      />
+      {hasRegisteredAddresses && (
+        <InterfaceSwitch
+          rightLabel="Novo Endereço"
+          leftLabel="Endereços Cadastrados"
+          value={toggleDefault}
+          onToggleChange={handleSwitchChange}
+          leftComponent={<RegisteredAddresses />}
+          rightComponent={
+            <AddNewAddress
+              latitude={latitude}
+              longitude={longitude}
+              neighborhood={neighborhood}
+              state={state}
+              street={street}
+              number={number}
+              complement={complement}
+              city={city}
+              postalCode={postalCode}
+              setLatitude={setLatitude}
+              setLongitude={setLongitude}
+              setNeighborhood={setNeighborhood}
+              setState={setState}
+              setStreet={setStreet}
+              setNumber={setNumber}
+              setComplement={setComplement}
+              setCity={setCity}
+              setPostalCode={setPostalCode}
+            />
+          }
+        />
+      )}
+      {!hasRegisteredAddresses && (
+        <AddNewAddress
+          latitude={latitude}
+          longitude={longitude}
+          neighborhood={neighborhood}
+          state={state}
+          street={street}
+          number={number}
+          complement={complement}
+          city={city}
+          postalCode={postalCode}
+          setLatitude={setLatitude}
+          setLongitude={setLongitude}
+          setNeighborhood={setNeighborhood}
+          setState={setState}
+          setStreet={setStreet}
+          setNumber={setNumber}
+          setComplement={setComplement}
+          setCity={setCity}
+          setPostalCode={setPostalCode}
+        />
+      )}
     </Card>
   );
 };

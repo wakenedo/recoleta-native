@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { ChevronDown } from "lucide-react-native";
-import { Picker } from "@react-native-picker/picker";
 import { UserTypePickerProps } from "@/components/custom/AuthInterface/types/AuthInterfaceTypes";
 
 const RegisterUserTypePicker = ({
@@ -10,11 +9,21 @@ const RegisterUserTypePicker = ({
   showUserTypePicker,
   isLoading,
 }: UserTypePickerProps) => {
+  const options = [
+    { label: "Gerador de Resíduos", value: "PRODUCES_WASTE" },
+    { label: "Coletor de Resíduos", value: "COLLECTS_WASTE" },
+  ];
+
+  const handleSelect = (value: string) => {
+    field.onChange(value);
+    setShowUserTypePicker(false);
+  };
+
   return (
     <View>
       <TouchableOpacity
         style={styles.pickerTrigger}
-        onPress={() => setShowUserTypePicker(true)}
+        onPress={() => setShowUserTypePicker(!showUserTypePicker)}
         disabled={isLoading}
         accessibilityLabel="Selecione o tipo de usuário"
       >
@@ -31,23 +40,16 @@ const RegisterUserTypePicker = ({
       </TouchableOpacity>
 
       {showUserTypePicker && (
-        <View style={styles.pickerContainer}>
-          <Picker
-            selectedValue={field.value}
-            onValueChange={(itemValue) => {
-              field.onChange(itemValue);
-              setShowUserTypePicker(false);
-            }}
-            itemStyle={{
-              color: "black",
-              height: 120,
-              fontSize: 16,
-            }}
-          >
-            <Picker.Item label="Selecione o tipo" value="" />
-            <Picker.Item label="Gerador de Resíduos" value="PRODUCES_WASTE" />
-            <Picker.Item label="Coletor de Resíduos" value="COLLECTS_WASTE" />
-          </Picker>
+        <View style={styles.dropdown}>
+          {options.map((option) => (
+            <TouchableOpacity
+              key={option.value}
+              style={styles.dropdownItem}
+              onPress={() => handleSelect(option.value)}
+            >
+              <Text style={styles.dropdownItemText}>{option.label}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
       )}
     </View>
@@ -56,6 +58,7 @@ const RegisterUserTypePicker = ({
 
 const styles = StyleSheet.create({
   pickerTrigger: {
+    elevation: 0.5,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -70,12 +73,23 @@ const styles = StyleSheet.create({
   pickerValue: {
     color: "#000000",
   },
-  pickerContainer: {
-    backgroundColor: "white",
-    borderRadius: 8,
-    marginTop: 4,
-    borderWidth: 1,
-    borderColor: "#E5E7EB",
+  dropdown: {
+    position: "relative",
+    marginTop: -6,
+    backgroundColor: "#F3F4F6",
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
+    overflow: "hidden",
+    // Elevation for Android
+    elevation: 0.5,
+  },
+  dropdownItem: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+  dropdownItemText: {
+    fontSize: 16,
+    color: "#000",
   },
 });
 
