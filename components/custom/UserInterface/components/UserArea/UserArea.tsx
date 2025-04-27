@@ -15,7 +15,7 @@ const UserArea: FC<UserAreaProps> = ({ user }) => {
   const isCollectsWaste = user.userType === "COLLECTS_WASTE";
 
   return (
-    <View className="w-full z-10">
+    <View className="w-full z-0">
       <View
         className={`justify-center border-l ${
           isProducesWaste && !isCollectsWaste ? "border-l-orange-300" : ""

@@ -20,7 +20,7 @@ const UserCenter: FC<UserCenterProps> = ({ user, onLogout }) => {
   const testVerification = false;
 
   return (
-    <View className="w-full">
+    <View className="w-full z-10">
       <View
         className={`relative justify-center ${
           isProducesWaste && !isCollectsWaste ? "bg-orange-100" : ""
@@ -42,6 +42,7 @@ const UserCenter: FC<UserCenterProps> = ({ user, onLogout }) => {
           <UseCenterGearMenu
             setShowActions={setShowActions}
             onLogout={onLogout}
+            userType={user.userType}
           />
         )}
 

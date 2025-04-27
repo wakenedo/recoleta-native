@@ -110,7 +110,7 @@ const Home = () => {
       {needsUserType ? (
         <UserTypePicker onSelect={handleUserTypeSelect} />
       ) : (
-        <View className="rounded-sm items-center justify-center p-4 w-full h-full">
+        <View className="rounded-sm items-center justify-center p-1 w-full h-full">
           {user && <UserInterface user={user} onLogout={onLogout} />}
         </View>
       )}
