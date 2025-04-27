@@ -4,8 +4,12 @@ import axios from "axios";
 import { format } from "date-fns";
 import { useAuth } from "@/context/AuthContext"; // adjust to your context path
 import Constants from "expo-constants";
+import { User } from "@/app/Home";
 
-interface WasteProducerCenterActiveCollectsProps {}
+interface WasteProducerCenterActiveCollectsProps {
+  user: User;
+  hasCollects: boolean;
+}
 
 interface CollectEvent {
   _id: string;
@@ -16,8 +20,8 @@ interface CollectEvent {
 
 const WasteProducerCenterActiveCollects: FC<
   WasteProducerCenterActiveCollectsProps
-> = () => {
-  const { API_URL, TOKEN_KEY } = Constants.expoConfig?.extra || {};
+> = ({ user, hasCollects }) => {
+  const { API_URL } = Constants.expoConfig?.extra || {};
   const { authState } = useAuth();
   const [activeCollects, setActiveCollects] = useState<CollectEvent[]>([]);
   const [loading, setLoading] = useState<boolean>(false);

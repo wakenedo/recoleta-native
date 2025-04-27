@@ -1,11 +1,22 @@
-import React from "react";
+import React, { FC } from "react";
 import { View } from "react-native";
 import { WasteProducerCenterActiveCollects } from "./components/WasteProducerCenterActiveCollects";
+import { User } from "@/app/Home";
 
-const WasteProducerCenterInterface = () => {
+interface WasteProducerCenterInterfaceProps {
+  user: User;
+  hasCollects: boolean;
+}
+const WasteProducerCenterInterface: FC<WasteProducerCenterInterfaceProps> = ({
+  user,
+  hasCollects,
+}) => {
   return (
     <View>
-      <WasteProducerCenterActiveCollects />
+      <WasteProducerCenterActiveCollects
+        user={user}
+        hasCollects={hasCollects}
+      />
     </View>
   );
 };
