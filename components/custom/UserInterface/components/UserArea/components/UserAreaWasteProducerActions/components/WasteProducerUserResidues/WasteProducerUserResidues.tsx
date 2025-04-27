@@ -79,10 +79,10 @@ const WasteProducerUserResidues: FC<WasteProducerUserResiduesProps> = ({
                 </TouchableOpacity>
               </View>
               <Text className="text-lg font-bold mb-2">
-                Resídos Cadastrados
+                Residuos Cadastrados
               </Text>
               <Text className="text-sm text-gray-600 mb-4">
-                Aqui estão os resídos que você cadastrou.
+                Aqui estão os residuos que você cadastrou.
               </Text>
 
               {error && <Text className="text-red-500 mb-4">{error}</Text>}
@@ -92,7 +92,7 @@ const WasteProducerUserResidues: FC<WasteProducerUserResiduesProps> = ({
                 </View>
               ) : residues.length === 0 ? (
                 <Text className="text-gray-500">
-                  Nenhum endereço cadastrado ainda.
+                  Nenhum resído cadastrado ainda.
                 </Text>
               ) : (
                 uniqueResidues.map((item) => (

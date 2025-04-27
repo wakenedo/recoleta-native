@@ -69,6 +69,11 @@ const WasteProducerUserCollects: FC<WasteProducerUserCollectsProps> = ({
 
           {error && <Text className="text-red-500 mt-2">{error}</Text>}
           {loading && <ActivityIndicator size="large" color="#4B9CD3" />}
+          {!loading && collects.length === 0 && (
+            <Text className="text-gray-500 mt-2">
+              Nenhuma coleta cadastrada ainda.
+            </Text>
+          )}
 
           <FlatList
             data={collects}

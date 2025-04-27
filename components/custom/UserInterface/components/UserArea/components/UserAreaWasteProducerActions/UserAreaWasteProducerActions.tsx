@@ -109,7 +109,7 @@ const UserAreaWasteProducerActions: FC<UserAreaWasteProducerActions> = () => {
         <Button title="Endereços" onPress={handleAddressesButton} />
       </View>
       <View className="mb-2">
-        <Button title="Residos" onPress={handleResiduesButton} />
+        <Button title="Residuos" onPress={handleResiduesButton} />
       </View>
       <View className="mb-2">
         <Button title="Coletas" onPress={handleCollectsButton} />
