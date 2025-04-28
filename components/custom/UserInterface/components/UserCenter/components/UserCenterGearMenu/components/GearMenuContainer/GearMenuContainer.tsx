@@ -11,9 +11,9 @@ const GearMenuContainer: FC<GearMenuContainerProps> = ({
   return (
     <View
       className={`absolute top-10 right-4 mt-1 
-                ${isWasteProducer && "bg-orange-400/60"}
-                ${isWasteCollector && "bg-green-400/60"}
-               bg-orange-400/60 px-2 py-1 rounded-sm shadow z-10`}
+                ${isWasteProducer && !isWasteCollector && "bg-orange-400/60"}
+                ${isWasteCollector && !isWasteProducer && "bg-green-400/60"}
+               px-2 py-1 rounded-sm shadow z-10`}
     >
       <BlurView
         intensity={40} // adjust the blur strength here (0 - 100)

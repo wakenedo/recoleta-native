@@ -43,10 +43,8 @@ const renderDayHeader = (props: any) => {
   const dayNumber = format(props.date, "d"); // Get the day number, e.g., "25"
   return (
     <View style={styles.dayHeaderContainer}>
-      <View className=" bg-[#4ea3e8] justify-center  w-full h-full">
-        <Text style={styles.dayHeaderTopLabel}>{dayOfWeek}</Text>
-        <Text style={styles.dayHeaderBottomLabel}>{dayNumber}</Text>
-      </View>
+      <Text style={styles.dayHeaderTopLabel}>{dayOfWeek}</Text>
+      <Text style={styles.dayHeaderBottomLabel}>{dayNumber}</Text>
     </View>
   );
 };
@@ -75,8 +73,7 @@ const renderCalendarView = (
       const endDate = new Date(
         startDate.getTime() + EVENT_DURATION_MINUTES * 60 * 1000
       );
-      console.log("startDate:", startDate.toISOString());
-      console.log("endDate:", endDate.toISOString());
+
       return {
         id: collect._id,
         description: collect.eventName || "Sem nome",
@@ -89,16 +86,16 @@ const renderCalendarView = (
       };
     });
 
-  console.log("Events:", JSON.stringify(events, null, 2));
-
   return (
     <View style={styles.calendarViewContainer}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text style={styles.yearText}>{formattedYear}</Text>
+
         {renderViewButtons({ handleViewChange })}
       </View>
       <View style={{ flex: 1, backgroundColor: "#fff" }}>
         <WeekView
+          nowLineColor="#4ea3e8"
           events={events}
           selectedDate={new Date()}
           numberOfDays={viewType === "week" ? 7 : 1} // 7 days for week view, 1 day for day view
@@ -106,8 +103,8 @@ const renderCalendarView = (
           DayHeaderComponent={renderDayHeader}
           locale="pt-BR"
           headerTextStyle={styles.headerTextStyle}
-          timesColumnWidth={30}
-          hoursInDisplay={12}
+          timesColumnWidth={viewType === "week" ? 48 : 52}
+          hoursInDisplay={viewType === "week" ? 8 : 6}
           hourTextStyle={styles.hourTextStyle}
           eventContainerStyle={styles.eventContainerStyle}
           gridColumnStyle={styles.gridColumnStyle}

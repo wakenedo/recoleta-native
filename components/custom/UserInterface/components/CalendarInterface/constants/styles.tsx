@@ -13,17 +13,19 @@ const styles = StyleSheet.create({
   },
   headerContainerRowStyle: {
     borderBottomWidth: 0,
+    display: "flex",
+
     zIndex: 1,
+    width: 54,
+    paddingHorizontal: 5,
     backgroundColor: "#2196f3",
     elevation: 2,
     borderRightWidth: 0,
     borderLeftWidth: 0,
-    width: 35,
     justifyContent: "center",
     alignItems: "center",
   },
   headerTextStyle: {
-    width: 40,
     fontSize: 10,
     color: "#fff",
     fontWeight: "bold",
@@ -43,17 +45,15 @@ const styles = StyleSheet.create({
   },
   gridColumnStyle: {
     borderRightColor: "#fff",
-    borderRightWidth: 1.5,
+    borderRightWidth: 1,
   },
   gridRowStyle: {
     borderBottomColor: "#fff",
-    borderBottomWidth: 1.5,
+    borderBottomWidth: 1,
   },
   dayHeaderContainer: {
     display: "flex",
     flexDirection: "column",
-    width: "100%",
-    zIndex: 10,
   },
   dayHeaderTopLabel: {
     fontSize: 10,
