@@ -19,7 +19,7 @@ export interface User {
 }
 
 const Home = () => {
-  const { onLogout } = useAuth();
+  const { onLogout, loadUser } = useAuth();
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -38,28 +38,10 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    const LoadUser = async () => {
-      if (!token) return;
-
-      try {
-        const result = await axios.get(`${API_URL}/user`, {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
-
-        console.log("🧾 Raw response from /user:", result.data);
-
-        setUser(result.data);
-      } catch (e: any) {
-        alert(e.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    LoadUser();
-  }, [token]);
+    if (token && !user && loadUser) {
+      loadUser(setUser, setLoading); // Properly pass token to load user
+    }
+  }, [token, user, loadUser]);
 
   const handleUserTypeSelect = async (
     selectedType: "COLLECTS_WASTE" | "PRODUCES_WASTE"

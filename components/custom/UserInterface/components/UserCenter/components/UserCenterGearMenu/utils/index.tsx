@@ -10,7 +10,7 @@ const gearMenuItemData = [
   {
     id: 1,
     title: "Perfil",
-    redirectUrl: "/Home",
+    redirectUrl: "/UserProfileScreen",
   },
   {
     id: 2,

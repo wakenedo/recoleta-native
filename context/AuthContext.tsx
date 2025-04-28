@@ -7,6 +7,7 @@ import Constants from "expo-constants";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { jwtDecode } from "jwt-decode";
 import { AuthProps } from "./types";
+import { User } from "@/app/Home";
 
 const AuthContext = createContext<AuthProps>({});
 
@@ -210,6 +211,30 @@ export const AuthProvider = ({ children }: any) => {
     }
   };
 
+  const loadUser = async (
+    setUser: (value: React.SetStateAction<User | null>) => void,
+    setLoading: (value: React.SetStateAction<boolean>) => void
+  ) => {
+    const { token } = authState;
+    if (!token) return;
+
+    try {
+      const result = await axios.get(`${API_URL}/user`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("🧾 Raw response from /user:", result.data);
+
+      setUser(result.data);
+    } catch (e: any) {
+      alert(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   console.log("Auth state:", authState);
 
   const value = {
@@ -218,6 +243,7 @@ export const AuthProvider = ({ children }: any) => {
     onLogout: logout,
     onGoogleLogin: googleLogin,
     authState,
+    loadUser: loadUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
