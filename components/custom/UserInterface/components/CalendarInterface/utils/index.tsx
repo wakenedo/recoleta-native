@@ -1,7 +1,8 @@
-import { format } from "date-fns";
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
+import { format } from "date-fns";
 import WeekView from "react-native-week-view";
+import styles from "../constants/styles";
 
 interface EventProps {
   id: number;
@@ -19,30 +20,6 @@ const renderViewButtons = ({
 }: {
   handleViewChange: (newView: "week" | "day") => void;
 }) => {
-  const styles = StyleSheet.create({
-    viewToggleContainer: {
-      flexDirection: "row",
-      justifyContent: "center",
-    },
-    activeButton: {
-      backgroundColor: "#2196f3",
-    },
-    toggleButtonText: {
-      color: "#fff",
-      fontSize: 12,
-    },
-    toggleButton: {
-      minWidth: 60,
-      height: 30,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "#4caf50",
-      borderRadius: 1,
-      marginLeft: 3,
-      marginTop: 3,
-    },
-  });
-
   return (
     <View style={styles.viewToggleContainer}>
       <TouchableOpacity
@@ -62,26 +39,6 @@ const renderViewButtons = ({
 };
 
 const renderDayHeader = (props: any) => {
-  const styles = StyleSheet.create({
-    dayHeaderContainer: {
-      display: "flex",
-      flexDirection: "column",
-      width: "100%",
-      zIndex: 10,
-    },
-    dayHeaderTopLabel: {
-      fontSize: 10,
-      color: "#fcfcfc",
-      fontWeight: "bold",
-      textAlign: "center",
-    },
-    dayHeaderBottomLabel: {
-      fontSize: 16,
-      color: "#fcfcfc",
-      fontWeight: "300",
-      textAlign: "center",
-    },
-  });
   const dayOfWeek = format(props.date, "EEE"); // Get the full day name, e.g., "Monday"
   const dayNumber = format(props.date, "d"); // Get the day number, e.g., "25"
   return (
@@ -96,88 +53,44 @@ const renderDayHeader = (props: any) => {
 
 const renderCalendarView = (
   viewType: string,
-  handleViewChange: (newView: "week" | "day") => void
+  handleViewChange: (newView: "week" | "day") => void,
+  collects: any[]
 ) => {
   const formattedYear = format(new Date(), "yyyy"); // Display only the month name (e.g., "April")
-  const styles = StyleSheet.create({
-    calendarViewContainer: {
-      flex: 1,
-      paddingHorizontal: 4,
-    },
-    yearText: {
-      fontSize: 28,
-      fontWeight: "700",
-      color: "#333",
-      textAlign: "left",
-    },
-    headerContainerRowStyle: {
-      borderBottomWidth: 0,
-      zIndex: 1,
-      backgroundColor: "#2196f3",
-      elevation: 2,
-      borderRightWidth: 0,
-      borderLeftWidth: 0,
-      width: 35,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    dayHeaderContainer: {
-      display: "flex",
-      flexDirection: "column",
-      width: "100%",
-      zIndex: 10,
-    },
-    headerTextStyle: {
-      width: 40,
-      fontSize: 10,
-      color: "#fff",
-      fontWeight: "bold",
-    },
-    hourTextStyle: {
-      color: "#333",
-      fontSize: 12,
-    },
-    eventContainerStyle: {
-      borderRadius: 8,
-      margin: 3,
-      shadowColor: "#000",
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
-      shadowOffset: { width: 0, height: 2 },
-      elevation: 3,
-    },
-    gridColumnStyle: {
-      borderRightColor: "#fff",
-      borderRightWidth: 1.5,
-    },
-    gridRowStyle: {
-      borderBottomColor: "#fff",
-      borderBottomWidth: 1.5,
-    },
-  });
 
-  const events: EventProps[] = [
-    {
-      id: 1,
-      description: "Pickup Waste",
-      startDate: new Date("2025-04-24T10:00:00"),
-      endDate: new Date("2025-04-24T11:30:00"),
-      color: "#4caf50", // green
-      eventKind: "standard",
-      resolveOverlap: "stack",
-      stackKey: "pickup-waste",
-    },
-    {
-      id: 2,
-      description: "Delivery Materials",
-      startDate: new Date("2025-04-25T14:00:00"),
-      endDate: new Date("2025-04-25T15:30:00"),
-      color: "#2196f3", // blue
-      eventKind: "standard",
-      resolveOverlap: "stack",
-      stackKey: "delivery-materials",
-    },
-  ];
+  const isValidDate = (date: any) => {
+    return date instanceof Date && !isNaN(date.getTime());
+  };
+
+  const events: EventProps[] = collects
+    .filter((collect: any) => {
+      if (!collect || !collect.dateTime) return false;
+
+      const date = new Date(collect.dateTime);
+      return isValidDate(date);
+    })
+    .map((collect: any) => {
+      const startDate = new Date(collect.dateTime);
+      const EVENT_DURATION_MINUTES = 60;
+      const endDate = new Date(
+        startDate.getTime() + EVENT_DURATION_MINUTES * 60 * 1000
+      );
+      console.log("startDate:", startDate.toISOString());
+      console.log("endDate:", endDate.toISOString());
+      return {
+        id: collect._id,
+        description: collect.eventName || "Sem nome",
+        startDate,
+        endDate,
+        color: collect.isSigned ? "#4caf50" : "#f44336",
+        eventKind: "standard",
+        resolveOverlap: "stack",
+        stackKey: collect.eventName || "coleta",
+      };
+    });
+
+  console.log("Events:", JSON.stringify(events, null, 2));
+
   return (
     <View style={styles.calendarViewContainer}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
