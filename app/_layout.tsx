@@ -5,6 +5,7 @@ import Toast from "react-native-toast-message";
 import { Redirect } from "expo-router";
 import "../global.css";
 import AnimatedSplashScreen from "@/components/AnimatedSplashScreen";
+import { UserProvider } from "@/context/UserContext";
 
 const Layout = () => {
   const [splashDone, setSplashDone] = useState(false);
@@ -28,19 +29,21 @@ const Layout = () => {
 
   return (
     <AuthProvider>
-      {!splashDone ? (
-        <AnimatedSplashScreen onFinish={() => setSplashDone(true)} />
-      ) : (
-        <>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Home" />
-            <Stack.Screen name="AuthScreen" />
-            <Stack.Screen name="CalendarScreen" />
-          </Stack>
-          <RootLayoutNav splashDone={splashDone} />
-        </>
-      )}
-      <Toast />
+      <UserProvider>
+        {!splashDone ? (
+          <AnimatedSplashScreen onFinish={() => setSplashDone(true)} />
+        ) : (
+          <>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="Home" />
+              <Stack.Screen name="AuthScreen" />
+              <Stack.Screen name="CalendarScreen" />
+            </Stack>
+            <RootLayoutNav splashDone={splashDone} />
+          </>
+        )}
+        <Toast />
+      </UserProvider>
     </AuthProvider>
   );
 };
