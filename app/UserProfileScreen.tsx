@@ -1,23 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { Button, View } from "react-native";
+import React from "react";
+import { Button } from "react-native";
 import { useRouter } from "expo-router";
-import { User } from "./Home";
-import { useAuth } from "@/context/AuthContext";
+import { useUser } from "@/context/UserContext";
+import { UserProfile } from "@/components/custom/UserInterface/components/UserCenter/components/UserProfile";
 
 const UserProfileScreen = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, loading, refreshUser } = useUser();
 
+  console.log("UserProfileScreen", user, loading, refreshUser);
   const router = useRouter();
   return (
-    <View>
+    <>
       <Button
         title="Voltar"
         onPress={() => {
           router.back();
         }}
       />
-    </View>
+      <UserProfile user={user} />
+    </>
   );
 };
 export default UserProfileScreen;
