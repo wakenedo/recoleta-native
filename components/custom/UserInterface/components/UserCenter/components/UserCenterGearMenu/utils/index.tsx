@@ -24,7 +24,7 @@ const gearMenuItemData = [
   },
   {
     id: 4,
-    title: "Relatório",
+    title: "Estatísticas",
     redirectUrl: "/Home",
   },
 ];
@@ -37,7 +37,7 @@ const determineIcon = (title: string) => {
       return <HistoryIcon size={18} color="#f8fafc" />;
     case "Calendário":
       return <CalendarCheck size={18} color="#f8fafc" />;
-    case "Relatório":
+    case "Estatísticas":
       return <ChartColumn size={18} color="#f8fafc" />;
     default:
       return null;
