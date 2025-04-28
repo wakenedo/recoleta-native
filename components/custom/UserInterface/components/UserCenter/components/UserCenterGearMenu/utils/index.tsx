@@ -15,7 +15,7 @@ const gearMenuItemData = [
   {
     id: 2,
     title: "Histórico",
-    redirectUrl: "/Home",
+    redirectUrl: "/HistoryScreen",
   },
   {
     id: 3,
@@ -25,7 +25,7 @@ const gearMenuItemData = [
   {
     id: 4,
     title: "Estatísticas",
-    redirectUrl: "/Home",
+    redirectUrl: "/StatsScreen",
   },
 ];
 
