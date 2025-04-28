@@ -4,6 +4,7 @@ import { User } from "@/app/Home";
 import { WasteProducerCenterInterface } from "./components/WasteProducerCenterInterface";
 import { UseCenterGearMenu } from "./components/UserCenterGearMenu";
 import { UserCenterHeading } from "./components/UserCenterHeading";
+import { WasteProducerProvider } from "@/context/WasteProducerContext";
 
 interface UserCenterProps {
   user: User;
@@ -19,7 +20,7 @@ const UserCenter: FC<UserCenterProps> = ({ user, onLogout }) => {
   const testVerification = false;
 
   return (
-    <View className="w-full">
+    <View className="w-full z-10">
       <View
         className={`relative justify-center ${
           isProducesWaste && !isCollectsWaste ? "bg-orange-100" : ""
@@ -41,14 +42,17 @@ const UserCenter: FC<UserCenterProps> = ({ user, onLogout }) => {
           <UseCenterGearMenu
             setShowActions={setShowActions}
             onLogout={onLogout}
+            userType={user.userType}
           />
         )}
 
         {isProducesWaste && (
-          <WasteProducerCenterInterface
-            user={user}
-            hasCollects={testVerification}
-          />
+          <WasteProducerProvider>
+            <WasteProducerCenterInterface
+              user={user}
+              hasCollects={testVerification}
+            />
+          </WasteProducerProvider>
         )}
         {isCollectsWaste && (
           <View className="w-full border rounded h-32 items-center justify-center">

@@ -35,6 +35,7 @@ const Layout = () => {
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" />
             <Stack.Screen name="AuthScreen" />
+            <Stack.Screen name="CalendarScreen" />
           </Stack>
           <RootLayoutNav splashDone={splashDone} />
         </>

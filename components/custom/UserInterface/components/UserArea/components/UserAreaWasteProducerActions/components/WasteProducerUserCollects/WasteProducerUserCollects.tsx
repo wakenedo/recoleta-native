@@ -23,9 +23,6 @@ const WasteProducerUserCollects: FC<WasteProducerUserCollectsProps> = ({
     onClose();
   };
 
-  // Log when data is passed
-  console.log("Collects data:", collects);
-
   // Render each item in the FlatList
   const renderCollectItem = useCallback(({ item }: any) => {
     console.log("Rendering item:", item); // Log the item being rendered
