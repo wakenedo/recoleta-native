@@ -1,8 +1,7 @@
 import React from "react";
-
 import { Calendar } from "./components/Calendar";
 import { Text, View } from "react-native";
-import { CalendarCheck, LucideCalendarDays } from "lucide-react-native";
+import { CalendarCheck } from "lucide-react-native";
 
 const CalendarInterface = () => {
   return (
