@@ -18,6 +18,18 @@ interface AuthProps {
     setUser: (value: React.SetStateAction<User | null>) => void,
     setLoading: (value: React.SetStateAction<boolean>) => void
   ) => Promise<void>;
+  verifyEmail?: (token: string) => Promise<
+    | {
+        success: boolean;
+        msg: any;
+        error?: undefined;
+      }
+    | {
+        error: boolean;
+        msg: any;
+        success?: undefined;
+      }
+  >;
 }
 
 interface CollectFlowState {

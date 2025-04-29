@@ -235,6 +235,19 @@ export const AuthProvider = ({ children }: any) => {
     }
   };
 
+  const verifyEmail = async (token: string) => {
+    try {
+      const response = await axios.get(`${API_URL}/user/verify-email/${token}`);
+      return { success: true, msg: response.data.message };
+    } catch (e: any) {
+      const msg =
+        (axios.isAxiosError(e) && e.response?.data?.error) ||
+        e.message ||
+        "Verification failed.";
+      return { error: true, msg };
+    }
+  };
+
   console.log("Auth state:", authState);
 
   const value = {
@@ -244,6 +257,7 @@ export const AuthProvider = ({ children }: any) => {
     onGoogleLogin: googleLogin,
     authState,
     loadUser: loadUser,
+    verifyEmail,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

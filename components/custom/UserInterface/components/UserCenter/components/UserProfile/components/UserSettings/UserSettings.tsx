@@ -1,6 +1,12 @@
 import { User } from "@/app/Home";
 import React, { FC } from "react";
 import { Button, Text, View } from "react-native";
+import { useUser } from "@/context/UserContext";
+import { DeleteUserButton } from "./components/DeleteUserButton";
+import { EditUserButton } from "./components/EditUserButton";
+import ChangePasswordButton from "./components/ChangePasswordButton/ChangePasswordButton";
+import { useAuth } from "@/context/AuthContext";
+import { VerifyEmailButton } from "./components/VerifyEmailButton";
 
 interface UserSettingsProps {
   user: User | null;
@@ -9,6 +15,14 @@ interface UserSettingsProps {
 const UserSettings: FC<UserSettingsProps> = ({ user }) => {
   const isProducesWaste = user?.userType === "PRODUCES_WASTE";
   const isCollectsWaste = user?.userType === "COLLECTS_WASTE";
+  const { updateUser, deleteUser, changePassword } = useUser();
+  const { verifyEmail, authState } = useAuth();
+  const verifyEmailHandler = verifyEmail
+    ? verifyEmail
+    : async () => Promise.resolve({ error: true, msg: "No operation" });
+
+  const token = authState?.token || "";
+
   // Emula a necessidade de verificar o e-mail
   // Isso deve ser substituído pela lógica real quando a verificação de e-mail for implementada
   const teste = true;
@@ -31,47 +45,31 @@ const UserSettings: FC<UserSettingsProps> = ({ user }) => {
           </Text>
         </View>
         <View className="mb-2">
-          <View className="mb-2">
-            {teste === true && (
-              <View className="mb-2">
-                <Button
-                  title="Verificar E-mail"
-                  onPress={() => console.log("Verificar E-mail Clicado")}
-                />
-              </View>
-            )}
+          {teste === true && token && (
+            <VerifyEmailButton token={token} verifyEmail={verifyEmailHandler} />
+          )}
+          <EditUserButton updateUser={updateUser} />
 
-            <Button
-              title="Editar Perfil"
-              onPress={() => console.log("Editar Perfil Clicado")}
-            />
-          </View>
-
-          <View className="mb-2">
-            <Button
-              title="Alterar Senha"
-              onPress={() => console.log("Alterar Senha Clicado")}
-            />
-          </View>
+          <ChangePasswordButton
+            changePassword={({ oldPassword, newPassword }) =>
+              changePassword(oldPassword, newPassword)
+            }
+          />
           <View className="mb-2">
             <Button
               title="Reportar Problema"
               onPress={() => console.log("Reportar Problema Clicado")}
+              disabled={true}
             />
           </View>
           <View className="mb-2">
             <Button
               title="Termos de Uso"
               onPress={() => console.log("Termos de Uso Clicado")}
+              disabled={true}
             />
           </View>
-          <View className="mb-2">
-            <Button
-              title="Deletar Conta"
-              onPress={() => console.log("Deletar Conta Clicado")}
-              color={"#FF0000"}
-            />
-          </View>
+          <DeleteUserButton deleteUser={deleteUser} />
         </View>
       </View>
     </View>

@@ -11,12 +11,18 @@ interface UserContextProps {
   user: User | null;
   loading: boolean;
   refreshUser: () => Promise<void>;
+  updateUser: (data: Partial<User>) => Promise<void>;
+  deleteUser: () => Promise<void>;
+  changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
 }
 
 const UserContext = createContext<UserContextProps>({
   user: null,
   loading: false,
   refreshUser: async () => {},
+  updateUser: () => Promise.resolve(),
+  deleteUser: () => Promise.resolve(),
+  changePassword: () => Promise.resolve(),
 });
 
 export const useUser = () => useContext(UserContext);
@@ -50,12 +56,66 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const updateUser = async (data: Partial<User>) => {
+    if (!authState?.token) return;
+
+    try {
+      await axios.put(`${API_URL}/user`, data, {
+        headers: { authorization: `Bearer ${authState.token}` },
+      });
+      await loadUser(); // Refresh user after update
+    } catch (error: any) {
+      console.error("Failed to update user:", error.message);
+      throw error;
+    }
+  };
+
+  const deleteUser = async () => {
+    if (!authState?.token) return;
+
+    try {
+      await axios.delete(`${API_URL}/user`, {
+        headers: { authorization: `Bearer ${authState.token}` },
+      });
+      setUser(null); // User deleted
+    } catch (error: any) {
+      console.error("Failed to delete user:", error.message);
+      throw error;
+    }
+  };
+
+  const changePassword = async (oldPassword: string, newPassword: string) => {
+    if (!authState?.token) return;
+
+    try {
+      await axios.put(
+        `${API_URL}/user/password`,
+        { oldPassword, newPassword },
+        {
+          headers: { authorization: `Bearer ${authState.token}` },
+        }
+      );
+    } catch (error: any) {
+      console.error("Failed to change password:", error.message);
+      throw error;
+    }
+  };
+
   useEffect(() => {
     loadUser();
   }, [authState?.token]); // Refetch if token changes (login/logout)
 
   return (
-    <UserContext.Provider value={{ user, loading, refreshUser: loadUser }}>
+    <UserContext.Provider
+      value={{
+        user,
+        loading,
+        refreshUser: loadUser,
+        updateUser,
+        deleteUser,
+        changePassword,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
