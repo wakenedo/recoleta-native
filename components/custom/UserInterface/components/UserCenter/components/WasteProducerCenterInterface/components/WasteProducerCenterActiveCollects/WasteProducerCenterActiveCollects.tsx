@@ -21,7 +21,7 @@ interface CollectEvent {
 const WasteProducerCenterActiveCollects: FC<
   WasteProducerCenterActiveCollectsProps
 > = ({ user, hasCollects }) => {
-  const { API_URL } = Constants.expoConfig?.extra || {};
+  const { LOCAL_API_URL } = Constants.expoConfig?.extra || {};
   const { authState } = useAuth();
   const [activeCollects, setActiveCollects] = useState<CollectEvent[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -31,11 +31,14 @@ const WasteProducerCenterActiveCollects: FC<
     const fetchActiveCollects = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${API_URL}/collect-event/user/events`, {
-          headers: {
-            Authorization: `Bearer ${authState?.token}`,
-          },
-        });
+        const res = await axios.get(
+          `${LOCAL_API_URL}/collect-event/user/events`,
+          {
+            headers: {
+              Authorization: `Bearer ${authState?.token}`,
+            },
+          }
+        );
 
         const now = new Date();
 

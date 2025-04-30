@@ -54,31 +54,36 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
           </View>
           <View className="flex flex-row items-center ">
             <View className="mr-2">
-              <Text>Telefone*:</Text>
+              <Text>Telefone: </Text>
             </View>
             <View>
               <Text className="text-lg font-light text-slate-800">
-                (11) 987654321
+                {!user?.phone ? "Adicionar Phone Válido" : user?.phone}
               </Text>
             </View>
           </View>
           <View className="flex flex-row items-center ">
             <View className="mr-2">
-              <Text>Tipo de Conta*:</Text>
+              <Text>Tipo de Conta:</Text>
             </View>
             <View className="mr-1">
               <Text className="text-lg font-light text-slate-800">
-                Pessoa Física
+                {!user?.accountType ? "Indeterminado" : user?.accountType}
               </Text>
             </View>
           </View>
           <View className="flex flex-row items-center ">
             <View className="mr-2">
-              <Text>Documento [CPF] *:</Text>
+              <Text>
+                Documento [
+                {user?.accountType === "Pessoa Física" ? "CPF" : "CNPJ"}]:
+              </Text>
             </View>
             <View className="mr-1">
               <Text className="text-lg font-light text-slate-800">
-                411.111.111-11
+                {!user?.document
+                  ? "Adicionar Documento Válido"
+                  : user?.document}
               </Text>
             </View>
           </View>
@@ -98,11 +103,11 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
           </View>
           <View className="flex flex-row items-center ">
             <View className="mr-2">
-              <Text>Status da Conta*:</Text>
+              <Text>Status da Conta:</Text>
             </View>
             <View className="mr-1">
               <Text className="text-lg font-light text-slate-800">
-                Ociosa | Ativa | Bloqueada
+                {user?.status === "not verified" && "Não Verificado"}
               </Text>
             </View>
           </View>

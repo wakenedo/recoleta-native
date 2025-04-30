@@ -5,7 +5,7 @@ import { useAuth } from "./AuthContext";
 import axios from "axios";
 import Constants from "expo-constants";
 
-const { API_URL } = Constants.expoConfig?.extra || {};
+const { LOCAL_API_URL } = Constants.expoConfig?.extra || {};
 
 interface UserContextProps {
   user: User | null;
@@ -42,7 +42,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     setLoading(true);
 
     try {
-      const response = await axios.get(`${API_URL}/user`, {
+      const response = await axios.get(`${LOCAL_API_URL}/user`, {
         headers: {
           authorization: `Bearer ${authState.token}`,
         },
@@ -60,7 +60,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     if (!authState?.token) return;
 
     try {
-      await axios.put(`${API_URL}/user`, data, {
+      await axios.put(`${LOCAL_API_URL}/user`, data, {
         headers: { authorization: `Bearer ${authState.token}` },
       });
       await loadUser(); // Refresh user after update
@@ -74,7 +74,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     if (!authState?.token) return;
 
     try {
-      await axios.delete(`${API_URL}/user`, {
+      await axios.delete(`${LOCAL_API_URL}/user`, {
         headers: { authorization: `Bearer ${authState.token}` },
       });
       setUser(null); // User deleted
@@ -89,7 +89,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     try {
       await axios.put(
-        `${API_URL}/user/password`,
+        `${LOCAL_API_URL}/user/password`,
         { oldPassword, newPassword },
         {
           headers: { authorization: `Bearer ${authState.token}` },

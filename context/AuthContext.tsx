@@ -15,7 +15,7 @@ export const useAuth = () => {
   return useContext(AuthContext);
 };
 
-const { API_URL, TOKEN_KEY, GOOGLE_CLIENT_ID } =
+const { LOCAL_API_URL, TOKEN_KEY, GOOGLE_CLIENT_ID } =
   Constants.expoConfig?.extra || {};
 
 export const AuthProvider = ({ children }: any) => {
@@ -83,7 +83,7 @@ export const AuthProvider = ({ children }: any) => {
   //login
   const login = async (email: string, password: string) => {
     try {
-      const result = await axios.post(`${API_URL}/auth/login`, {
+      const result = await axios.post(`${LOCAL_API_URL}/auth/login`, {
         email,
         password,
       });
@@ -129,7 +129,7 @@ export const AuthProvider = ({ children }: any) => {
       userType,
     });
     try {
-      return await axios.post(`${API_URL}/auth/register`, {
+      return await axios.post(`${LOCAL_API_URL}/auth/register`, {
         firstName,
         lastName,
         email,
@@ -182,7 +182,7 @@ export const AuthProvider = ({ children }: any) => {
 
       if (!idToken) throw new Error("Missing Google ID token");
 
-      const response = await axios.post(`${API_URL}/auth/google-login`, {
+      const response = await axios.post(`${LOCAL_API_URL}/auth/google-login`, {
         idToken,
       });
 
@@ -219,7 +219,7 @@ export const AuthProvider = ({ children }: any) => {
     if (!token) return;
 
     try {
-      const result = await axios.get(`${API_URL}/user`, {
+      const result = await axios.get(`${LOCAL_API_URL}/user`, {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -237,7 +237,9 @@ export const AuthProvider = ({ children }: any) => {
 
   const verifyEmail = async (token: string) => {
     try {
-      const response = await axios.get(`${API_URL}/user/verify-email/${token}`);
+      const response = await axios.get(
+        `${LOCAL_API_URL}/user/verify-email/${token}`
+      );
       return { success: true, msg: response.data.message };
     } catch (e: any) {
       const msg =

@@ -32,6 +32,7 @@ export default {
     },
     extra: {
       API_URL: process.env.API_URL,
+      LOCAL_API_URL: process.env.LOCAL_API_URL,
       TOKEN_KEY: process.env.TOKEN_KEY,
       GOOGLE_SERVICE_JSON: process.env.GOOGLE_SERVICE_JSON,
       GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,

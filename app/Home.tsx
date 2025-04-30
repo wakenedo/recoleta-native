@@ -8,7 +8,7 @@ import Constants from "expo-constants";
 import { UserTypePicker } from "@/components/custom/UserTypePicker";
 import { UserInterface } from "@/components/custom/UserInterface";
 
-const { API_URL, TOKEN_KEY } = Constants.expoConfig?.extra || {};
+const { LOCAL_API_URL, TOKEN_KEY } = Constants.expoConfig?.extra || {};
 
 export interface User {
   email?: string;
@@ -59,7 +59,7 @@ const Home = () => {
 
     try {
       const response = await axios.put(
-        `${API_URL}/set-user-type`,
+        `${LOCAL_API_URL}/set-user-type`,
         { userType: selectedType },
         {
           headers: {
