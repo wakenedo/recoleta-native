@@ -1,11 +1,12 @@
-// context/UserContext.tsx
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { User } from "@/app/Home";
 import { useAuth } from "./AuthContext";
 import axios from "axios";
 import Constants from "expo-constants";
+import { router } from "expo-router";
+import * as SecureStore from "expo-secure-store";
 
-const { LOCAL_API_URL } = Constants.expoConfig?.extra || {};
+const { LOCAL_API_URL, TOKEN_KEY } = Constants.expoConfig?.extra || {};
 
 interface UserContextProps {
   user: User | null;
@@ -28,7 +29,7 @@ const UserContext = createContext<UserContextProps>({
 export const useUser = () => useContext(UserContext);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  const { authState } = useAuth();
+  const { authState, onLogout } = useAuth();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -78,6 +79,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         headers: { authorization: `Bearer ${authState.token}` },
       });
       setUser(null); // User deleted
+      await SecureStore.deleteItemAsync(TOKEN_KEY);
+      onLogout?.(); // Clear auth state if defined
+      // 🔁 Redirect to home or any other screen
+      router.replace("/Home"); // Replace with "/login" or "/welcome" if needed
     } catch (error: any) {
       console.error("Failed to delete user:", error.message);
       throw error;

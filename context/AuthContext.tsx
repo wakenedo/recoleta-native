@@ -36,9 +36,9 @@ export const AuthProvider = ({ children }: any) => {
       try {
         let token;
         if (Platform.OS === "web") {
-          token = await AsyncStorage.getItem("user-jwt");
+          token = await AsyncStorage.getItem(TOKEN_KEY);
         } else {
-          token = await SecureStore.getItemAsync("user-jwt");
+          token = await SecureStore.getItemAsync(TOKEN_KEY);
         }
 
         if (token) {
@@ -54,9 +54,9 @@ export const AuthProvider = ({ children }: any) => {
           } else {
             console.log("Token expired, logging out...");
             if (Platform.OS === "web") {
-              await AsyncStorage.removeItem("user-jwt");
+              await AsyncStorage.removeItem(TOKEN_KEY);
             } else {
-              await SecureStore.deleteItemAsync("user-jwt");
+              await SecureStore.deleteItemAsync(TOKEN_KEY);
             }
             setAuthState({
               token: null,
