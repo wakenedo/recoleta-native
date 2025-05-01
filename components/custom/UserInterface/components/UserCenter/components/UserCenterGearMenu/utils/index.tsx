@@ -10,12 +10,12 @@ const gearMenuItemData = [
   {
     id: 1,
     title: "Perfil",
-    redirectUrl: "/Home",
+    redirectUrl: "/UserProfileScreen",
   },
   {
     id: 2,
     title: "Histórico",
-    redirectUrl: "/Home",
+    redirectUrl: "/HistoryScreen",
   },
   {
     id: 3,
@@ -24,8 +24,8 @@ const gearMenuItemData = [
   },
   {
     id: 4,
-    title: "Relatório",
-    redirectUrl: "/Home",
+    title: "Estatísticas",
+    redirectUrl: "/StatsScreen",
   },
 ];
 
@@ -37,7 +37,7 @@ const determineIcon = (title: string) => {
       return <HistoryIcon size={18} color="#f8fafc" />;
     case "Calendário":
       return <CalendarCheck size={18} color="#f8fafc" />;
-    case "Relatório":
+    case "Estatísticas":
       return <ChartColumn size={18} color="#f8fafc" />;
     default:
       return null;

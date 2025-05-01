@@ -7,6 +7,7 @@ import Constants from "expo-constants";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { jwtDecode } from "jwt-decode";
 import { AuthProps } from "./types";
+import { User } from "@/app/Home";
 
 const AuthContext = createContext<AuthProps>({});
 
@@ -35,9 +36,9 @@ export const AuthProvider = ({ children }: any) => {
       try {
         let token;
         if (Platform.OS === "web") {
-          token = await AsyncStorage.getItem("user-jwt");
+          token = await AsyncStorage.getItem(TOKEN_KEY);
         } else {
-          token = await SecureStore.getItemAsync("user-jwt");
+          token = await SecureStore.getItemAsync(TOKEN_KEY);
         }
 
         if (token) {
@@ -53,9 +54,9 @@ export const AuthProvider = ({ children }: any) => {
           } else {
             console.log("Token expired, logging out...");
             if (Platform.OS === "web") {
-              await AsyncStorage.removeItem("user-jwt");
+              await AsyncStorage.removeItem(TOKEN_KEY);
             } else {
-              await SecureStore.deleteItemAsync("user-jwt");
+              await SecureStore.deleteItemAsync(TOKEN_KEY);
             }
             setAuthState({
               token: null,
@@ -210,6 +211,43 @@ export const AuthProvider = ({ children }: any) => {
     }
   };
 
+  const loadUser = async (
+    setUser: (value: React.SetStateAction<User | null>) => void,
+    setLoading: (value: React.SetStateAction<boolean>) => void
+  ) => {
+    const { token } = authState;
+    if (!token) return;
+
+    try {
+      const result = await axios.get(`${API_URL}/user`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("🧾 Raw response from /user:", result.data);
+
+      setUser(result.data);
+    } catch (e: any) {
+      alert(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const verifyEmail = async (token: string) => {
+    try {
+      const response = await axios.get(`${API_URL}/auth/verify-email/${token}`);
+      return { success: true, msg: response.data.message };
+    } catch (e: any) {
+      const msg =
+        (axios.isAxiosError(e) && e.response?.data?.error) ||
+        e.message ||
+        "Verification failed.";
+      return { error: true, msg };
+    }
+  };
+
   console.log("Auth state:", authState);
 
   const value = {
@@ -218,6 +256,8 @@ export const AuthProvider = ({ children }: any) => {
     onLogout: logout,
     onGoogleLogin: googleLogin,
     authState,
+    loadUser: loadUser,
+    verifyEmail,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
