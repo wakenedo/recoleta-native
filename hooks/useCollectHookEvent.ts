@@ -21,7 +21,7 @@ export const useCollectEvent = () => {
     resetCollectFlow,
   } = useCollectFlow();
 
-  const { LOCAL_API_URL } = Constants.expoConfig?.extra || {};
+  const { API_URL } = Constants.expoConfig?.extra || {};
 
   const [loading, setLoading] = useState(false);
 
@@ -67,7 +67,7 @@ export const useCollectEvent = () => {
 
         console.log("📍 Searching for existing address:", addressPayload);
         const existingAddressRes = await axios.get(
-          `${LOCAL_API_URL}/address/search`,
+          `${API_URL}/address/search`,
           {
             params: addressPayload,
             headers: { Authorization: `Bearer ${token}` },
@@ -84,7 +84,7 @@ export const useCollectEvent = () => {
         } else {
           console.log("➕ Creating new address...");
           const createAddressRes = await axios.post(
-            `${LOCAL_API_URL}/address`,
+            `${API_URL}/address`,
             addressPayload,
             { headers: { Authorization: `Bearer ${token}` } }
           );
@@ -95,7 +95,7 @@ export const useCollectEvent = () => {
 
       // 🧪 Create residue
       const createResidueRes = await axios.post(
-        `${LOCAL_API_URL}/residues`,
+        `${API_URL}/residues`,
         residuePayload,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -106,7 +106,7 @@ export const useCollectEvent = () => {
 
       // 🗓 Create collect event
       const res = await axios.post(
-        `${LOCAL_API_URL}/collect-event/create`,
+        `${API_URL}/collect-event/create`,
         {
           residueIds: [finalResidueId],
           addressId,
@@ -147,7 +147,7 @@ export const useCollectEvent = () => {
     previousRegisteredAddressSelectedId,
     getResiduePayload,
     resetCollectFlow,
-    LOCAL_API_URL,
+    API_URL,
   ]);
 
   return { handleSubmit, loading };

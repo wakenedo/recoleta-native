@@ -16,7 +16,7 @@ export const WasteProducerProvider = ({
   children: React.ReactNode;
 }) => {
   const { authState } = useAuth();
-  const { LOCAL_API_URL } = Constants.expoConfig?.extra || {};
+  const { API_URL } = Constants.expoConfig?.extra || {};
 
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [residues, setResidues] = useState<any[]>([]);
@@ -27,7 +27,7 @@ export const WasteProducerProvider = ({
   const fetchAddresses = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await axios.get<Address[]>(`${LOCAL_API_URL}/address/user`, {
+      const res = await axios.get<Address[]>(`${API_URL}/address/user`, {
         headers: { Authorization: `Bearer ${authState?.token}` },
       });
       setAddresses(res.data);
@@ -40,12 +40,12 @@ export const WasteProducerProvider = ({
     } finally {
       setLoading(false);
     }
-  }, [LOCAL_API_URL, authState?.token]);
+  }, [API_URL, authState?.token]);
 
   const fetchResidues = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`${LOCAL_API_URL}/residues/user`, {
+      const res = await axios.get(`${API_URL}/residues/user`, {
         headers: { Authorization: `Bearer ${authState?.token}` },
       });
       setResidues(res.data);
@@ -58,17 +58,14 @@ export const WasteProducerProvider = ({
     } finally {
       setLoading(false);
     }
-  }, [LOCAL_API_URL, authState?.token]);
+  }, [API_URL, authState?.token]);
 
   const fetchCollects = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await axios.get(
-        `${LOCAL_API_URL}/collect-event/user/events`,
-        {
-          headers: { Authorization: `Bearer ${authState?.token}` },
-        }
-      );
+      const res = await axios.get(`${API_URL}/collect-event/user/events`, {
+        headers: { Authorization: `Bearer ${authState?.token}` },
+      });
       setCollects(res.data);
     } catch (err: any) {
       console.error(
@@ -79,7 +76,7 @@ export const WasteProducerProvider = ({
     } finally {
       setLoading(false);
     }
-  }, [LOCAL_API_URL, authState?.token]);
+  }, [API_URL, authState?.token]);
 
   const resetError = () => setError(null);
 

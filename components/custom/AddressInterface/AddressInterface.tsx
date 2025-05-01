@@ -18,7 +18,7 @@ const AddressInterface: React.FC = ({}) => {
   const [hasRegisteredAddresses, setHasRegisteredAddresses] = useState(false);
   const [toggleDefault, setToggleDefault] = useState(false);
   const { authState } = useAuth();
-  const { LOCAL_API_URL } = Constants.expoConfig?.extra || {};
+  const { API_URL } = Constants.expoConfig?.extra || {};
   const { setCollectFlowData, resetAddressData } = useCollectFlow();
   const {
     latitude,
@@ -44,14 +44,11 @@ const AddressInterface: React.FC = ({}) => {
   useEffect(() => {
     const checkUserAddresses = async () => {
       try {
-        const res = await axios.get<Address[]>(
-          `${LOCAL_API_URL}/address/user`,
-          {
-            headers: {
-              Authorization: `Bearer ${authState?.token}`,
-            },
-          }
-        );
+        const res = await axios.get<Address[]>(`${API_URL}/address/user`, {
+          headers: {
+            Authorization: `Bearer ${authState?.token}`,
+          },
+        });
         if (res.data.length > 0) {
           setHasRegisteredAddresses(!hasRegisteredAddresses);
           setToggleDefault(hasRegisteredAddresses); // start on left (registered addresses)

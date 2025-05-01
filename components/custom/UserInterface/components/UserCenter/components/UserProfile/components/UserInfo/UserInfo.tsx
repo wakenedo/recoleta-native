@@ -29,7 +29,7 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
         <View className="mb-2">
           <View className="flex flex-row items-center ">
             <View className="mr-2">
-              <Text>Nome:</Text>
+              <Text>Nome :</Text>
             </View>
             <View className="mr-1">
               <Text className="text-lg font-light text-slate-800">
@@ -44,7 +44,7 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
           </View>
           <View className="flex flex-row items-center ">
             <View className="mr-2">
-              <Text>E-mail:</Text>
+              <Text>E-mail :</Text>
             </View>
             <View>
               <Text className="text-lg font-light text-slate-800">
@@ -54,7 +54,7 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
           </View>
           <View className="flex flex-row items-center ">
             <View className="mr-2">
-              <Text>Telefone: </Text>
+              <Text>Telefone : </Text>
             </View>
             <View>
               <Text className="text-lg font-light text-slate-800">
@@ -64,7 +64,7 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
           </View>
           <View className="flex flex-row items-center ">
             <View className="mr-2">
-              <Text>Tipo de Conta:</Text>
+              <Text>Tipo de Conta :</Text>
             </View>
             <View className="mr-1">
               <Text className="text-lg font-light text-slate-800">
@@ -75,8 +75,11 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
           <View className="flex flex-row items-center ">
             <View className="mr-2">
               <Text>
-                Documento [
-                {user?.accountType === "Pessoa Física" ? "CPF" : "CNPJ"}]:
+                Documento {user?.accountType === "Pessoa Física" && "[CPF]:"}
+                {user?.accountType === "Pessoa Jurídica" && "[CNPJ]:"}
+                {user?.accountType !== "Pessoa Física" &&
+                  "Pessoa Jurídica" &&
+                  ":"}
               </Text>
             </View>
             <View className="mr-1">
@@ -89,7 +92,7 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
           </View>
           <View className="flex flex-row items-center ">
             <View className="mr-2">
-              <Text>Tipo de Usuário:</Text>
+              <Text>Tipo de Usuário :</Text>
             </View>
             <View className="mr-1">
               <Text className="text-lg font-light text-slate-800">
@@ -103,7 +106,7 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
           </View>
           <View className="flex flex-row items-center ">
             <View className="mr-2">
-              <Text>Status da Conta:</Text>
+              <Text>Status da Conta :</Text>
             </View>
             <View className="mr-1">
               <Text className="text-lg font-light text-slate-800">

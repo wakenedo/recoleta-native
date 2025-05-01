@@ -46,7 +46,14 @@ const UserSettings: FC<UserSettingsProps> = ({ user }) => {
         </View>
         <View className="mb-2">
           {teste === true && token && (
-            <VerifyEmailButton token={token} verifyEmail={verifyEmailHandler} />
+            <VerifyEmailButton
+              token={token}
+              verifyEmail={verifyEmailHandler}
+              onSuccess={() => {
+                // Optional extra logic after success
+                console.log("✅ Email verified.");
+              }}
+            />
           )}
           <EditUserButton updateUser={updateUser} />
 

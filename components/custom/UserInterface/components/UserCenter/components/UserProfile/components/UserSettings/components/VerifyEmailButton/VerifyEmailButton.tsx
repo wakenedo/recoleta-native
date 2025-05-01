@@ -1,28 +1,40 @@
 import React, { FC, useState } from "react";
 import { Button, View, Alert } from "react-native";
 import { VerifyEmailModal } from "../VerifyEmailModal";
+import { router } from "expo-router";
 
 interface VerifyEmailButtonProps {
-  token: string; // token must be passed in from a parent or deep link
+  token: string;
   verifyEmail: (
     token: string
   ) => Promise<{ success: boolean; msg: any } | { error: boolean; msg: any }>;
+  onSuccess?: () => void; // 🔁 Optional callback
 }
 
 const VerifyEmailButton: FC<VerifyEmailButtonProps> = ({
   token,
   verifyEmail,
+  onSuccess,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
+
   const handlePress = async () => {
-    setModalVisible(true); // Show the modal when verification starts
-    const result = await verifyEmail(token); // Call the verifyEmail function
-    setModalVisible(false); // Hide the modal after verification
+    setModalVisible(true); // Show loading modal
+    const result = await verifyEmail(token);
+    setModalVisible(false); // Hide modal
 
     if ("success" in result) {
-      Alert.alert("Sucesso", result.msg); // Show success message
+      Alert.alert("Sucesso", result.msg, [
+        {
+          text: "OK",
+          onPress: () => {
+            onSuccess?.(); // 🔁 Trigger optional logic
+            router.replace("/Home"); // or your desired post-verification screen
+          },
+        },
+      ]);
     } else {
-      Alert.alert("Erro", result.msg); // Show error message
+      Alert.alert("Erro", result.msg);
     }
   };
 

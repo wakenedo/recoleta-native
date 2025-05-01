@@ -64,9 +64,14 @@ const EditUserModal: FC<EditUserModalProps> = ({
             <Text className="mb-2">Telefone:</Text>
             <PhoneInput
               ref={phoneInputRef}
-              defaultValue={phone}
-              defaultCode="BR"
+              value={phone}
               layout="first"
+              defaultCode="BR"
+              countryPickerProps={{
+                withAlphaFilter: true,
+                withEmoji: true,
+                withFlag: true,
+              }}
               onChangeFormattedText={(text) => {
                 setPhone(text);
                 const isValid = phoneInputRef.current?.isValidNumber(text);

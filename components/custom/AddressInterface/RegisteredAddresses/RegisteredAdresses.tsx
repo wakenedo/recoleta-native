@@ -12,7 +12,7 @@ const RegisteredAddresses = () => {
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const { LOCAL_API_URL } = Constants.expoConfig?.extra || {};
+  const { API_URL } = Constants.expoConfig?.extra || {};
   const { previousRegisteredAddressSelectedId, setCollectFlowData } =
     useCollectFlow();
 
@@ -25,14 +25,11 @@ const RegisteredAddresses = () => {
     const fetchAddresses = async () => {
       try {
         setLoading(true);
-        const res = await axios.get<Address[]>(
-          `${LOCAL_API_URL}/address/user`,
-          {
-            headers: {
-              Authorization: `Bearer ${authState?.token}`,
-            },
-          }
-        );
+        const res = await axios.get<Address[]>(`${API_URL}/address/user`, {
+          headers: {
+            Authorization: `Bearer ${authState?.token}`,
+          },
+        });
         setAddresses(res.data);
       } catch (err: any) {
         console.error(
