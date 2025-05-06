@@ -1,8 +1,8 @@
 import React from "react";
-import { Button } from "react-native";
 import { useRouter } from "expo-router";
 import { useUser } from "@/context/UserContext";
 import { UserProfile } from "@/components/custom/UserInterface/components/UserCenter/components/UserProfile";
+import { BackToHomeButton } from "@/components/custom/BackToHomeButton";
 
 const UserProfileScreen = () => {
   const { user, loading, refreshUser } = useUser();
@@ -11,12 +11,7 @@ const UserProfileScreen = () => {
   const router = useRouter();
   return (
     <>
-      <Button
-        title="Voltar"
-        onPress={() => {
-          router.back();
-        }}
-      />
+      <BackToHomeButton user={user} />
       <UserProfile user={user} />
     </>
   );

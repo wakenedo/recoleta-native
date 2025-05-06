@@ -1,13 +1,12 @@
+import React, { useEffect, useState } from "react";
 import { CalendarInterface } from "@/components/custom/UserInterface/components/CalendarInterface";
 import { useAuth } from "@/context/AuthContext";
 import { WasteProducerProvider } from "@/context/WasteProducerContext";
-import { useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Button, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { User } from "./Home";
+import { BackToHomeButton } from "@/components/custom/BackToHomeButton";
 
 const CalendarScreen = () => {
-  const router = useRouter();
   const { loadUser } = useAuth();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -28,15 +27,10 @@ const CalendarScreen = () => {
 
   return (
     <>
-      <Button
-        title="Voltar"
-        onPress={() => {
-          router.back();
-        }}
-      />
+      <BackToHomeButton user={user} />
       {user?.userType === "PRODUCES_WASTE" && (
         <WasteProducerProvider>
-          <CalendarInterface />
+          <CalendarInterface user={user} />
         </WasteProducerProvider>
       )}
     </>

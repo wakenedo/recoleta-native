@@ -1,14 +1,12 @@
+import React, { useEffect, useState } from "react";
 import { WasteProducerHistoryInterface } from "@/components/custom/UserInterface/components/WasteProducerHistoryInterface";
 import { useAuth } from "@/context/AuthContext";
 import { WasteProducerProvider } from "@/context/WasteProducerContext";
-
-import { useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Button, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { User } from "./Home";
+import { BackToHomeButton } from "@/components/custom/BackToHomeButton";
 
 const HistoryScreen = () => {
-  const router = useRouter();
   const { loadUser } = useAuth();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -29,15 +27,10 @@ const HistoryScreen = () => {
 
   return (
     <>
-      <Button
-        title="Voltar"
-        onPress={() => {
-          router.back();
-        }}
-      />
+      <BackToHomeButton user={user} />
       {user?.userType === "PRODUCES_WASTE" && (
         <WasteProducerProvider>
-          <WasteProducerHistoryInterface />
+          <WasteProducerHistoryInterface user={user} />
         </WasteProducerProvider>
       )}
     </>

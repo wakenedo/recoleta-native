@@ -1,18 +1,55 @@
-import React from "react";
+import React, { FC } from "react";
 import { Calendar } from "./components/Calendar";
 import { Text, View } from "react-native";
 import { CalendarCheck } from "lucide-react-native";
+import { User } from "@/app/Home";
 
-const CalendarInterface = () => {
+interface CalendarInterfaceProps {
+  user: User | null;
+}
+
+const CalendarInterface: FC<CalendarInterfaceProps> = ({ user }) => {
+  const isProducesWaste = user?.userType === "PRODUCES_WASTE";
+  const isCollectsWaste = user?.userType === "COLLECTS_WASTE";
+
+  const iconColor = isProducesWaste
+    ? "#c2410c"
+    : isCollectsWaste
+    ? "#15803d"
+    : "#000000";
   return (
     <View className="flex-1 ">
-      <View className="">
-        <View className="flex-row items-center justify-start px-1">
+      <View className="py-4">
+        <View
+          className={`flex flex-row mx-2 border-b 
+                    ${
+                      isProducesWaste && !isCollectsWaste
+                        ? "border-orange-700"
+                        : ""
+                    } 
+                    ${
+                      !isProducesWaste && isCollectsWaste
+                        ? "border-green-700"
+                        : ""
+                    }
+                  `}
+        >
           <View className="mr-2">
-            <CalendarCheck size={32} color="#000" />
+            <CalendarCheck size={32} color={iconColor} />
           </View>
           <View className="mt-2">
-            <Text className="text-left text-2xl font-bold  ">Calendário</Text>
+            <Text
+              className={`text-left text-3xl font-bold  ${
+                isProducesWaste && !isCollectsWaste ? "text-orange-700" : ""
+              } 
+                        ${
+                          !isProducesWaste && isCollectsWaste
+                            ? "text-green-700"
+                            : ""
+                        }`}
+            >
+              CALENDÁRIO
+            </Text>
           </View>
         </View>
         <View className="px-2 my-2">

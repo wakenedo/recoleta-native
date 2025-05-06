@@ -1,13 +1,12 @@
+import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { WasteProducerProvider } from "@/context/WasteProducerContext";
-import { useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Button, Text, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { User } from "./Home";
 import { WasteProducerStatsInterface } from "@/components/custom/UserInterface/components/WasteProducerStatsInterface";
+import { BackToHomeButton } from "@/components/custom/BackToHomeButton";
 
 const StatScreen = () => {
-  const router = useRouter();
   const { loadUser } = useAuth();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -28,15 +27,10 @@ const StatScreen = () => {
 
   return (
     <>
-      <Button
-        title="Voltar"
-        onPress={() => {
-          router.back();
-        }}
-      />
+      <BackToHomeButton user={user} />
       {user?.userType === "PRODUCES_WASTE" && (
         <WasteProducerProvider>
-          <WasteProducerStatsInterface />
+          <WasteProducerStatsInterface user={user} />
         </WasteProducerProvider>
       )}
     </>

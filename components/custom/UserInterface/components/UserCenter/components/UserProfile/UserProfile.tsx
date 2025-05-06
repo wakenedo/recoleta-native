@@ -10,23 +10,37 @@ interface UserProfileInterfaceProps {
   user: User | null;
 }
 const UserProfile: FC<UserProfileInterfaceProps> = ({ user }) => {
+  const isProducesWaste = user?.userType === "PRODUCES_WASTE";
+  const isCollectsWaste = user?.userType === "COLLECTS_WASTE";
+
+  const iconColor = isProducesWaste
+    ? "#c2410c"
+    : isCollectsWaste
+    ? "#15803d"
+    : "#000000";
+
   return (
     <View className="flex-1 ">
-      <View className="">
-        <View className="flex-row items-center justify-start px-1">
+      <View className="py-4">
+        <View
+          className={`flex flex-row mx-2 border-b 
+            ${isProducesWaste && !isCollectsWaste ? "border-orange-700" : ""} 
+            ${!isProducesWaste && isCollectsWaste ? "border-green-700" : ""}
+          `}
+        >
           <View className="mr-2">
-            <User2Icon size={32} color="#000" />
+            <User2Icon size={32} color={iconColor} />
           </View>
           <View className="mt-2">
-            <Text className="text-left text-2xl font-bold  ">
-              Perfil do Usuário
+            <Text
+              className={`text-left text-3xl font-bold  ${
+                isProducesWaste && !isCollectsWaste ? "text-orange-700" : ""
+              } 
+            ${!isProducesWaste && isCollectsWaste ? "text-green-700" : ""}`}
+            >
+              PERFIL
             </Text>
           </View>
-        </View>
-        <View className="px-2 my-2">
-          <Text className="text-left text-sm font-bold">
-            Visualize seus dados de usuário.
-          </Text>
         </View>
       </View>
       <UserPhoto user={user} />

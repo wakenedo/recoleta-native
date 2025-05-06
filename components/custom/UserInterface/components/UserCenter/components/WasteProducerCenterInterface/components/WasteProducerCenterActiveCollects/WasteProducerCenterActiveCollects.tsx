@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { useAuth } from "@/context/AuthContext"; // adjust to your context path
 import Constants from "expo-constants";
 import { User } from "@/app/Home";
+import { SnailIcon } from "lucide-react-native";
 
 interface WasteProducerCenterActiveCollectsProps {
   user: User;
@@ -21,6 +22,14 @@ interface CollectEvent {
 const WasteProducerCenterActiveCollects: FC<
   WasteProducerCenterActiveCollectsProps
 > = ({ user, hasCollects }) => {
+  const isProducesWaste = user?.userType === "PRODUCES_WASTE";
+  const isCollectsWaste = user?.userType === "COLLECTS_WASTE";
+
+  const iconColor = isProducesWaste
+    ? "#fed7aa"
+    : isCollectsWaste
+    ? "#bbf7d0"
+    : "#000000";
   const { API_URL } = Constants.expoConfig?.extra || {};
   const { authState } = useAuth();
   const [activeCollects, setActiveCollects] = useState<CollectEvent[]>([]);
@@ -60,16 +69,23 @@ const WasteProducerCenterActiveCollects: FC<
 
   if (loading) {
     return (
-      <View className="w-full border rounded h-32 items-center justify-center">
-        <ActivityIndicator size="small" />
-        <Text>Carregando coletas...</Text>
+      <View className="w-full h-32 items-center justify-center">
+        <ActivityIndicator size="small" color={iconColor} />
+        <Text
+          className={`${
+            isProducesWaste && !isCollectsWaste ? "text-orange-200" : ""
+          } 
+            ${!isProducesWaste && isCollectsWaste ? "text-green-200" : ""}`}
+        >
+          Carregando coletas...
+        </Text>
       </View>
     );
   }
 
   if (error) {
     return (
-      <View className="w-full border rounded h-32 items-center justify-center">
+      <View className="w-full h-32 items-center justify-center">
         <Text>{error}</Text>
       </View>
     );
@@ -82,7 +98,7 @@ const WasteProducerCenterActiveCollects: FC<
           data={activeCollects}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
-            <View className="mb-2 p-3 border rounded bg-white shadow-sm">
+            <View className="mb-2 p-3 rounded bg-white shadow-sm">
               <Text className="font-semibold">{item.eventName}</Text>
               <Text className="text-sm text-gray-600">
                 {format(new Date(item.dateTime), "dd/MM/yyyy 'às' HH:mm")}
@@ -91,8 +107,16 @@ const WasteProducerCenterActiveCollects: FC<
           )}
         />
       ) : (
-        <View className="w-full border rounded h-32 items-center justify-center">
-          <Text>Não há coletas ativas</Text>
+        <View className="w-full h-32 items-center justify-center ">
+          <SnailIcon size={28} color={iconColor} />
+          <Text
+            className={`font-semibold ${
+              isProducesWaste && !isCollectsWaste ? "text-orange-200" : ""
+            } 
+            ${!isProducesWaste && isCollectsWaste ? "text-green-200" : ""} `}
+          >
+            Não há coletas ativas
+          </Text>
         </View>
       )}
     </View>

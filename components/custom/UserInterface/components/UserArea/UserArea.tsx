@@ -34,8 +34,8 @@ const UserArea: FC<UserAreaProps> = ({ user }) => {
         </View>
         <View className="mb-2">
           <Text className="text-lg font-bold">Bem vindo, {user.firstName}</Text>
-          <Text className="text-lg font-regular">
-            Pronto para organizar seus resídos e coletas?
+          <Text className="text-lg font-regular text-slate-800">
+            Pronto para organizar seus resíduos e coletas?
           </Text>
         </View>
 
