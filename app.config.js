@@ -50,6 +50,13 @@ export default {
       "expo-secure-store",
       "expo-build-properties",
       "expo-router",
+      [
+        "expo-location",
+        {
+          locationAlwaysAndWhenInUsePermission:
+            "Allow Recoleta to use your location.",
+        },
+      ],
     ],
     experiments: {
       typedRoutes: true,

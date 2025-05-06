@@ -1,8 +1,7 @@
 import React from "react";
-import { Heading } from "@/components/ui/heading";
-import { Platform, View } from "react-native";
-import { Input, InputField } from "@/components/ui/input";
+import { View, StyleSheet, TextInput, Text } from "react-native";
 import { QuantityInputProps } from "../types";
+import { WeightIcon } from "lucide-react-native";
 
 const QuantityInput: React.FC<QuantityInputProps> = ({ weight, setWeight }) => {
   const handleChange = (text: string) => {
@@ -13,22 +12,42 @@ const QuantityInput: React.FC<QuantityInputProps> = ({ weight, setWeight }) => {
   };
 
   return (
-    <View className={`${Platform.OS != "windows" ? "mt-6" : ""}`}>
-      <Heading size="xs">Quantidade (em Kg)</Heading>
-      <Input
-        variant="outline"
-        size="md"
-        className="mt-2 border border-zinc-300"
-      >
-        <InputField
-          placeholder="Ex 5.5"
-          keyboardType="numeric"
-          value={weight}
-          onChangeText={handleChange}
-        />
-      </Input>
+    <View className="flex-1">
+      <Text className="text-md font-bold mb-2 mt-4 text-slate-800">
+        Quantidade em Kg
+      </Text>
+      <View>
+        <View style={styles.inputWrapper}>
+          <WeightIcon size={18} color="#9CA3AF" style={styles.icon} />
+          <TextInput
+            style={styles.input}
+            placeholder="Ex: 123.45"
+            value={weight}
+            onChangeText={handleChange}
+            keyboardType="numeric"
+            placeholderTextColor="#9CA3AF"
+          />
+        </View>
+      </View>
     </View>
   );
 };
-
+const styles = StyleSheet.create({
+  inputWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    backgroundColor: "#F3F4F6", // light gray background
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  icon: {
+    marginRight: 4,
+  },
+  input: {
+    fontSize: 13,
+    color: "#111827",
+  },
+});
 export default QuantityInput;
