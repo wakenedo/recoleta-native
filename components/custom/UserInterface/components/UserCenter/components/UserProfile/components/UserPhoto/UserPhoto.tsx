@@ -22,7 +22,7 @@ const UserPhoto: FC<UserPhotoProps> = ({ user }) => {
       )}
       {!user?.photo && (
         <View className=" items-center justify-center">
-          <View className="w-24 h-24 bg-gray-200 rounded-full items-center justify-center border-4 border-gray-300 shadow">
+          <View className="w-24 h-24 bg-gray-200 rounded-full items-center justify-center shadow">
             <User2 size={65} color="#d1d5db" />
           </View>
           <Text className="text-center text-gray-500">Sem foto</Text>
