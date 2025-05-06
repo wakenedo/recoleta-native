@@ -27,10 +27,25 @@ const UserRegisteredCollectsCard: FC<UserRegisteredCollectsCardProps> = ({
             </Text>
           </View>
         )}
+        {item.completedBy != null && (
+          <View>
+            <Text>Coletado por: </Text>
+            <Text className="text-sm text-gray-500">
+              {item.completedBy.firstName} - {item.completedBy.email}
+            </Text>
+          </View>
+        )}
+        <Text className="text-sm text-gray-500">Status: {item.status}</Text>
+        <Text className="text-sm text-gray-500">
+          Criado por: {item.createdBy}
+        </Text>
         <Text className="text-sm text-gray-500">
           Craido em : {item.createdAt}
         </Text>
         <Text className="text-sm text-gray-500">Hora : {item.createdAt}</Text>
+        <Text className="text-sm text-gray-500">
+          Data Final : {item.dateTime}
+        </Text>
       </View>
       <View className="flex-col justify-between mb-2">
         <Text className="text-sm text-gray-500">

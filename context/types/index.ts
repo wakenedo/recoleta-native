@@ -40,7 +40,10 @@ interface CollectFlowState {
   selectedDate: Date | null;
   selectedHour: string | null;
   photo: string | null;
-
+  status?: string;
+  isSigned?: boolean;
+  signedBy?: User | null;
+  completedBy?: [User] | null;
   // Address Information
   neighborhood: string;
   state: string;

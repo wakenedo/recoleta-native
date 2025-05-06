@@ -19,10 +19,6 @@ export default {
     },
     android: {
       package: "com.recoleta.android",
-      adaptiveIcon: {
-        foregroundImage: "./assets/images/adaptive-icon.png",
-        backgroundColor: "#ffffff",
-      },
       googleServicesFile: "./android/app/google-services.json",
     },
     web: {
