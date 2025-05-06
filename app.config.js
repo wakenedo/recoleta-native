@@ -19,10 +19,6 @@ export default {
     },
     android: {
       package: "com.recoleta.android",
-      adaptiveIcon: {
-        foregroundImage: "./assets/images/adaptive-icon.png",
-        backgroundColor: "#ffffff",
-      },
       googleServicesFile: "./android/app/google-services.json",
     },
     web: {
@@ -54,6 +50,13 @@ export default {
       "expo-secure-store",
       "expo-build-properties",
       "expo-router",
+      [
+        "expo-location",
+        {
+          locationAlwaysAndWhenInUsePermission:
+            "Allow Recoleta to use your location.",
+        },
+      ],
     ],
     experiments: {
       typedRoutes: true,

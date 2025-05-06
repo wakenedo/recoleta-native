@@ -174,10 +174,6 @@ const styles = StyleSheet.create({
     height: 48,
     paddingHorizontal: 8,
   },
-  inputIcon: {
-    marginLeft: 8,
-    marginRight: 8,
-  },
   input: {
     flex: 1,
     height: 48,

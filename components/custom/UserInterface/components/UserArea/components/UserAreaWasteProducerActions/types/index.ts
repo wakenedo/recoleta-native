@@ -10,6 +10,14 @@ interface Collect {
   eventName: string;
   updatedAt: string;
   _id: string;
+  status: string;
+
+  completedBy: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  } | null;
 
   signedBy: {
     _id: string;

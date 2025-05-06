@@ -25,7 +25,7 @@ const WasteProducerUserCollects: FC<WasteProducerUserCollectsProps> = ({
 
   // Render each item in the FlatList
   const renderCollectItem = useCallback(({ item }: any) => {
-    console.log("Rendering item:", item); // Log the item being rendered
+    console.log("Rendering item:", item.status); // Log the item being rendered
     return <UserRegisteredCollectsCard item={item} />;
   }, []);
 

@@ -25,6 +25,9 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
     selectedHour: null,
     photo: null,
     previousRegisteredAddressSelectedId: null,
+    status: "",
+    isSigned: false,
+    signedBy: null,
 
     city: "",
     neighborhood: "",
@@ -49,6 +52,9 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
       selectedHour: null,
       photo: null,
       previousRegisteredAddressSelectedId: null,
+      status: "",
+      isSigned: false,
+      signedBy: null,
 
       city: "",
       neighborhood: "",

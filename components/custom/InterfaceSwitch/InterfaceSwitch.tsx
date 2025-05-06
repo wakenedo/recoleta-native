@@ -46,7 +46,6 @@ const InterfaceSwitch: React.FC<InterfaceSwitchProps> = ({
           </Text>
         </Pressable>
       </View>
-
       {value ? rightComponent : leftComponent}
     </>
   );
@@ -56,11 +55,10 @@ const styles = StyleSheet.create({
   switchContainer: {
     flexDirection: "row",
     backgroundColor: "#f0f0f0",
-    borderRadius: 8,
+    borderRadius: 4,
     alignItems: "center",
     paddingVertical: 6,
-    paddingHorizontal: 6,
-    marginVertical: 6,
+    paddingHorizontal: 4,
     width: "auto",
     height: 35,
   },
