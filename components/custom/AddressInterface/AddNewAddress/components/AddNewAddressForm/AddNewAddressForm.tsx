@@ -27,6 +27,10 @@ const AddNewAddressForm: FC<AddNewAddressFormProps> = ({
   setCity,
   setState,
 }) => {
+  // We will need to implement some logic to use the postalCode and get latitude and longitude using an API
+  // When we have the latitude and longitude, we can save along with the address every time the user adds a new address
+  // This will be useful for the map and for the delivery person to find the address
+  // const { setLatitude, setLongitude } = useAddress();
   return (
     <View className="">
       <View className="flex-row gap-x-4 ">

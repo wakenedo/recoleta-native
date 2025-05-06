@@ -5,8 +5,6 @@ import { AddNewAddressViaGPS } from "./components/AddNewAddressViaGPS";
 import { AddNewAddressProps } from "../types";
 
 const AddNewAddress: FC<AddNewAddressProps> = ({
-  latitude,
-  longitude,
   postalCode,
   number,
   street,
@@ -14,8 +12,6 @@ const AddNewAddress: FC<AddNewAddressProps> = ({
   neighborhood,
   city,
   state,
-  setLatitude,
-  setLongitude,
   setPostalCode,
   setNumber,
   setStreet,
