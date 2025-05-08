@@ -4,8 +4,6 @@ import { View, Text } from "react-native";
 import { UserAreaWasteProducerActions } from "./components/UserAreaWasteProducerActions";
 import { UserAreaWasteCollectorActions } from "./components/UserAreaWasteCollectorActions";
 
-import axios from "axios";
-
 interface UserAreaProps {
   user: User;
 }
