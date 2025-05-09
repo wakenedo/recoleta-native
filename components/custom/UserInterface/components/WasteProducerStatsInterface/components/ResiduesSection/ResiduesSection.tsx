@@ -1,4 +1,5 @@
 import { User } from "@/app/Home";
+import { Gem } from "lucide-react-native";
 import React, { FC, useState, useRef, useEffect, useCallback } from "react";
 import {
   View,
@@ -51,7 +52,9 @@ const ResiduesSection: FC<ResiduesSectionProps> = ({
     >
       <View className="flex-row items-center justify-between mb-1">
         <View className="flex-row">
-          <View className="mr-1"></View>
+          <View className="mr-1">
+            <Gem size={26} color={iconColor} />
+          </View>
 
           <Text
             className={`text-xl font-bold  ${
@@ -62,7 +65,7 @@ const ResiduesSection: FC<ResiduesSectionProps> = ({
           </Text>
         </View>
       </View>
-      <View className="flex flex-col border items-center justify-center rounded p-2 h-72 mt-2">
+      <View className="flex flex-col bg-slate-50 shadow-lg items-center justify-center rounded p-2 h-72 mt-2">
         {loading ? (
           <ActivityIndicator size="small" color="#0000ff" />
         ) : (

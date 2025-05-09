@@ -15,15 +15,17 @@ const UserAreaWasteProducerActions: FC<UserAreaWasteProducerActions> = () => {
     loading,
     error,
     fetchAddresses,
-    fetchResidues,
-    fetchCollects,
+    // fetchResidues,
+    // fetchCollects,
     resetError,
   } = useWasteProducer();
 
   const [addressesModalVisible, setAddressesModalVisible] =
     useState<boolean>(false);
-  const [residuesModalVisible, setResiduesModalVisible] =
-    useState<boolean>(false);
+  {
+    /*const [residuesModalVisible, setResiduesModalVisible] =
+    useState<boolean>(false);*/
+  }
   {
     /*const [collectsModalVisible, setCollectsModalVisible] =
     useState<boolean>(false);*/
@@ -39,11 +41,13 @@ const UserAreaWasteProducerActions: FC<UserAreaWasteProducerActions> = () => {
   // e deixar apenas a lógica de busca de residuos, pois a StatsScreen já vai utilizar essas informações além do resto das informaçoes da conta
   // com todas as informações vamos poder gerar graficos e estatisticas de residuos, coletas e endereços para o usuario
 
-  const handleResiduesButton = async () => {
+  {
+    /*const handleResiduesButton = async () => {
     resetError();
     setResiduesModalVisible(true);
     await fetchResidues();
-  };
+  };*/
+  }
 
   // Como já temos o HistoryScreen implantado, não precisamos mais do botão de coletas, nem da lógica
   // para buscar coletas integralmente, pois o HistoryScreen já faz as separações esperadas de eventos a partir do status
@@ -66,9 +70,9 @@ const UserAreaWasteProducerActions: FC<UserAreaWasteProducerActions> = () => {
       <View className="mb-2">
         <Button title="Endereços" onPress={handleAddressesButton} />
       </View>
-      <View className="mb-2">
+      {/*<View className="mb-2">
         <Button title="Residuos" onPress={handleResiduesButton} />
-      </View>
+      </View>*/}
       {/*<View className="mb-2">
         <Button title="Coletas" onPress={handleCollectsButton} />
       </View>
@@ -80,13 +84,13 @@ const UserAreaWasteProducerActions: FC<UserAreaWasteProducerActions> = () => {
         loading={loading}
         onClose={() => setAddressesModalVisible(false)}
       />
-      <WasteProducerUserResidues
+      {/* <WasteProducerUserResidues
         error={error}
         residues={residues}
         visible={residuesModalVisible}
         loading={loading}
         onClose={() => setResiduesModalVisible(false)}
-      />
+      />*/}
 
       {/* <WasteProducerUserCollects
         error={error}
