@@ -43,7 +43,7 @@ const Home = () => {
 
   useEffect(() => {
     if (token && !user && loadUser) {
-      loadUser(setUser, setLoading); // Properly pass token to load user
+      loadUser(setUser, setLoading, token); // Properly pass token to load user
     }
   }, [token, user, loadUser]);
 
