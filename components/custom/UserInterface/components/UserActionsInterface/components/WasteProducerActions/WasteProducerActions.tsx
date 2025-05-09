@@ -1,7 +1,7 @@
 import { CreateCollectModal } from "@/components/custom/CreateCollectModal";
 import { CollectFlowProvider } from "@/context/CollectFlowContext";
 import React, { FC } from "react";
-import { ScrollView, Button } from "react-native";
+import { ScrollView, Button, View } from "react-native";
 
 interface WasteProducerActionsProps {
   showModal: boolean;
@@ -14,7 +14,13 @@ const WasteProducerActions: FC<WasteProducerActionsProps> = ({
 }) => {
   return (
     <ScrollView className="w-full">
-      <Button title="Criar Coleta" onPress={() => setShowModal(true)} />
+      <View className="mb-2">
+        <Button title="Criar Coleta" onPress={() => setShowModal(true)} />
+      </View>
+      <Button
+        title="Editar Coletas Agendadas"
+        onPress={() => console.log("Editar Coletas Agendadas Clickado!")}
+      />
 
       <CollectFlowProvider>
         <CreateCollectModal

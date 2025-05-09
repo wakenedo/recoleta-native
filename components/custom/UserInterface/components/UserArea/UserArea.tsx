@@ -23,17 +23,19 @@ const UserArea: FC<UserAreaProps> = ({ user }) => {
       >
         <View className="flex-row items-center mb-4">
           <Text
-            className={`text-xs font-bold ${
+            className={`text-xs font-bold  ${
               isProducesWaste && !isCollectsWaste ? "text-orange-300" : ""
             } ${!isProducesWaste && isCollectsWaste ? "text-green-300" : ""}`}
           >
             AREA DO USUÁRIO
           </Text>
         </View>
-        <View className="mb-2">
-          <Text className="text-lg font-bold">Bem vindo, {user.firstName}</Text>
-          <Text className="text-lg font-regular text-slate-800">
-            Pronto para organizar seus resíduos e coletas?
+        <View className="mb-2 ">
+          <Text className="text-lg font-bold text-slate-800">
+            Bem vindo, {user.firstName}
+          </Text>
+          <Text className="text-lg font-light text-slate-800">
+            Pronto para organizar seus resíduos e coletas ?
           </Text>
         </View>
 

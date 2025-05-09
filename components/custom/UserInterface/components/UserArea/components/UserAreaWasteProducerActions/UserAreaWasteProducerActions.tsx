@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import { View, Button } from "react-native";
 import { WasteProducerUserAddresses } from "./components/WasteProducerUserAddresses";
 import { WasteProducerUserResidues } from "./components/WasteProducerUserResidues";
-import { WasteProducerUserCollects } from "./components/WasteProducerUserCollects";
+//import { WasteProducerUserCollects } from "./components/WasteProducerUserCollects";
 import { useWasteProducer } from "@/context/WasteProducerContext";
 
 interface UserAreaWasteProducerActions {}
@@ -24,8 +24,10 @@ const UserAreaWasteProducerActions: FC<UserAreaWasteProducerActions> = () => {
     useState<boolean>(false);
   const [residuesModalVisible, setResiduesModalVisible] =
     useState<boolean>(false);
-  const [collectsModalVisible, setCollectsModalVisible] =
-    useState<boolean>(false);
+  {
+    /*const [collectsModalVisible, setCollectsModalVisible] =
+    useState<boolean>(false);*/
+  }
 
   const handleAddressesButton = async () => {
     resetError();
@@ -33,17 +35,27 @@ const UserAreaWasteProducerActions: FC<UserAreaWasteProducerActions> = () => {
     await fetchAddresses();
   };
 
+  // Quando a StatsScreen for implementada, podemos remover essa lógica de busca de residuos
+  // e deixar apenas a lógica de busca de residuos, pois a StatsScreen já vai utilizar essas informações além do resto das informaçoes da conta
+  // com todas as informações vamos poder gerar graficos e estatisticas de residuos, coletas e endereços para o usuario
+
   const handleResiduesButton = async () => {
     resetError();
     setResiduesModalVisible(true);
     await fetchResidues();
   };
 
-  const handleCollectsButton = async () => {
+  // Como já temos o HistoryScreen implantado, não precisamos mais do botão de coletas, nem da lógica
+  // para buscar coletas integralmente, pois o HistoryScreen já faz as separações esperadas de eventos a partir do status
+  // caso não seja implementado a interface de admin acho que podemos remover e esquecer toda a lógica de coletas aqui.
+
+  {
+    /*const handleCollectsButton = async () => {
     resetError();
     setCollectsModalVisible(true);
     await fetchCollects();
-  };
+  };*/
+  }
 
   console.log("addresses:", addresses);
   console.log("residues:", residues);
@@ -57,10 +69,10 @@ const UserAreaWasteProducerActions: FC<UserAreaWasteProducerActions> = () => {
       <View className="mb-2">
         <Button title="Residuos" onPress={handleResiduesButton} />
       </View>
-      <View className="mb-2">
+      {/*<View className="mb-2">
         <Button title="Coletas" onPress={handleCollectsButton} />
       </View>
-
+      */}
       <WasteProducerUserAddresses
         error={error}
         addresses={addresses}
@@ -76,13 +88,13 @@ const UserAreaWasteProducerActions: FC<UserAreaWasteProducerActions> = () => {
         onClose={() => setResiduesModalVisible(false)}
       />
 
-      <WasteProducerUserCollects
+      {/* <WasteProducerUserCollects
         error={error}
         collects={collects}
         visible={collectsModalVisible}
         loading={loading}
         onClose={() => setCollectsModalVisible(false)}
-      />
+      />*/}
     </View>
   );
 };

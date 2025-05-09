@@ -1,7 +1,12 @@
 import React, { FC } from "react";
-import { Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { User } from "@/app/Home";
 import { ChartColumn } from "lucide-react-native";
+import { ResiduesSection } from "./components/ResiduesSection";
+import { CollectsSection } from "./components/CollectsSection";
+import { AddressSection } from "./components/AddressSection";
+import { useWasteProducer } from "@/context/WasteProducerContext";
+import { AccountSection } from "./components/AccountSection";
 
 interface WasteProducerStatsInterfaceProps {
   user: User | null;
@@ -10,6 +15,7 @@ interface WasteProducerStatsInterfaceProps {
 const WasteProducerStatsInterface: FC<WasteProducerStatsInterfaceProps> = ({
   user,
 }) => {
+  const { collects, loading, fetchCollects } = useWasteProducer();
   const isProducesWaste = user?.userType === "PRODUCES_WASTE";
   const isCollectsWaste = user?.userType === "COLLECTS_WASTE";
 
@@ -19,7 +25,7 @@ const WasteProducerStatsInterface: FC<WasteProducerStatsInterfaceProps> = ({
     ? "#15803d"
     : "#000000";
   return (
-    <View className="flex-1 ">
+    <ScrollView className="flex-1 ">
       <View className="py-4">
         <View
           className={`flex flex-row mx-2 border-b 
@@ -54,13 +60,16 @@ const WasteProducerStatsInterface: FC<WasteProducerStatsInterfaceProps> = ({
           </View>
         </View>
         <View className="px-2 my-2">
-          <Text className="text-left text-sm font-bold">
+          <Text className="text-left text-sm font-normal">
             Visualize suas estátisticas como coletor de resíduos, coletas
             completas, quantidade de residuos reciclados e mais.
           </Text>
         </View>
+        <AccountSection user={user} loading={loading} AccStats={[]} />
+        <CollectsSection user={user} loading={loading} collects={[]} />
+        <ResiduesSection user={user} loading={loading} residues={[]} />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 export default WasteProducerStatsInterface;

@@ -53,7 +53,7 @@ const CalendarInterface: FC<CalendarInterfaceProps> = ({ user }) => {
           </View>
         </View>
         <View className="px-2 my-2">
-          <Text className="text-left text-sm font-bold">
+          <Text className="text-left text-sm font-normal">
             Visualize suas coletas agendadas e os dias disponíveis para
             agendamento.
           </Text>
