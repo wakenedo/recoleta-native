@@ -177,6 +177,10 @@ export const AuthProvider = ({ children }: any) => {
       await GoogleSignin.hasPlayServices({
         showPlayServicesUpdateDialog: true,
       });
+
+      // Force sign-out to prompt account selection
+      await GoogleSignin.signOut();
+
       const userInfo = await GoogleSignin.signIn();
       const idToken = userInfo?.data?.idToken;
 
