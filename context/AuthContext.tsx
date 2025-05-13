@@ -179,6 +179,10 @@ export const AuthProvider = ({ children }: any) => {
       await GoogleSignin.hasPlayServices({
         showPlayServicesUpdateDialog: true,
       });
+
+      // Force sign-out to prompt account selection
+      await GoogleSignin.signOut();
+
       const userInfo = await GoogleSignin.signIn();
 
       const googleProfile: GoogleProfile = {
@@ -226,9 +230,9 @@ export const AuthProvider = ({ children }: any) => {
 
   const loadUser = async (
     setUser: (value: React.SetStateAction<User | null>) => void,
-    setLoading: (value: React.SetStateAction<boolean>) => void
+    setLoading: (value: React.SetStateAction<boolean>) => void,
+    token?: string | null
   ) => {
-    const { token } = authState;
     if (!token) return;
 
     try {

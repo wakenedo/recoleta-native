@@ -16,7 +16,8 @@ interface AuthProps {
   onGoogleLogin?: () => Promise<any>;
   loadUser?: (
     setUser: (value: React.SetStateAction<User | null>) => void,
-    setLoading: (value: React.SetStateAction<boolean>) => void
+    setLoading: (value: React.SetStateAction<boolean>) => void,
+    token?: string | null
   ) => Promise<void>;
   verifyEmail?: (token: string) => Promise<
     | {
