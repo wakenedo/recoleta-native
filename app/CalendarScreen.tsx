@@ -1,21 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { CalendarInterface } from "@/components/custom/UserInterface/components/CalendarInterface";
-import { useAuth } from "@/context/AuthContext";
 import { WasteProducerProvider } from "@/context/WasteProducerContext";
 import { ActivityIndicator, View } from "react-native";
-import { User } from "./Home";
 import { BackToHomeButton } from "@/components/custom/BackToHomeButton";
+import { useUser } from "@/context/UserContext";
 
 const CalendarScreen = () => {
-  const { loadUser } = useAuth();
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { loadUser, loading, user } = useUser();
 
   useEffect(() => {
-    if (!user && loadUser) {
-      loadUser(setUser, setLoading); // Properly pass token to load user
-    }
-  }, [user, loadUser]);
+    loadUser(); // Properly pass token to load user
+  }, []);
 
   if (loading) {
     return (

@@ -1,21 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { useAuth } from "@/context/AuthContext";
+import React, { useEffect } from "react";
 import { WasteProducerProvider } from "@/context/WasteProducerContext";
 import { ActivityIndicator, View } from "react-native";
-import { User } from "./Home";
 import { WasteProducerStatsInterface } from "@/components/custom/UserInterface/components/WasteProducerStatsInterface";
 import { BackToHomeButton } from "@/components/custom/BackToHomeButton";
+import { useUser } from "@/context/UserContext";
 
 const StatScreen = () => {
-  const { loadUser } = useAuth();
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { loadUser, loading, user } = useUser();
 
   useEffect(() => {
-    if (!user && loadUser) {
-      loadUser(setUser, setLoading); // Properly pass token to load user
-    }
-  }, [user, loadUser]);
+    loadUser(); // Properly pass token to load user
+  }, []);
 
   if (loading) {
     return (

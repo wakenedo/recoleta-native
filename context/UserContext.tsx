@@ -15,6 +15,7 @@ interface UserContextProps {
   updateUser: (data: Partial<User>) => Promise<void>;
   deleteUser: () => Promise<void>;
   changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
+  loadUser: () => Promise<void>;
 }
 
 const UserContext = createContext<UserContextProps>({
@@ -24,6 +25,7 @@ const UserContext = createContext<UserContextProps>({
   updateUser: () => Promise.resolve(),
   deleteUser: () => Promise.resolve(),
   changePassword: () => Promise.resolve(),
+  loadUser: () => Promise.resolve(),
 });
 
 export const useUser = () => useContext(UserContext);
@@ -119,6 +121,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         updateUser,
         deleteUser,
         changePassword,
+        loadUser, // Expose loadUser for manual refresh if needed
       }}
     >
       {children}

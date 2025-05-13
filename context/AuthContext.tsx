@@ -6,9 +6,8 @@ import { Platform } from "react-native";
 import Constants from "expo-constants";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { jwtDecode } from "jwt-decode";
+
 import { AuthProps, GoogleProfile } from "./types";
-import { User } from "@/app/Home";
-import { useUser } from "./UserContext";
 
 const AuthContext = createContext<AuthProps>({});
 
@@ -30,7 +29,6 @@ export const AuthProvider = ({ children }: any) => {
     token: null,
     authenticated: null,
   });
-  const { updateUser } = useUser();
 
   //loading data
   useEffect(() => {
@@ -174,7 +172,9 @@ export const AuthProvider = ({ children }: any) => {
     }
   };
 
-  const googleLogin = async () => {
+  const googleLogin = async (
+    onProfileUpdate?: (photo: string | undefined) => void
+  ) => {
     try {
       await GoogleSignin.hasPlayServices({
         showPlayServicesUpdateDialog: true,
@@ -190,9 +190,7 @@ export const AuthProvider = ({ children }: any) => {
       };
 
       if (googleProfile) {
-        await updateUser({
-          photo: googleProfile.photo ?? undefined,
-        });
+        onProfileUpdate?.(googleProfile.photo ?? undefined);
       }
 
       const idToken = userInfo?.data?.idToken;
@@ -228,30 +226,6 @@ export const AuthProvider = ({ children }: any) => {
     }
   };
 
-  const loadUser = async (
-    setUser: (value: React.SetStateAction<User | null>) => void,
-    setLoading: (value: React.SetStateAction<boolean>) => void,
-    token?: string | null
-  ) => {
-    if (!token) return;
-
-    try {
-      const result = await axios.get(`${API_URL}/user`, {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
-
-      console.log("🧾 Raw response from /user:", result.data);
-
-      setUser(result.data);
-    } catch (e: any) {
-      alert(e.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const verifyEmail = async (token: string) => {
     try {
       const response = await axios.get(`${API_URL}/auth/verify-email/${token}`);
@@ -273,7 +247,6 @@ export const AuthProvider = ({ children }: any) => {
     onLogout: logout,
     onGoogleLogin: googleLogin,
     authState,
-    loadUser: loadUser,
     verifyEmail,
   };
 

@@ -1,6 +1,7 @@
 import { User } from "@/app/Home";
 import { Address } from "@/components/custom/AddressInterface/types";
 import { Residue } from "@/components/custom/WasteManagementInterface/types";
+import { AxiosResponse } from "axios";
 
 interface AuthProps {
   authState?: { token: string | null; authenticated: boolean | null };
@@ -13,7 +14,15 @@ interface AuthProps {
   ) => Promise<any>;
   onLogin?: (email: string, password: string) => Promise<any>;
   onLogout?: () => Promise<any>;
-  onGoogleLogin?: () => Promise<any>;
+  onGoogleLogin?: (
+    onProfileUpdate?: (photo: string | undefined) => void
+  ) => Promise<
+    | AxiosResponse<any, any>
+    | {
+        error: boolean;
+        msg: string;
+      }
+  >;
   loadUser?: (
     setUser: (value: React.SetStateAction<User | null>) => void,
     setLoading: (value: React.SetStateAction<boolean>) => void,

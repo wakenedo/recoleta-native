@@ -1,4 +1,5 @@
 import { useAuth } from "@/context/AuthContext";
+import { useUser } from "@/context/UserContext";
 import React, { useState } from "react";
 import {
   Text,
@@ -10,13 +11,16 @@ import {
 
 const GoogleButton = () => {
   const { onGoogleLogin } = useAuth();
+  const { updateUser } = useUser();
   const [loading, setLoading] = useState(false);
 
   const handlePress = async () => {
     try {
       setLoading(true);
       if (onGoogleLogin) {
-        await onGoogleLogin();
+        await onGoogleLogin(async (photo) => {
+          await updateUser({ photo }); // 👈 Now user photo gets updated again!
+        });
       } else {
         console.error("onGoogleLogin is undefined");
       }
