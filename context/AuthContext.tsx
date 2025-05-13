@@ -6,8 +6,9 @@ import { Platform } from "react-native";
 import Constants from "expo-constants";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { jwtDecode } from "jwt-decode";
-import { AuthProps } from "./types";
+import { AuthProps, GoogleProfile } from "./types";
 import { User } from "@/app/Home";
+import { useUser } from "./UserContext";
 
 const AuthContext = createContext<AuthProps>({});
 
@@ -29,6 +30,7 @@ export const AuthProvider = ({ children }: any) => {
     token: null,
     authenticated: null,
   });
+  const { updateUser } = useUser();
 
   //loading data
   useEffect(() => {
@@ -178,6 +180,17 @@ export const AuthProvider = ({ children }: any) => {
         showPlayServicesUpdateDialog: true,
       });
       const userInfo = await GoogleSignin.signIn();
+
+      const googleProfile: GoogleProfile = {
+        photo: userInfo.data?.user?.photo,
+      };
+
+      if (googleProfile) {
+        await updateUser({
+          photo: googleProfile.photo ?? undefined,
+        });
+      }
+
       const idToken = userInfo?.data?.idToken;
 
       if (!idToken) throw new Error("Missing Google ID token");

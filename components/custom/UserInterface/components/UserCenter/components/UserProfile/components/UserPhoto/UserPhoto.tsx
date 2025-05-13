@@ -15,8 +15,9 @@ const UserPhoto: FC<UserPhotoProps> = ({ user }) => {
         <View className=" items-center justify-center">
           <Image
             source={{ uri: user.photo }}
-            className="w-24 h-24 rounded-full"
+            className="w-24 h-24 rounded-full shadow-lg"
             resizeMode="cover"
+            alt="user"
           />
         </View>
       )}

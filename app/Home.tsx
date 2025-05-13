@@ -1,14 +1,9 @@
-import { View, Platform, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as SecureStore from "expo-secure-store";
 import { useAuth } from "@/context/AuthContext";
-import Constants from "expo-constants";
 import { UserTypePicker } from "@/components/custom/UserTypePicker";
 import { UserInterface } from "@/components/custom/UserInterface";
-
-const { API_URL, TOKEN_KEY } = Constants.expoConfig?.extra || {};
+import { useUser } from "@/context/UserContext";
 
 export interface User {
   email?: string;
@@ -23,54 +18,21 @@ export interface User {
 }
 
 const Home = () => {
-  const { onLogout, loadUser } = useAuth();
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
+  const { onLogout } = useAuth();
+  const { user, updateUser } = useUser();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchCredentials = async () => {
-      const storedToken =
-        Platform.OS === "web"
-          ? await AsyncStorage.getItem(TOKEN_KEY)
-          : await SecureStore.getItemAsync(TOKEN_KEY);
-
-      setToken(storedToken);
-    };
-
-    fetchCredentials();
-  }, []);
-
-  useEffect(() => {
-    if (token && !user && loadUser) {
-      loadUser(setUser, setLoading); // Properly pass token to load user
+    if (user) {
+      setLoading(false);
     }
-  }, [token, user, loadUser]);
+  }, [user]);
 
   const handleUserTypeSelect = async (
     selectedType: "COLLECTS_WASTE" | "PRODUCES_WASTE"
   ) => {
-    if (!token) {
-      console.warn("No token found");
-      return;
-    }
-
-    console.log("Sending user type selection to backend:", selectedType);
-
     try {
-      const response = await axios.put(
-        `${API_URL}/set-user-type`,
-        { userType: selectedType },
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      console.log("User type successfully updated:", response.data);
-
-      setUser(response.data); // now includes updated userType + needsUserType: false
+      await updateUser({ userType: selectedType });
     } catch (error: any) {
       console.error(
         "Erro ao atualizar o tipo de usuário:",
@@ -79,6 +41,7 @@ const Home = () => {
       alert("Erro ao atualizar o tipo de usuário");
     }
   };
+
   const needsUserType =
     user &&
     !["COLLECTS_WASTE", "PRODUCES_WASTE", "admin"].includes(user.userType);

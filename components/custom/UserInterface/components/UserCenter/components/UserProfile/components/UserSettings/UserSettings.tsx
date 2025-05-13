@@ -23,6 +23,9 @@ const UserSettings: FC<UserSettingsProps> = ({ user }) => {
 
   const token = authState?.token || "";
 
+  const isActive = user?.status === "active";
+  const isEditable = user?.document !== null && user?.phone !== null;
+
   // Emula a necessidade de verificar o e-mail
   // Isso deve ser substituído pela lógica real quando a verificação de e-mail for implementada
   const teste = true;
@@ -45,7 +48,7 @@ const UserSettings: FC<UserSettingsProps> = ({ user }) => {
           </Text>
         </View>
         <View className="mb-2">
-          {teste === true && token && (
+          {teste === true && token && !isActive && (
             <VerifyEmailButton
               token={token}
               verifyEmail={verifyEmailHandler}
@@ -55,7 +58,7 @@ const UserSettings: FC<UserSettingsProps> = ({ user }) => {
               }}
             />
           )}
-          <EditUserButton updateUser={updateUser} />
+          {!isEditable && <EditUserButton updateUser={updateUser} />}
 
           <ChangePasswordButton
             changePassword={({ oldPassword, newPassword }) =>
