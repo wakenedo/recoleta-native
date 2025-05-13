@@ -1,37 +1,62 @@
-// components/UserTypePicker.tsx
-import React from "react";
-import { View, TouchableOpacity } from "react-native";
-import { Text } from "@/components/ui/text";
+import React, { useState } from "react";
+import {
+  View,
+  TouchableOpacity,
+  Modal,
+  Text as RNText,
+  Button,
+} from "react-native";
+import { Text } from "@/components/ui/text"; // assuming you have a custom Text component
+import { GoogleUserWelcome } from "./components/GoogleUserWelcome";
+import { AddPersonalInfo } from "./components/AddPersonalInfo";
+import { useUser } from "@/context/UserContext";
+import { UserTypePickerInterface } from "./components/UserTypePickerInterface";
+import { UserTypeConfirmModal } from "./components/UserTypeConfirmModal";
 
 type Props = {
   onSelect: (userType: "COLLECTS_WASTE" | "PRODUCES_WASTE") => void;
 };
 
 const UserTypePicker = ({ onSelect }: Props) => {
+  const { updateUser, user } = useUser();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedUserType, setSelectedUserType] = useState<
+    "COLLECTS_WASTE" | "PRODUCES_WASTE" | null
+  >(null);
+
+  const handleSelect = (userType: "COLLECTS_WASTE" | "PRODUCES_WASTE") => {
+    setSelectedUserType(userType);
+    setIsModalVisible(true); // Show modal when a user type is selected
+  };
+
+  const handleConfirm = () => {
+    if (selectedUserType) {
+      onSelect(selectedUserType); // Call the parent function with the selected type
+      setIsModalVisible(false); // Close the modal
+    }
+  };
+
+  const handleCancel = () => {
+    setSelectedUserType(null); // Reset selection
+    setIsModalVisible(false); // Close the modal
+  };
+
   return (
-    <View className="p-4">
-      <Text className="text-xl font-semibold mb-4">
-        Selecione o tipo de usuário:
-      </Text>
-
-      <TouchableOpacity
-        onPress={() => onSelect("COLLECTS_WASTE")}
-        className="bg-green-600 p-4 rounded-2xl mb-2"
-      >
-        <Text className="text-white text-center font-medium">
-          Coletor de Resíduos
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => onSelect("PRODUCES_WASTE")}
-        className="bg-blue-600 p-4 rounded-2xl"
-      >
-        <Text className="text-white text-center font-medium">
-          Produtor de Resíduos
-        </Text>
-      </TouchableOpacity>
-    </View>
+    <>
+      <GoogleUserWelcome user={user} />
+      <AddPersonalInfo updateUser={updateUser} user={user} />
+      <UserTypePickerInterface
+        handleCancel={handleCancel}
+        handleConfirm={handleConfirm}
+        handleSelect={handleSelect}
+      />
+      <UserTypeConfirmModal
+        isModalVisible={isModalVisible}
+        handleConfirm={handleConfirm}
+        handleCancel={handleCancel}
+      />
+    </>
   );
 };
+
 export default UserTypePicker;

@@ -82,9 +82,14 @@ interface WasteProducerContextProps {
   resetError: () => void;
 }
 
+interface GoogleProfile {
+  photo?: string | null;
+}
+
 export {
   AuthProps,
   CollectFlowState,
   WasteProducerContextProps,
+  GoogleProfile,
   // Add other types here as needed
 };

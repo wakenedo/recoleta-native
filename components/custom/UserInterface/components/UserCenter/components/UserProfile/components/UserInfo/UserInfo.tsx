@@ -111,6 +111,7 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
             <View className="mr-1">
               <Text className="text-lg font-light text-slate-800">
                 {user?.status === "not verified" && "Não Verificado"}
+                {user?.status === "active" && "Ativa"}
               </Text>
             </View>
           </View>
