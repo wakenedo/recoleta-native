@@ -54,8 +54,8 @@ const AddNewAddressViaGPS = () => {
         setCity(address.city || "");
         setState(address.region || "");
         setPostalCode(address.postalCode || "");
-        setNeighborhood(address.district || "");
-        setComplement(address.subregion || "");
+        setNeighborhood(address.subregion || "");
+        setComplement(address.district || "");
         setSuccess(true);
       }
     } catch (error) {
