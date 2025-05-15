@@ -55,7 +55,7 @@ export const WasteProducerStatsProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { LOCAL_API_URL, API_URL } = Constants.expoConfig?.extra || {};
+  const { API_URL } = Constants.expoConfig?.extra || {};
   const { authState } = useAuth();
 
   const [loading, setLoading] = useState(false);
@@ -71,13 +71,10 @@ export const WasteProducerStatsProvider = ({
     async (from?: string, to?: string) => {
       try {
         setLoading(true);
-        const response = await axios.get(
-          `${LOCAL_API_URL}/statistics/producer`,
-          {
-            headers: { Authorization: `Bearer ${authState?.token}` },
-            params: { from, to },
-          }
-        );
+        const response = await axios.get(`${API_URL}/statistics/producer`, {
+          headers: { Authorization: `Bearer ${authState?.token}` },
+          params: { from, to },
+        });
 
         const { summary, events, residueRanking, residueGroupedByType } =
           response.data;
@@ -97,7 +94,7 @@ export const WasteProducerStatsProvider = ({
         setLoading(false);
       }
     },
-    [LOCAL_API_URL, authState?.token]
+    [API_URL, authState?.token]
   );
 
   return (
