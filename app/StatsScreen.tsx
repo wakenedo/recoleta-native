@@ -4,6 +4,7 @@ import { ActivityIndicator, View } from "react-native";
 import { WasteProducerStatsInterface } from "@/components/custom/UserInterface/components/WasteProducerStatsInterface";
 import { BackToHomeButton } from "@/components/custom/BackToHomeButton";
 import { useUser } from "@/context/UserContext";
+import { WasteProducerStatsProvider } from "@/context/WasteProducerStatsContext";
 
 const StatScreen = () => {
   const { loadUser, loading, user } = useUser();
@@ -25,7 +26,9 @@ const StatScreen = () => {
       <BackToHomeButton user={user} />
       {user?.userType === "PRODUCES_WASTE" && (
         <WasteProducerProvider>
-          <WasteProducerStatsInterface user={user} />
+          <WasteProducerStatsProvider>
+            <WasteProducerStatsInterface user={user} />
+          </WasteProducerStatsProvider>
         </WasteProducerProvider>
       )}
     </>
