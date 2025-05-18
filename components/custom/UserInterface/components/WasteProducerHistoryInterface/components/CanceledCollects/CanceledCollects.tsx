@@ -106,7 +106,7 @@ const CanceledCollects: FC<CanceledCollectsProps> = ({
           <View className="flex-1 justify-center items-center">
             <View className="flex-col items-center">
               <CalendarX size={50} color={iconColor} />
-              <Text className="text-red-600 mt-2 text-center font-semibold">
+              <Text className="text-red-700 mt-2 text-center font-semibold">
                 Nenhuma coleta cancelada.
               </Text>
             </View>
