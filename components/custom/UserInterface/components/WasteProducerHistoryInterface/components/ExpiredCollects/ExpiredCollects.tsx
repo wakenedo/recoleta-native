@@ -91,11 +91,13 @@ const ExpiredCollects: FC<ExpiredCollectsProps> = ({
               <ActivityIndicator size="large" color={iconColor} />
             </View>
           ) : expiredCollects.length === 0 ? (
-            <View className="flex-col items-center my-4">
-              <AlarmClock size={50} color={iconColor} />
-              <Text className="text-yellow-500 mt-2 text-center font-semibold">
-                Nenhuma coleta expirada ainda.
-              </Text>
+            <View className="flex-1 justify-center items-center">
+              <View className="flex-col items-center">
+                <AlarmClock size={50} color={iconColor} />
+                <Text className="text-yellow-500 mt-2 text-center font-semibold">
+                  Nenhuma coleta expirada ainda.
+                </Text>
+              </View>
             </View>
           ) : (
             <FlatList

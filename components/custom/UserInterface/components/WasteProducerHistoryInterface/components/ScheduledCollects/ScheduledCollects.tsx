@@ -1,5 +1,5 @@
 import { User } from "@/app/Home";
-import { Calendar1 } from "lucide-react-native";
+import { Calendar1, CalendarClock } from "lucide-react-native";
 import React, { FC, useState, useRef, useEffect, useCallback } from "react";
 import {
   View,
@@ -97,9 +97,20 @@ const ScheduledCollects: FC<ScheduledCollectsProps> = ({
               <ActivityIndicator size="large" color="#4B9CD3" />
             </View>
           ) : scheduledCollects.length === 0 ? (
-            <Text className="text-gray-500 mt-2 text-center">
-              Nenhuma coleta agendada ainda.
-            </Text>
+            <View className="flex-1 justify-center items-center">
+              <View className="flex-col items-center">
+                <CalendarClock size={50} color={iconColor} />
+                <Text
+                  className={`${
+                    isProducesWaste && !isCollectsWaste ? "text-orange-700" : ""
+                  } ${
+                    !isProducesWaste && isCollectsWaste ? "text-green-700" : ""
+                  } mt-2 text-center font-semibold`}
+                >
+                  Nenhuma coleta agendada ainda.
+                </Text>
+              </View>
+            </View>
           ) : (
             <FlatList
               data={scheduledCollects}
