@@ -3,11 +3,11 @@ import "dotenv/config";
 
 export default {
   expo: {
-    name: "RecoletaNative",
+    icon: "./assets/icon.png",
+    name: "Recoleta",
     slug: "RecoletaNative",
     version: "1.0.0",
     orientation: "portrait",
-    icon: "./assets/images/icon.png",
     scheme: "recoleta",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,

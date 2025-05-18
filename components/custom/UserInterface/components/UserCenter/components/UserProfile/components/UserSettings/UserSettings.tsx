@@ -26,6 +26,8 @@ const UserSettings: FC<UserSettingsProps> = ({ user }) => {
   const isActive = user?.status === "active";
   const isEditable = user?.document !== null && user?.phone !== null;
 
+  const isUserGoogle = user?.email?.includes("@gmail.com");
+
   // Emula a necessidade de verificar o e-mail
   // Isso deve ser substituído pela lógica real quando a verificação de e-mail for implementada
   const teste = true;
@@ -59,12 +61,13 @@ const UserSettings: FC<UserSettingsProps> = ({ user }) => {
             />
           )}
           {!isEditable && <EditUserButton updateUser={updateUser} />}
-
-          <ChangePasswordButton
-            changePassword={({ oldPassword, newPassword }) =>
-              changePassword(oldPassword, newPassword)
-            }
-          />
+          {!isUserGoogle && (
+            <ChangePasswordButton
+              changePassword={({ oldPassword, newPassword }) =>
+                changePassword(oldPassword, newPassword)
+              }
+            />
+          )}
           <View className="mb-2">
             <Button
               title="Reportar Problema"
