@@ -23,22 +23,24 @@ const ExpiredCollects: FC<ExpiredCollectsProps> = ({
   loading,
 }) => {
   const [expanded, setExpanded] = useState(false);
-  const animatedOpacity = useRef(new Animated.Value(0)).current;
-
-  const isProducesWaste = user?.userType === "PRODUCES_WASTE";
-  const isCollectsWaste = user?.userType === "COLLECTS_WASTE";
+  const animatedHeight = useRef(new Animated.Value(0)).current;
 
   const toggleExpanded = () => {
     setExpanded((prev) => !prev);
   };
 
   useEffect(() => {
-    Animated.timing(animatedOpacity, {
+    Animated.timing(animatedHeight, {
       toValue: expanded ? 1 : 0,
       duration: 200,
-      useNativeDriver: true,
+      useNativeDriver: false,
     }).start();
   }, [expanded]);
+
+  const containerHeight = animatedHeight.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 250], // Max height for expanded content
+  });
 
   const iconColor = "#eab308";
 
@@ -58,11 +60,7 @@ const ExpiredCollects: FC<ExpiredCollectsProps> = ({
   );
 
   return (
-    <View
-      className={`justify-center border-l mx-2 ${
-        isProducesWaste || isCollectsWaste ? "border-l-yellow-500" : ""
-      } rounded p-4 bg-white shadow-md mb-4`}
-    >
+    <View className="justify-center border-l mx-2 border-l-yellow-500 rounded p-4 bg-white shadow-md mb-4">
       <Pressable onPress={toggleExpanded}>
         <View className="flex-row items-center justify-between mb-1">
           <View className="flex-row">
@@ -70,13 +68,7 @@ const ExpiredCollects: FC<ExpiredCollectsProps> = ({
               <CalendarClock size={22} color={iconColor} />
             </View>
 
-            <Text
-              className={`text-xl font-bold ${
-                isProducesWaste || isCollectsWaste ? "text-yellow-500" : ""
-              }`}
-            >
-              EXPIRADAS
-            </Text>
+            <Text className="text-xl font-bold text-yellow-500">EXPIRADAS</Text>
           </View>
           <Text className="text-sm text-gray-500">
             {expanded ? "Recolher ▲" : "Expandir ▼"}
@@ -84,35 +76,32 @@ const ExpiredCollects: FC<ExpiredCollectsProps> = ({
         </View>
       </Pressable>
 
-      {expanded && (
-        <Animated.View style={{ opacity: animatedOpacity }}>
-          {loading ? (
-            <View className="flex justify-center items-center my-4">
-              <ActivityIndicator size="large" color={iconColor} />
+      <Animated.View style={{ overflow: "hidden", height: containerHeight }}>
+        {loading ? (
+          <View className="flex-1 justify-center items-center ">
+            <ActivityIndicator size="large" color={iconColor} />
+          </View>
+        ) : expiredCollects.length === 0 ? (
+          <View className="flex-1 justify-center items-center">
+            <View className="flex-col items-center">
+              <AlarmClock size={50} color={iconColor} />
+              <Text className="text-yellow-500 mt-2 text-center font-semibold">
+                Nenhuma coleta expirada ainda.
+              </Text>
             </View>
-          ) : expiredCollects.length === 0 ? (
-            <View className="flex-1 justify-center items-center">
-              <View className="flex-col items-center">
-                <AlarmClock size={50} color={iconColor} />
-                <Text className="text-yellow-500 mt-2 text-center font-semibold">
-                  Nenhuma coleta expirada ainda.
-                </Text>
-              </View>
-            </View>
-          ) : (
-            <FlatList
-              data={expiredCollects}
-              renderItem={renderCollectItem}
-              keyExtractor={(item) => item._id.toString()}
-              getItemLayout={getItemLayout}
-              showsVerticalScrollIndicator={false}
-              scrollEnabled={false}
-              contentContainerStyle={{ paddingBottom: 10 }}
-              className="flex-1"
-            />
-          )}
-        </Animated.View>
-      )}
+          </View>
+        ) : (
+          <FlatList
+            data={expiredCollects}
+            renderItem={renderCollectItem}
+            keyExtractor={(item) => item._id.toString()}
+            getItemLayout={getItemLayout}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 10 }}
+            className="flex-1"
+          />
+        )}
+      </Animated.View>
     </View>
   );
 };
