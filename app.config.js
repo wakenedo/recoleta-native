@@ -18,6 +18,11 @@ export default {
       },
     },
     android: {
+      adaptiveIcons: {
+        foregroundImage: "./assets/icons/adaptive-icon.png",
+        monochromeImage: "./assets/icons/adaptive-icon.png",
+        backgroundColor: "#FFFFFF",
+      },
       package: "com.recoleta.android",
       googleServicesFile: "./android/app/google-services.json",
     },
