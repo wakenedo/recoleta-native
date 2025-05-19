@@ -21,7 +21,6 @@ export default {
       adaptiveIcons: {
         foregroundImage: "./assets/icons/adaptive-icon.png",
         monochromeImage: "./assets/icons/adaptive-icon.png",
-        backgroundColor: "#FFFFFF",
       },
       package: "com.recoleta.android",
       googleServicesFile: "./android/app/google-services.json",
@@ -35,9 +34,7 @@ export default {
       API_URL: process.env.API_URL,
       LOCAL_API_URL: process.env.LOCAL_API_URL,
       TOKEN_KEY: process.env.TOKEN_KEY,
-      GOOGLE_SERVICE_JSON: process.env.GOOGLE_SERVICE_JSON,
       GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-      WEB_CLIENT_ID: process.env.WEB_CLIENT_ID,
       eas: {
         projectId: "135c9e91-f3a9-4432-b7c8-9d23311b0166",
       },
