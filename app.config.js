@@ -3,7 +3,7 @@ import "dotenv/config";
 
 export default {
   expo: {
-    icon: "./assets/images/icon.png",
+    icon: "./assets/icons/adaptive-icon.png",
     name: "Recoleta",
     slug: "RecoletaNative",
     version: "1.0.0",
