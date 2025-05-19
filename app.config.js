@@ -3,7 +3,7 @@ import "dotenv/config";
 
 export default {
   expo: {
-    icon: "./assets/icons/adaptive-icon.png",
+    icon: "./assets/images/icon.png",
     name: "Recoleta",
     slug: "RecoletaNative",
     version: "1.0.0",
@@ -21,7 +21,6 @@ export default {
       adaptiveIcons: {
         foregroundImage: "./assets/icons/adaptive-icon.png",
         monochromeImage: "./assets/icons/adaptive-icon.png",
-        backgroundColor: "#FFFFFF",
       },
       package: "com.recoleta.android",
       googleServicesFile: "./android/app/google-services.json",
