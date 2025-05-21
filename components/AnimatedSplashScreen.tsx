@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { StyleSheet, Animated, Easing } from "react-native";
 import LottieView from "lottie-react-native";
 import * as SplashScreen from "expo-splash-screen";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 SplashScreen.preventAutoHideAsync();
 

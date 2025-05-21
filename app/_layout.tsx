@@ -13,18 +13,13 @@ const Layout = () => {
   function RootLayoutNav({ splashDone }: { splashDone: boolean }) {
     const { authState } = useAuth();
 
-    // Wait for splash to finish before deciding on redirect
-    if (!splashDone || authState == null) return null;
+    if (!splashDone || authState == null) return null; // Still playing splash animation
 
-    while (authState == null) {
-      return <AnimatedSplashScreen onFinish={() => setSplashDone(true)} />;
-    }
-
-    if (authState.authenticated) {
-      return <Redirect href="/Home" />;
-    } else {
-      return <Redirect href="/AuthScreen" />;
-    }
+    return authState.authenticated ? (
+      <Redirect href="/Home" />
+    ) : (
+      <Redirect href="/AuthScreen" />
+    );
   }
 
   return (
