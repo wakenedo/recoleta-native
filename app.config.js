@@ -25,11 +25,6 @@ export default {
       package: "com.recoleta.android",
       googleServicesFile: "./android/app/google-services.json",
     },
-    splash: {
-      image: "./assets/images/Logo.png",
-      resizeMode: "contain", // or "cover" if better for your design
-      backgroundColor: "#ffffff", // must match your LottieView background
-    },
     web: {
       bundler: "metro",
       output: "static",
