@@ -51,6 +51,14 @@ export default {
             "Allow Recoleta to use your location.",
         },
       ],
+      [
+        "expo-splash-screen",
+        {
+          image: "./assets/images/Logo.png",
+          resizeMode: "contain",
+          backgroundColor: "#ffffff",
+        },
+      ],
     ],
     experiments: {
       typedRoutes: true,
