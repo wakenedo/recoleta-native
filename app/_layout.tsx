@@ -7,6 +7,9 @@ import "../global.css";
 import AnimatedSplashScreen from "@/components/AnimatedSplashScreen";
 import { UserProvider } from "@/context/UserContext";
 
+import * as SplashScreen from "expo-splash-screen";
+SplashScreen.preventAutoHideAsync();
+
 const Layout = () => {
   const [splashDone, setSplashDone] = useState(false);
 
