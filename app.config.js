@@ -11,6 +11,7 @@ export default {
     scheme: "recoleta",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
+    assetBundlePatterns: ["**/*"],
     ios: {
       supportsTablet: true,
       config: {
