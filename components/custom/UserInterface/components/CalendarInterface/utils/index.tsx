@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { format } from "date-fns";
+import moment from "moment";
+import "moment/locale/pt-br";
 import WeekView from "react-native-week-view";
 import styles from "../constants/styles";
 
+moment.locale("pt-br");
 interface EventProps {
   id: number;
   description: string;
@@ -54,6 +57,12 @@ const renderCalendarView = (
   handleViewChange: (newView: "week" | "day") => void,
   collects: any[]
 ) => {
+  const [mounted, setMounted] = useState(false); // 🛠️ Add mount state
+
+  useEffect(() => {
+    setMounted(true); // ✅ Set mounted after first render
+  }, []);
+
   const formattedYear = format(new Date(), "yyyy"); // Display only the month name (e.g., "April")
 
   const isValidDate = (date: any) => {
@@ -94,24 +103,26 @@ const renderCalendarView = (
         {renderViewButtons({ handleViewChange })}
       </View>
       <View style={{ flex: 1, backgroundColor: "#fff" }}>
-        <WeekView
-          nowLineColor="#4ea3e8"
-          events={events}
-          selectedDate={new Date()}
-          numberOfDays={viewType === "week" ? 7 : 1} // 7 days for week view, 1 day for day view
-          headerStyle={styles.headerContainerRowStyle}
-          DayHeaderComponent={renderDayHeader}
-          locale="pt-BR"
-          headerTextStyle={styles.headerTextStyle}
-          timesColumnWidth={viewType === "week" ? 48 : 52}
-          hoursInDisplay={viewType === "week" ? 8 : 6}
-          hourTextStyle={styles.hourTextStyle}
-          eventContainerStyle={styles.eventContainerStyle}
-          gridColumnStyle={styles.gridColumnStyle}
-          gridRowStyle={styles.gridRowStyle}
-          onEventPress={(event) => console.log("Pressed event:", event)}
-          onGridClick={(event) => console.log("Pressed empty:", event)}
-        />
+        {mounted ? (
+          <WeekView
+            nowLineColor="#4ea3e8"
+            events={events}
+            selectedDate={new Date()}
+            numberOfDays={viewType === "week" ? 7 : 1} // 7 days for week view, 1 day for day view
+            headerStyle={styles.headerContainerRowStyle}
+            DayHeaderComponent={renderDayHeader}
+            locale="pt-br"
+            headerTextStyle={styles.headerTextStyle}
+            timesColumnWidth={viewType === "week" ? 48 : 52}
+            hoursInDisplay={viewType === "week" ? 8 : 6}
+            hourTextStyle={styles.hourTextStyle}
+            eventContainerStyle={styles.eventContainerStyle}
+            gridColumnStyle={styles.gridColumnStyle}
+            gridRowStyle={styles.gridRowStyle}
+            onEventPress={(event) => console.log("Pressed event:", event)}
+            onGridClick={(event) => console.log("Pressed empty:", event)}
+          />
+        ) : null}
       </View>
     </View>
   );
