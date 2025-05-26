@@ -37,11 +37,6 @@ const ExpiredCollects: FC<ExpiredCollectsProps> = ({
     }).start();
   }, [expanded]);
 
-  const containerHeight = animatedHeight.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 250], // Max height for expanded content
-  });
-
   const iconColor = "#eab308";
 
   const renderCollectItem = useCallback(({ item }: any) => {
@@ -76,7 +71,7 @@ const ExpiredCollects: FC<ExpiredCollectsProps> = ({
         </View>
       </Pressable>
 
-      <Animated.View style={{ overflow: "hidden", height: containerHeight }}>
+      <Animated.View style={{ overflow: "hidden" }}>
         {loading ? (
           <View className="flex-1 justify-center items-center ">
             <ActivityIndicator size="large" color={iconColor} />
