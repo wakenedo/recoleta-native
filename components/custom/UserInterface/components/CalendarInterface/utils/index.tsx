@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import moment from "moment";
 import "moment/locale/pt-br";
 import WeekView from "react-native-week-view";
@@ -21,7 +22,7 @@ interface EventProps {
 const renderViewButtons = ({
   handleViewChange,
 }: {
-  handleViewChange: (newView: "week" | "day") => void;
+  handleViewChange: (newView: "week" | "day" | "3-days") => void;
 }) => {
   return (
     <View style={styles.viewToggleContainer}>
@@ -29,7 +30,13 @@ const renderViewButtons = ({
         style={[styles.toggleButton, styles.activeButton]}
         onPress={() => handleViewChange("week")}
       >
-        <Text style={styles.toggleButtonText}>Semana</Text>
+        <Text style={styles.toggleButtonText}>7 Dias</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.toggleButton, styles.activeButton]}
+        onPress={() => handleViewChange("3-days")}
+      >
+        <Text style={styles.toggleButtonText}>3 Dias</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.toggleButton, styles.activeButton]}
@@ -41,12 +48,34 @@ const renderViewButtons = ({
   );
 };
 
+const daysShortenForPortuguese = (day: string) => {
+  switch (day) {
+    case "segunda":
+      return "Seg";
+    case "terça":
+      return "Ter";
+    case "quarta":
+      return "Qua";
+    case "quinta":
+      return "Qui";
+    case "sexta":
+      return "Sex";
+    case "sábado":
+      return "Sáb";
+    case "domingo":
+      return "Dom";
+    default:
+      return "";
+  }
+};
+
 const renderDayHeader = (props: any) => {
-  const dayOfWeek = format(props.date, "EEE"); // Get the full day name, e.g., "Monday"
-  const dayNumber = format(props.date, "d"); // Get the day number, e.g., "25"
+  const dayOfWeek = format(props.date, "E", { locale: ptBR }); // Get the full day name, e.g., "Monday"
+  const dayNumber = format(props.date, "d", { locale: ptBR }); // Get the day number, e.g., "25"
+  const dayOfWeekShort = daysShortenForPortuguese(dayOfWeek); // Translate to Portuguese short form
   return (
     <View style={styles.dayHeaderContainer}>
-      <Text style={styles.dayHeaderTopLabel}>{dayOfWeek}</Text>
+      <Text style={styles.dayHeaderTopLabel}>{dayOfWeekShort}</Text>
       <Text style={styles.dayHeaderBottomLabel}>{dayNumber}</Text>
     </View>
   );
@@ -54,7 +83,7 @@ const renderDayHeader = (props: any) => {
 
 const renderCalendarView = (
   viewType: string,
-  handleViewChange: (newView: "week" | "day") => void,
+  handleViewChange: (newView: "week" | "day" | "3-days") => void,
   collects: any[]
 ) => {
   const [mounted, setMounted] = useState(false); // 🛠️ Add mount state
@@ -95,9 +124,67 @@ const renderCalendarView = (
       };
     });
 
+  const definedViewType = (viewType: string) => {
+    switch (viewType) {
+      case "week":
+        return 7; // 7 days for week view
+      case "3-days":
+        return 3; // 3 days for 3-days view
+      case "day":
+        return 1; // 1 day for day view
+      default:
+        return 3; // Default to week view if no valid type is provided
+    }
+  };
+
+  const definedTimesColumnWidth = (viewType: string) => {
+    switch (viewType) {
+      case "week":
+        return 32; // 47 for week view
+      case "3-days":
+        return 50; // 52 for 3-days view
+      case "day":
+        return 52; // 52 for day view
+      default:
+        return 52; // Default to week view if no valid type is provided
+    }
+  };
+
+  const definedHoursInDisplay = (viewType: string) => {
+    switch (viewType) {
+      case "week":
+        return 8; // 8 hours for week view
+      case "3-days":
+        return 6; // 6 hours for 3-days view
+      case "day":
+        return 6; // 6 hours for day view
+      default:
+        return 8; // Default to week view if no valid type is provided
+    }
+  };
+
+  const definedHeaderStyle = (viewType: string) => {
+    switch (viewType) {
+      case "week":
+        return styles.headerContainer7DaysRowStyle; // Use row style for week view
+      case "3-days":
+        return styles.headerContainer3DaysRowStyle; // Use row style for 3-days view
+      case "day":
+        return styles.headerContainerRowStyle; // Use column style for day view
+      default:
+        return styles.headerContainerRowStyle; // Default to week view if no valid type is provided
+    }
+  };
+
   return (
     <View style={styles.calendarViewContainer}>
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginHorizontal: 3,
+        }}
+      >
         <Text style={styles.yearText}>{formattedYear}</Text>
 
         {renderViewButtons({ handleViewChange })}
@@ -108,13 +195,13 @@ const renderCalendarView = (
             nowLineColor="#4ea3e8"
             events={events}
             selectedDate={new Date()}
-            numberOfDays={viewType === "week" ? 7 : 1} // 7 days for week view, 1 day for day view
-            headerStyle={styles.headerContainerRowStyle}
+            numberOfDays={definedViewType(viewType)} // 7 days for week view, 1 day for day view
+            headerStyle={definedHeaderStyle(viewType)}
             DayHeaderComponent={renderDayHeader}
             locale="pt-br"
             headerTextStyle={styles.headerTextStyle}
-            timesColumnWidth={viewType === "week" ? 48 : 52}
-            hoursInDisplay={viewType === "week" ? 8 : 6}
+            timesColumnWidth={definedTimesColumnWidth(viewType)}
+            hoursInDisplay={definedHoursInDisplay(viewType)}
             hourTextStyle={styles.hourTextStyle}
             eventContainerStyle={styles.eventContainerStyle}
             gridColumnStyle={styles.gridColumnStyle}

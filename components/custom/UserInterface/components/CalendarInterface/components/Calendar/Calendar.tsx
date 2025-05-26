@@ -6,9 +6,10 @@ import { useWasteProducer } from "@/context/WasteProducerContext";
 const Calendar = () => {
   const { collects, fetchCollects } = useWasteProducer();
   // State to manage the selected view type: 'week' or 'day'
-  const [viewType, setViewType] = useState<"week" | "day">("week");
+  const [viewType, setViewType] = useState<"week" | "day" | "3-days">("week");
 
-  const handleViewChange = (newView: "week" | "day") => setViewType(newView);
+  const handleViewChange = (newView: "week" | "day" | "3-days") =>
+    setViewType(newView);
 
   useEffect(() => {
     if (collects.length === 0) {

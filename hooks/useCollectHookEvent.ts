@@ -3,9 +3,11 @@ import { useCollectFlow } from "@/context/CollectFlowContext";
 import { useCallback, useState } from "react";
 import axios from "axios";
 import Constants from "expo-constants";
+import { useUser } from "@/context/UserContext";
 
 export const useCollectEvent = () => {
   const { authState } = useAuth();
+  const { user } = useUser();
   const {
     selectedDate,
     selectedHour,
@@ -104,6 +106,19 @@ export const useCollectEvent = () => {
       const finalResidueId = createResidueRes.data._id;
       console.log("✅ Created residue:", finalResidueId);
 
+      const formattedResidue = residuePayload?.name || "Coleta";
+      const shortDate = newDate.toLocaleDateString("pt-BR");
+      const shortTime = newDate.toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      const userName = user?.firstName?.split(" ")[0] || "Usuário";
+
+      const dynamicEventName = `Coleta de ${formattedResidue} - ${userName}`;
+      const dynamicDescription = `Coleta agendada por ${
+        userName || "usuário"
+      } para ${street}, ${number} - ${neighborhood}, ${city}, ${state} em ${shortDate} às ${shortTime}`;
+
       // 🗓 Create collect event
       const res = await axios.post(
         `${API_URL}/collect-event/create`,
@@ -111,8 +126,8 @@ export const useCollectEvent = () => {
           residueIds: [finalResidueId],
           addressId,
           dateTime: isoDateTime,
-          eventName: "Nova coleta",
-          description: "Evento de coleta criado pelo usuário",
+          eventName: dynamicEventName,
+          description: dynamicDescription,
         },
         {
           headers: { Authorization: `Bearer ${token}` },

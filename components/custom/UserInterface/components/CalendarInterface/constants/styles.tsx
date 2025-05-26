@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   calendarViewContainer: {
     flex: 1,
-    paddingHorizontal: 4,
   },
   yearText: {
     fontSize: 28,
@@ -16,7 +15,34 @@ const styles = StyleSheet.create({
     display: "flex",
 
     zIndex: 1,
-    width: 54,
+    width: 53,
+    paddingHorizontal: 5,
+    backgroundColor: "#2196f3",
+    elevation: 2,
+    borderRightWidth: 0,
+    borderLeftWidth: 0,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  headerContainer7DaysRowStyle: {
+    borderBottomWidth: 0,
+    display: "flex",
+    zIndex: 1,
+    width: 35,
+    paddingHorizontal: 4,
+    backgroundColor: "#2196f3",
+    elevation: 2,
+    borderRightWidth: 0,
+    borderLeftWidth: 0,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  headerContainer3DaysRowStyle: {
+    borderBottomWidth: 0,
+    display: "flex",
+
+    zIndex: 1,
+    width: 52,
     paddingHorizontal: 5,
     backgroundColor: "#2196f3",
     elevation: 2,
@@ -36,7 +62,7 @@ const styles = StyleSheet.create({
   },
   eventContainerStyle: {
     borderRadius: 8,
-    margin: 3,
+    margin: 1,
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -62,7 +88,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   dayHeaderBottomLabel: {
-    fontSize: 16,
+    fontSize: 13,
     color: "#fcfcfc",
     fontWeight: "300",
     textAlign: "center",
