@@ -13,6 +13,17 @@ const UserRegisteredAddressCard: FC<UserRegisteredAddressCardProps> = ({
       <Text className="text-sm text-gray-600">
         {item.neighborhood}, {item.city} - {item.state}
       </Text>
+      {item.latitude && item.longitude && (
+        <Text className="text-xs text-gray-500">
+          Latitude: {item.latitude}, Longitude: {item.longitude}
+        </Text>
+      )}
+      {item.complement && (
+        <Text className="text-sm text-gray-500">
+          Complemento: {item.complement}
+        </Text>
+      )}
+
       <Text className="text-xs text-gray-400">CEP: {item.postalCode}</Text>
     </View>
   );

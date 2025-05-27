@@ -28,7 +28,8 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
     status: "",
     isSigned: false,
     signedBy: null,
-
+    latitude: undefined, // or null
+    longitude: undefined,
     city: "",
     neighborhood: "",
     state: "",
