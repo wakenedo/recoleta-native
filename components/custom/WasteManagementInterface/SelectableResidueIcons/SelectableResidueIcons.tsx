@@ -103,56 +103,82 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
   return (
     <View>
       <Heading size="xs">Tipo de Resíduo</Heading>
-      <View className="flex-row flex-wrap justify-between mt-2">
-        {RESIDUE_CARDS.map((card) => {
-          const isSelected = selectedResidue?.id === card.id;
-          return (
-            <Card
-              onTouchStart={() => setSelectedResidue(card)}
-              key={card.id}
-              className={`items-center my-2 border ${
-                Platform.OS === "android" ? "w-[165px]" : "w-[150px]"
-              } ${isSelected ? "border-blue-500" : "border-zinc-300"}`}
-            >
-              <Image
-                source={{ uri: card.image }}
-                style={{
-                  width: "100%",
-                  aspectRatio: 1,
-                  resizeMode: "contain",
-                }}
-                alt={`Imagem de ${card.alt}`}
-                className="h-24"
-              />
-              <View className="mt-5">
-                <Text
-                  className={`${isSelected ? "font-bold text-blue-500" : ""}`}
-                >
-                  {card.name}
-                </Text>
-              </View>
-            </Card>
-          );
-        })}
-      </View>
 
-      {variants.length > 0 && (
-        <View className="mt-4">
-          <Text className="mb-2 font-semibold">Tipo específico</Text>
-          {variants.map((variant, idx) => (
-            <TouchableOpacity
-              key={idx}
-              onPress={() => setSelectedVariant?.(variant)}
-              className={`p-3 rounded-md mb-2 border ${
-                selectedVariant?.label === variant.label
-                  ? "border-blue-500 bg-blue-100"
-                  : "border-gray-300"
-              }`}
-            >
-              <Text className="text-base font-medium">{variant.label}</Text>
-              <Text className="text-xs text-gray-500">
-                R$ {variant.pricePerKg}/kg • Mín: {variant.minWeightKg}kg
+      {selectedResidue ? (
+        <View className="mt-2">
+          {/* Botão para voltar à seleção */}
+          <TouchableOpacity
+            onPress={() => {
+              setSelectedResidue(null as any);
+              setSelectedVariant?.(null);
+            }}
+            className="mb-4"
+          >
+            <Text className="text-blue-500 underline items-center">
+              ← Voltar a seleção de resíduo
+            </Text>
+          </TouchableOpacity>
+
+          {/* Card do resíduo selecionado */}
+          <Card className="flex flex-row items-center border border-blue-500 w-full">
+            <Image
+              source={{ uri: selectedResidue.image }}
+              width={10}
+              height={10}
+              alt={`Imagem de ${selectedResidue.alt}`}
+              className="h-8"
+            />
+            <View className="mt-5">
+              <Text className="font-bold text-blue-500">
+                {selectedResidue.name}
               </Text>
+            </View>
+          </Card>
+
+          {/* Lista de variantes */}
+          {variants.length > 0 && (
+            <View className="mt-4 pl-2">
+              <Text className="mb-2 font-semibold">Tipo específico</Text>
+              {variants.map((variant, idx) => (
+                <TouchableOpacity
+                  key={idx}
+                  onPress={() => setSelectedVariant?.(variant)}
+                  className={`p-3 rounded-md mb-2 border ${
+                    selectedVariant?.label === variant.label
+                      ? "border-blue-500 bg-blue-100"
+                      : "border-gray-300"
+                  }`}
+                >
+                  <Text className="text-base font-medium">{variant.label}</Text>
+                  <Text className="text-xs text-gray-500">
+                    R$ {variant.pricePerKg}/kg • Mín: {variant.minWeightKg}kg
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+        </View>
+      ) : (
+        // Exibe todos os cards se nenhum estiver selecionado
+        <View className="flex justify-between mt-2 w-full">
+          {RESIDUE_CARDS.map((card) => (
+            <TouchableOpacity
+              key={card.id}
+              onPress={() => setSelectedResidue(card)}
+              className="mb-2"
+            >
+              <Card className="flex flex-row items-center border w-full border-zinc-300">
+                <Image
+                  source={{ uri: card.image }}
+                  width={10}
+                  height={10}
+                  alt={`Imagem de ${card.alt}`}
+                  className="h-8"
+                />
+                <View className="mt-5">
+                  <Text>{card.name}</Text>
+                </View>
+              </Card>
             </TouchableOpacity>
           ))}
         </View>
