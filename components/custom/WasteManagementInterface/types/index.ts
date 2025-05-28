@@ -13,18 +13,35 @@ type QuantityInputProps = {
   setWeight: (value: string) => void;
 };
 
+type ResidueVariant = {
+  label: string;
+  pricePerKg: number;
+  minWeightKg: number;
+  commission30Percent: number;
+};
+
+type ResidueVariantsResponse = {
+  variants: ResidueVariant[];
+};
+
 type Residue = {
   id: string;
   name: string;
+  apiName: string;
   image: string;
   alt: string;
   weight?: number;
   _id?: string;
+
+  // Campos calculados (opcionais, preenchidos pelo backend)
+  variants?: ResidueVariant[]; // <-- novo
 };
 
 type SelectableResidueIconsProps = {
   selectedResidue: Residue | null;
   setSelectedResidue: (residue: Residue) => void;
+  selectedVariant?: ResidueVariant | null;
+  setSelectedVariant?: (variant: ResidueVariant | null) => void;
 };
 
 type AvailableDateProps = {
@@ -52,4 +69,6 @@ export {
   QuantityInputProps,
   Residue,
   SelectableResidueIconsProps,
+  ResidueVariant,
+  ResidueVariantsResponse,
 };
