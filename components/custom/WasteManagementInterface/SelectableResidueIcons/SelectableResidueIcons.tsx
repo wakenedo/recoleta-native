@@ -14,6 +14,9 @@ import { SelectableResidueIconsProps, ResidueVariant } from "../types";
 import { RESIDUE_CARDS } from "../utils/enum";
 import { useAuth } from "@/context/AuthContext";
 
+import Animated, { FadeIn, FadeOut, Layout } from "react-native-reanimated";
+import { ArrowLeftIcon } from "lucide-react-native";
+
 type PriceTable = Record<string, { variants: ResidueVariant[] }>;
 
 const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
@@ -24,9 +27,7 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
 }) => {
   const { authState } = useAuth();
   const [loading, setLoading] = useState(true);
-  // priceTable é um objeto: { [apiName: string]: ResidueVariant[] }
   const [priceTable, setPriceTable] = useState<PriceTable>({});
-  // variants é o array de variantes para o resíduo selecionado
   const [variants, setVariants] = useState<ResidueVariant[]>([]);
 
   // Preload das imagens
@@ -58,7 +59,6 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
           }
         );
         const json = await res.json();
-        // Aqui assumimos que json é do tipo Record<string, ResidueVariant[]>
         setPriceTable(json);
       } catch (err) {
         console.warn("[ResidueIcons] Erro ao buscar tabela de preços:", err);
@@ -68,16 +68,13 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
     fetchPriceTable();
   }, [authState?.token]);
 
-  // Atualiza variantes quando um resíduo é selecionado ou priceTable muda
+  // Atualiza variantes quando muda o resíduo
   useEffect(() => {
     if (selectedResidue?.apiName) {
-      // Corrigido para acessar a propriedade .variants
       const variantsForResidue =
         priceTable[selectedResidue.apiName]?.variants || [];
       setVariants(variantsForResidue);
-      if (setSelectedVariant) {
-        setSelectedVariant(null); // limpa seleção anterior
-      }
+      setSelectedVariant?.(null);
     } else {
       setVariants([]);
       setSelectedVariant?.(null);
@@ -93,20 +90,49 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
     );
   }
 
-  console.log("[SelectableResidueIcons] Variants Length:", variants.length);
-  console.log(
-    "[SelectableResidueIcons] Selected Residue:",
-    selectedResidue?.name
-  );
-  console.log("[SelectableResidueIcons] Variants:", variants);
-
   return (
     <View>
       <Heading size="xs">Tipo de Resíduo</Heading>
 
-      {selectedResidue ? (
-        <View className="mt-2">
-          {/* Botão para voltar à seleção */}
+      {/* Tela de seleção de resíduos */}
+      {!selectedResidue && (
+        <Animated.View
+          entering={FadeIn.duration(300)}
+          exiting={FadeOut.duration(300)}
+          layout={Layout.springify()}
+          className="flex justify-between mt-2 w-full"
+        >
+          {RESIDUE_CARDS.map((card) => (
+            <TouchableOpacity
+              key={card.id}
+              onPress={() => setSelectedResidue(card)}
+              className="mb-2"
+            >
+              <Card className="flex flex-row items-center border w-full border-zinc-300">
+                <Image
+                  source={{ uri: card.image }}
+                  width={10}
+                  height={10}
+                  alt={`Imagem de ${card.alt}`}
+                  className="h-8"
+                />
+                <View className="mt-5">
+                  <Text>{card.name}</Text>
+                </View>
+              </Card>
+            </TouchableOpacity>
+          ))}
+        </Animated.View>
+      )}
+
+      {/* Tela de variantes do resíduo selecionado */}
+      {selectedResidue && (
+        <Animated.View
+          entering={FadeIn.duration(300)}
+          exiting={FadeOut.duration(300)}
+          layout={Layout.springify()}
+          className="mt-2"
+        >
           <TouchableOpacity
             onPress={() => {
               setSelectedResidue(null as any);
@@ -114,12 +140,16 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
             }}
             className="mb-4"
           >
-            <Text className="text-blue-500 underline items-center">
-              ← Voltar a seleção de resíduo
-            </Text>
+            <View className="flex flex-row items-center">
+              <View className="mr-1">
+                <ArrowLeftIcon size={16} color="#4B9CD3" className="mb-2" />
+              </View>
+              <Text className="text-blue-500 underline items-center">
+                Voltar a seleção de resíduo
+              </Text>
+            </View>
           </TouchableOpacity>
 
-          {/* Card do resíduo selecionado */}
           <Card className="flex flex-row items-center border border-blue-500 w-full">
             <Image
               source={{ uri: selectedResidue.image }}
@@ -135,7 +165,6 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
             </View>
           </Card>
 
-          {/* Lista de variantes */}
           {variants.length > 0 && (
             <View className="mt-4 pl-2">
               <Text className="mb-2 font-semibold">Tipo específico</Text>
@@ -157,31 +186,7 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
               ))}
             </View>
           )}
-        </View>
-      ) : (
-        // Exibe todos os cards se nenhum estiver selecionado
-        <View className="flex justify-between mt-2 w-full">
-          {RESIDUE_CARDS.map((card) => (
-            <TouchableOpacity
-              key={card.id}
-              onPress={() => setSelectedResidue(card)}
-              className="mb-2"
-            >
-              <Card className="flex flex-row items-center border w-full border-zinc-300">
-                <Image
-                  source={{ uri: card.image }}
-                  width={10}
-                  height={10}
-                  alt={`Imagem de ${card.alt}`}
-                  className="h-8"
-                />
-                <View className="mt-5">
-                  <Text>{card.name}</Text>
-                </View>
-              </Card>
-            </TouchableOpacity>
-          ))}
-        </View>
+        </Animated.View>
       )}
     </View>
   );
