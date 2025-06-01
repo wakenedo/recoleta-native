@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { CollectFlowState } from "./types";
 
 const CollectFlowContext = createContext<CollectFlowState | undefined>(
@@ -18,7 +18,11 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
     >
   >({
     selectedResidue: null,
+    selectedVariant: null,
     weight: "",
+    pricePerKg: null,
+    minWeightKg: null,
+    estimatedValue: null,
     selectedCondition: "Limpo",
     selectedPackage: "Caixa de Papelão",
     selectedDate: null,
@@ -46,7 +50,11 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
   const resetCollectFlow = () => {
     setState({
       selectedResidue: null,
+      selectedVariant: null,
       weight: "",
+      pricePerKg: null,
+      minWeightKg: null,
+      estimatedValue: null,
       selectedCondition: "Limpo",
       selectedPackage: "Caixa de Papelão",
       selectedDate: null,
@@ -83,11 +91,37 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
     }));
   };
 
+  useEffect(() => {
+    if (state.selectedVariant && state.weight) {
+      const weightNum = parseFloat(state.weight);
+      if (!isNaN(weightNum)) {
+        const { pricePerKg, minWeightKg } = state.selectedVariant;
+        const estimatedValue =
+          weightNum >= minWeightKg ? weightNum * pricePerKg : 0;
+
+        setState((prev) => ({
+          ...prev,
+          pricePerKg,
+          minWeightKg,
+          estimatedValue: parseFloat(estimatedValue.toFixed(2)),
+        }));
+      }
+    } else {
+      setState((prev) => ({
+        ...prev,
+        pricePerKg: null,
+        minWeightKg: null,
+        estimatedValue: null,
+      }));
+    }
+  }, [state.selectedVariant, state.weight]);
+
   const getResiduePayload = () => {
     if (!state.selectedResidue) return null;
 
     return {
       name: state.selectedResidue.name,
+      variant: state.selectedVariant ? state.selectedVariant.label : null,
       weight: state.weight,
       condition: state.selectedCondition,
       pkg: state.selectedPackage,
@@ -103,7 +137,7 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
         ...state,
         setCollectFlowData,
         resetCollectFlow,
-        getResiduePayload,
+        getResiduePayload: () => getResiduePayload(),
         resetAddressData, // 👈 exposed here
       }}
     >

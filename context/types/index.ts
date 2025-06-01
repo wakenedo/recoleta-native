@@ -1,6 +1,9 @@
 import { User } from "@/app/Home";
 import { Address } from "@/components/custom/AddressInterface/types";
-import { Residue } from "@/components/custom/WasteManagementInterface/types";
+import {
+  Residue,
+  ResidueVariant,
+} from "@/components/custom/WasteManagementInterface/types";
 import { AxiosResponse } from "axios";
 
 interface AuthProps {
@@ -44,6 +47,10 @@ interface AuthProps {
 
 interface CollectFlowState {
   selectedResidue: Residue | null;
+  selectedVariant: ResidueVariant | null;
+  pricePerKg: number | null;
+  minWeightKg: number | null;
+  estimatedValue: number | null;
   weight: string;
   selectedCondition: string;
   selectedPackage: string;

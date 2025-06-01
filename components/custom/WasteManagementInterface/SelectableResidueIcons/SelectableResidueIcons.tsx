@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
-  Platform,
   View,
   Image as RNImage,
   TouchableOpacity,
@@ -10,27 +9,26 @@ import { Card } from "@/components/ui/card";
 import { Heading } from "@/components/ui/heading";
 import { Image } from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
-import { SelectableResidueIconsProps, ResidueVariant } from "../types";
+import { ResidueVariant } from "../types";
 import { RESIDUE_CARDS } from "../utils/enum";
 import { useAuth } from "@/context/AuthContext";
+import { useResidue } from "@/hooks/useResidue";
 
 import Animated, { FadeIn, FadeOut, Layout } from "react-native-reanimated";
 import { ArrowLeftIcon } from "lucide-react-native";
 
 type PriceTable = Record<string, { variants: ResidueVariant[] }>;
 
-const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
-  selectedResidue,
-  setSelectedResidue,
-  selectedVariant,
-  setSelectedVariant,
-}) => {
+const SelectableResidueIcons: React.FC = () => {
   const { authState } = useAuth();
+
+  const { selectedResidue, selectedVariant, setResidue, setVariant } =
+    useResidue();
+
   const [loading, setLoading] = useState(true);
   const [priceTable, setPriceTable] = useState<PriceTable>({});
-  const [variants, setVariants] = useState<ResidueVariant[]>([]);
 
-  // Preload das imagens
+  // Preload das imagens dos resíduos
   useEffect(() => {
     const preloadImages = async () => {
       try {
@@ -48,7 +46,7 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
     preloadImages();
   }, []);
 
-  // Busca tabela de preços
+  // Busca da tabela de preços
   useEffect(() => {
     const fetchPriceTable = async () => {
       try {
@@ -68,18 +66,20 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
     fetchPriceTable();
   }, [authState?.token]);
 
-  // Atualiza variantes quando muda o resíduo
-  useEffect(() => {
+  // Variantes calculadas via useMemo
+  const variants: ResidueVariant[] = useMemo(() => {
     if (selectedResidue?.apiName) {
-      const variantsForResidue =
-        priceTable[selectedResidue.apiName]?.variants || [];
-      setVariants(variantsForResidue);
-      setSelectedVariant?.(null);
-    } else {
-      setVariants([]);
-      setSelectedVariant?.(null);
+      return priceTable[selectedResidue.apiName]?.variants || [];
     }
-  }, [selectedResidue, priceTable, setSelectedVariant]);
+    return [];
+  }, [selectedResidue, priceTable]);
+
+  // Limpa variante ao mudar de resíduo
+  useEffect(() => {
+    if (selectedVariant && selectedResidue) {
+      setVariant(null);
+    }
+  }, [selectedResidue]);
 
   if (loading) {
     return (
@@ -94,18 +94,18 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
     <View>
       <Heading size="xs">Tipo de Resíduo</Heading>
 
-      {/* Tela de seleção de resíduos */}
+      {/* Seleção de resíduo */}
       {!selectedResidue && (
         <Animated.View
-          entering={FadeIn.duration(300)}
-          exiting={FadeOut.duration(300)}
+          entering={FadeIn.duration(200)}
+          exiting={FadeOut.duration(200)}
           layout={Layout.springify()}
           className="flex justify-between mt-2 w-full"
         >
           {RESIDUE_CARDS.map((card) => (
             <TouchableOpacity
               key={card.id}
-              onPress={() => setSelectedResidue(card)}
+              onPress={() => setResidue(card)}
               className="mb-2"
             >
               <Card className="flex flex-row items-center border w-full border-zinc-300">
@@ -128,15 +128,15 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
       {/* Tela de variantes do resíduo selecionado */}
       {selectedResidue && (
         <Animated.View
-          entering={FadeIn.duration(300)}
-          exiting={FadeOut.duration(300)}
+          entering={FadeIn.duration(200)}
+          exiting={FadeOut.duration(200)}
           layout={Layout.springify()}
           className="mt-2"
         >
           <TouchableOpacity
             onPress={() => {
-              setSelectedResidue(null as any);
-              setSelectedVariant?.(null);
+              setResidue(null);
+              setVariant(null);
             }}
             className="mb-4"
           >
@@ -171,7 +171,7 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
               {variants.map((variant, idx) => (
                 <TouchableOpacity
                   key={idx}
-                  onPress={() => setSelectedVariant?.(variant)}
+                  onPress={() => setVariant(variant)}
                   className={`p-3 rounded-md mb-2 border ${
                     selectedVariant?.label === variant.label
                       ? "border-blue-500 bg-blue-100"

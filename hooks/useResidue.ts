@@ -1,8 +1,12 @@
-import { Residue } from "@/components/custom/WasteManagementInterface/types";
+import {
+  Residue,
+  ResidueVariant,
+} from "@/components/custom/WasteManagementInterface/types";
 import { useCollectFlow } from "@/context/CollectFlowContext";
 
 export const useResidue = () => {
   const {
+    selectedVariant,
     selectedResidue,
     weight,
     selectedCondition,
@@ -10,25 +14,40 @@ export const useResidue = () => {
     selectedDate,
     selectedHour,
     photo,
+    pricePerKg,
+    minWeightKg,
+    estimatedValue,
     setCollectFlowData,
     getResiduePayload,
   } = useCollectFlow();
 
+  const setVariant = (variant: ResidueVariant | null) =>
+    setCollectFlowData({ selectedVariant: variant });
+
   const setResidue = (residue: Residue | null) =>
     setCollectFlowData({ selectedResidue: residue });
+
   const setWeight = (w: string) => setCollectFlowData({ weight: w });
+
   const setCondition = (condition: string) =>
     setCollectFlowData({ selectedCondition: condition });
+
   const setPackage = (pkg: string) =>
     setCollectFlowData({ selectedPackage: pkg });
+
   const setDate = (date: Date | null) =>
     setCollectFlowData({ selectedDate: date });
+
   const setHour = (hour: string | null) =>
     setCollectFlowData({ selectedHour: hour });
+
   const setPhoto = (p: string | null) => setCollectFlowData({ photo: p });
 
   const isResidueValid =
     !!selectedResidue?.name &&
+    !!selectedVariant?.label &&
+    !!selectedVariant?.pricePerKg &&
+    !!selectedVariant?.minWeightKg &&
     weight &&
     selectedCondition &&
     selectedPackage &&
@@ -36,6 +55,7 @@ export const useResidue = () => {
     selectedDate;
 
   return {
+    selectedVariant,
     selectedResidue,
     weight,
     selectedCondition,
@@ -43,6 +63,10 @@ export const useResidue = () => {
     selectedDate,
     selectedHour,
     photo,
+    pricePerKg,
+    minWeightKg,
+    estimatedValue,
+    setVariant,
     setResidue,
     setWeight,
     setCondition,
@@ -51,6 +75,6 @@ export const useResidue = () => {
     setHour,
     setPhoto,
     isResidueValid,
-    payloadResidue: getResiduePayload(), // 🔥 easy
+    payloadResidue: getResiduePayload(), // inclui pricePerKg, estimatedValue...
   };
 };

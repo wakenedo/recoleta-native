@@ -5,8 +5,14 @@ import { Card } from "@/components/ui/card";
 import { useCollectFlow } from "@/context/CollectFlowContext";
 
 const ChosenResidueCard = () => {
-  const { selectedResidue, weight, selectedCondition, selectedPackage } =
-    useCollectFlow();
+  const {
+    selectedResidue,
+    weight,
+    selectedCondition,
+    selectedPackage,
+    selectedVariant,
+    estimatedValue,
+  } = useCollectFlow();
 
   if (!selectedResidue) return null;
 
@@ -32,6 +38,16 @@ const ChosenResidueCard = () => {
               {selectedResidue.name.toUpperCase()}
             </Text>
           </View>
+          <Text className="text-xs">
+            <Text className="font-normal">Tipo:</Text>{" "}
+            <Text className="font-medium">{selectedVariant?.label}</Text>
+          </Text>
+          <Text className="text-xs">
+            <Text className="font-normal">Valor estimado:</Text>{" "}
+            <Text className="font-medium">
+              R$ {estimatedValue?.toFixed(2) || "0.00"}
+            </Text>
+          </Text>
           <Text className="text-xs">
             <Text className="font-normal">Condição:</Text>{" "}
             <Text className="font-medium">{selectedCondition}</Text>
