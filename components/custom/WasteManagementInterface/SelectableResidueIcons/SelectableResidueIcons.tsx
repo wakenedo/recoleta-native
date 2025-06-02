@@ -96,12 +96,11 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
               <Card className="flex flex-row items-center border w-full border-zinc-300">
                 <Image
                   source={{ uri: card.image }}
-                  width={10}
-                  height={10}
+                  size="xs"
                   alt={`Imagem de ${card.alt}`}
-                  className="h-8"
+                  className="h-12"
                 />
-                <View className="mt-5">
+                <View className="mx-auto">
                   <Text>{card.name}</Text>
                 </View>
               </Card>
@@ -138,12 +137,11 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
           <Card className="flex flex-row items-center border border-blue-500 w-full">
             <Image
               source={{ uri: selectedResidue.image }}
-              width={10}
-              height={10}
+              size="xs"
               alt={`Imagem de ${selectedResidue.alt}`}
-              className="h-8"
+              className="h-10"
             />
-            <View className="mt-5">
+            <View className=" mx-auto">
               <Text className="font-bold text-blue-500">
                 {selectedResidue.name}
               </Text>
