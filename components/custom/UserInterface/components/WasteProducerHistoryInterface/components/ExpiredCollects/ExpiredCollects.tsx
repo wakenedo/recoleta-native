@@ -23,17 +23,17 @@ const ExpiredCollects: FC<ExpiredCollectsProps> = ({
   loading,
 }) => {
   const [expanded, setExpanded] = useState(false);
-  const animatedHeight = useRef(new Animated.Value(0)).current;
+  const animatedOpacity = useRef(new Animated.Value(0)).current;
 
   const toggleExpanded = () => {
     setExpanded((prev) => !prev);
   };
 
   useEffect(() => {
-    Animated.timing(animatedHeight, {
+    Animated.timing(animatedOpacity, {
       toValue: expanded ? 1 : 0,
       duration: 200,
-      useNativeDriver: false,
+      useNativeDriver: true,
     }).start();
   }, [expanded]);
 
@@ -92,8 +92,8 @@ const ExpiredCollects: FC<ExpiredCollectsProps> = ({
             keyExtractor={(item) => item._id.toString()}
             getItemLayout={getItemLayout}
             showsVerticalScrollIndicator={false}
+            scrollEnabled={false} // Let parent scroll instead
             contentContainerStyle={{ paddingBottom: 10 }}
-            className="flex-1"
           />
         )}
       </Animated.View>

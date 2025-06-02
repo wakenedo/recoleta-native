@@ -9,24 +9,29 @@ import { Card } from "@/components/ui/card";
 import { Heading } from "@/components/ui/heading";
 import { Image } from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
-import { ResidueVariant } from "../types";
+import { Residue, ResidueVariant } from "../types";
 import { RESIDUE_CARDS } from "../utils/enum";
 import { useAuth } from "@/context/AuthContext";
-import { useResidue } from "@/hooks/useResidue";
 
 import Animated, { FadeIn, FadeOut, Layout } from "react-native-reanimated";
 import { ArrowLeftIcon } from "lucide-react-native";
+import { usePriceTable } from "@/hooks/usePriceTable";
 
-type PriceTable = Record<string, { variants: ResidueVariant[] }>;
+type SelectableResidueIconsProps = {
+  selectedResidue: Residue | null;
+  setResidue: (residue: Residue | null) => void;
+  selectedVariant: ResidueVariant | null;
+  setVariant: (variant: ResidueVariant | null) => void;
+};
 
-const SelectableResidueIcons: React.FC = () => {
+const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
+  selectedResidue,
+  setResidue,
+  selectedVariant,
+  setVariant,
+}) => {
   const { authState } = useAuth();
-
-  const { selectedResidue, selectedVariant, setResidue, setVariant } =
-    useResidue();
-
-  const [loading, setLoading] = useState(true);
-  const [priceTable, setPriceTable] = useState<PriceTable>({});
+  const { loading, priceTable } = usePriceTable(authState?.token ?? "");
 
   // Preload das imagens dos resíduos
   useEffect(() => {
@@ -38,8 +43,6 @@ const SelectableResidueIcons: React.FC = () => {
         await Promise.all(promises);
       } catch (err) {
         console.warn("[ResidueIcons] Error preloading images:", err);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -47,29 +50,11 @@ const SelectableResidueIcons: React.FC = () => {
   }, []);
 
   // Busca da tabela de preços
-  useEffect(() => {
-    const fetchPriceTable = async () => {
-      try {
-        const res = await fetch(
-          "http://192.168.96.2:5000/api/price-tables/sp",
-          {
-            headers: { Authorization: `Bearer ${authState?.token}` },
-          }
-        );
-        const json = await res.json();
-        setPriceTable(json);
-      } catch (err) {
-        console.warn("[ResidueIcons] Erro ao buscar tabela de preços:", err);
-      }
-    };
-
-    fetchPriceTable();
-  }, [authState?.token]);
 
   // Variantes calculadas via useMemo
   const variants: ResidueVariant[] = useMemo(() => {
     if (selectedResidue?.apiName) {
-      return priceTable[selectedResidue.apiName]?.variants || [];
+      return priceTable?.[selectedResidue.apiName]?.variants || [];
     }
     return [];
   }, [selectedResidue, priceTable]);

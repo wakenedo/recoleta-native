@@ -15,6 +15,7 @@ import { useResidue } from "@/hooks/useResidue";
 import { ResidueVariant } from "./types";
 import { ResidueVariantSelector } from "./ResidueVariantSelector";
 import { useAuth } from "@/context/AuthContext";
+import { usePriceTable } from "@/hooks/usePriceTable";
 
 interface WasteManagementInterfaceProps {}
 
@@ -23,6 +24,7 @@ export const WasteManagementInterface: React.FC<
 > = ({}) => {
   const {
     selectedResidue,
+    selectedVariant,
     weight,
     selectedCondition,
     selectedPackage,
@@ -30,6 +32,7 @@ export const WasteManagementInterface: React.FC<
     selectedHour,
     photo,
     setResidue,
+    setVariant,
     setWeight,
     setCondition,
     setPackage,
@@ -39,38 +42,13 @@ export const WasteManagementInterface: React.FC<
   } = useResidue();
   const { authState } = useAuth();
 
-  const [selectedVariant, setSelectedVariant] = useState<ResidueVariant | null>(
-    null
-  );
-  const [priceTable, setPriceTable] = useState<
-    Record<string, ResidueVariant[]>
-  >({});
-
-  useEffect(() => {
-    const fetchPriceTable = async () => {
-      try {
-        const res = await fetch(
-          "http://192.168.96.2:5000/api/price-tables/sp",
-          {
-            headers: { Authorization: `Bearer ${authState?.token}` },
-          }
-        );
-        const json = await res.json();
-        setPriceTable(json);
-      } catch (err) {
-        console.warn(
-          "[WasteManagementInterface] Erro ao buscar tabela de preços:",
-          err
-        );
-      }
-    };
-
-    fetchPriceTable();
-  }, []);
+  const { priceTable } = usePriceTable(authState?.token ?? "");
 
   const variants: ResidueVariant[] =
-    selectedResidue && selectedResidue.apiName
-      ? priceTable[selectedResidue.apiName] || []
+    selectedResidue &&
+    selectedResidue.apiName &&
+    Array.isArray(priceTable?.[selectedResidue.apiName])
+      ? (priceTable[selectedResidue.apiName] as unknown as ResidueVariant[])
       : [];
 
   return (
@@ -85,15 +63,15 @@ export const WasteManagementInterface: React.FC<
       <FormControl className="space-y-6">
         <SelectableResidueIcons
           selectedResidue={selectedResidue}
-          setSelectedResidue={setResidue}
+          setResidue={setResidue}
           selectedVariant={selectedVariant}
-          setSelectedVariant={setSelectedVariant}
+          setVariant={setVariant}
         />
         {variants.length > 0 && (
           <ResidueVariantSelector
             variants={variants}
             selectedVariant={selectedVariant}
-            setSelectedVariant={setSelectedVariant}
+            setSelectedVariant={setVariant}
           />
         )}
         <QuantityInput weight={weight} setWeight={setWeight} />
