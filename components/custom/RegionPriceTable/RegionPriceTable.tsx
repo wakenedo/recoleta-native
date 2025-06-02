@@ -1,18 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { usePriceTable } from "@/hooks/usePriceTable";
 import { View, Text, ActivityIndicator, ScrollView } from "react-native";
-
-type Variant = {
-  label: string;
-  pricePerKg: number;
-  minWeightKg: number;
-  commission30Percent: number;
-};
-
-type PriceTable = {
-  [category: string]: {
-    variants: Variant[];
-  };
-};
 
 type RegionPriceTableProps = {
   token: string | undefined | null;
@@ -23,39 +11,8 @@ export const RegionPriceTable: React.FC<RegionPriceTableProps> = ({
   token,
   region,
 }) => {
-  const [data, setData] = useState<PriceTable | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const { error, loading, priceTable } = usePriceTable(token ?? "", region);
 
-  useEffect(() => {
-    const fetchPriceTable = async () => {
-      try {
-        const res = await fetch(
-          `http://192.168.96.2:5000/api/price-tables/${region}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        console.log("Fetching price table for region:", region);
-        console.log("Response status:", res.status);
-        if (!res.ok) {
-          throw new Error("Erro ao carregar tabela de preço.");
-        }
-        const json = await res.json();
-        setData(json);
-      } catch (err: any) {
-        setError(err.message || "Erro desconhecido");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (token) fetchPriceTable();
-  }, [token, region]);
-
-  console.log("Price table data:", data);
   if (loading) {
     return (
       <View className="items-center justify-center h-48">
@@ -65,11 +22,13 @@ export const RegionPriceTable: React.FC<RegionPriceTableProps> = ({
     );
   }
 
-  if (error || !data) {
+  if (error || !priceTable) {
     return (
       <View className="p-4">
         <Text className="text-red-500 font-semibold">
-          {error || "Não foi possível carregar os dados."}
+          {error
+            ? `Erro: ${error.message}`
+            : "Tabela de preços não encontrada."}
         </Text>
       </View>
     );
@@ -77,7 +36,7 @@ export const RegionPriceTable: React.FC<RegionPriceTableProps> = ({
 
   return (
     <ScrollView className="p-4">
-      {Object.entries(data).map(([category, { variants }]) => (
+      {Object.entries(priceTable).map(([category, { variants }]) => (
         <View key={category} className="mb-6">
           <Text className="text-lg font-bold mb-2">{category}</Text>
           {variants.map((v, idx) => (

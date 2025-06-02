@@ -121,6 +121,7 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
 
     return {
       name: state.selectedResidue.name,
+      apiName: state.selectedResidue.apiName,
       variant: state.selectedVariant ? state.selectedVariant.label : null,
       weight: state.weight,
       condition: state.selectedCondition,

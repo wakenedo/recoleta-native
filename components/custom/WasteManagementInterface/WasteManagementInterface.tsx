@@ -42,7 +42,7 @@ export const WasteManagementInterface: React.FC<
   } = useResidue();
   const { authState } = useAuth();
 
-  const { priceTable } = usePriceTable(authState?.token ?? "");
+  const { priceTable } = usePriceTable(authState?.token ?? "", "sp");
 
   const variants: ResidueVariant[] =
     selectedResidue &&

@@ -31,7 +31,7 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
   setVariant,
 }) => {
   const { authState } = useAuth();
-  const { loading, priceTable } = usePriceTable(authState?.token ?? "");
+  const { loading, priceTable } = usePriceTable(authState?.token ?? "", "sp");
 
   // Preload das imagens dos resíduos
   useEffect(() => {

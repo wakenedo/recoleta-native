@@ -18,7 +18,7 @@ type PriceTable = {
 
 const { API_URL } = Constants.expoConfig?.extra || {};
 
-export function usePriceTable(token?: string | null) {
+export function usePriceTable(token?: string | null, region?: string) {
   const [priceTable, setPriceTable] = useState<PriceTable | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -29,12 +29,9 @@ export function usePriceTable(token?: string | null) {
     const fetchPriceTable = async () => {
       setLoading(true);
       try {
-        const res = await fetch(
-          "http://192.168.96.2:5000/api/price-tables/sp",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const res = await fetch(`${API_URL}/price-tables/${region}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         if (!res.ok) {
           throw new Error(`HTTP ${res.status}: ${res.statusText}`);
