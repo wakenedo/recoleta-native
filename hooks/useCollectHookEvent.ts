@@ -107,6 +107,8 @@ export const useCollectEvent = () => {
       console.log("✅ Created residue:", finalResidueId);
 
       const formattedResidue = residuePayload?.name || "Coleta";
+      const formattedSingleResidueVariant =
+        residuePayload?.variant || "Sem variante";
       const shortDate = newDate.toLocaleDateString("pt-BR");
       const shortTime = newDate.toLocaleTimeString("pt-BR", {
         hour: "2-digit",
@@ -114,7 +116,7 @@ export const useCollectEvent = () => {
       });
       const userName = user?.firstName?.split(" ")[0] || "Usuário";
 
-      const dynamicEventName = `Coleta de ${formattedResidue} - ${userName}`;
+      const dynamicEventName = `Coleta de ${formattedResidue}: ${formattedSingleResidueVariant} - ${userName}`;
       const dynamicDescription = `Coleta agendada por ${
         userName || "usuário"
       } para ${street}, ${number} - ${neighborhood}, ${city}, ${state} em ${shortDate} às ${shortTime}`;

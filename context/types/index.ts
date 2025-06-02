@@ -83,7 +83,7 @@ interface CollectFlowState {
     condition: string;
     pkg: string;
     photo: string | null;
-    variant: ResidueVariant | null;
+    variant: string | null;
   } | null;
 }
 
