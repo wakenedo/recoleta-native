@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { CollectFlowState } from "./types";
+import { CollectFlowState, ResiduePayload, ResidueWithDetails } from "./types";
 
 const CollectFlowContext = createContext<CollectFlowState | undefined>(
   undefined
@@ -14,9 +14,12 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
       | "setCollectFlowData"
       | "resetCollectFlow"
       | "getResiduePayload"
+      | "getResiduesPayloadArray"
       | "resetAddressData"
     >
   >({
+    selectedResidues: [], // Initialize selectedResidues as an empty array
+    residues: [], // Initialize residues as null
     selectedResidue: null,
     selectedVariant: null,
     weight: "",
@@ -49,6 +52,8 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const resetCollectFlow = () => {
     setState({
+      residues: [],
+      selectedResidues: [], // Initialize selectedResidues as an empty array
       selectedResidue: null,
       selectedVariant: null,
       weight: "",
@@ -64,6 +69,8 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
       status: "",
       isSigned: false,
       signedBy: null,
+      latitude: undefined, // or null
+      longitude: undefined,
 
       city: "",
       neighborhood: "",
@@ -130,6 +137,20 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
     };
   };
 
+  const getResiduesPayloadArray = (): ResiduePayload[] => {
+    return (
+      state.selectedResidues?.map((r) => ({
+        name: r.name,
+        apiName: r.apiName,
+        variant: r.variant?.label || null,
+        weight: r.weight,
+        condition: r.condition, // ensure these fields exist on ResidueWithDetails
+        pkg: r.pkg,
+        photo: r.photo || null,
+      })) ?? []
+    );
+  };
+
   console.log("CollectFlowProvider state:", state);
 
   return (
@@ -139,6 +160,7 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
         setCollectFlowData,
         resetCollectFlow,
         getResiduePayload: () => getResiduePayload(),
+        getResiduesPayloadArray: () => getResiduesPayloadArray(),
         resetAddressData, // 👈 exposed here
       }}
     >

@@ -45,8 +45,30 @@ interface AuthProps {
   >;
 }
 
+type ResidueWithDetails = {
+  name: string;
+  apiName: string;
+  variant: ResidueVariant | null;
+  weight: string;
+  condition: string;
+  pkg: string;
+  photo: string | null;
+};
+
+type ResiduePayload = {
+  name: string;
+  apiName: string;
+  variant: string | null; // variant label
+  weight: string;
+  condition: string;
+  pkg: string;
+  photo: string | null;
+};
+
 interface CollectFlowState {
+  residues?: Residue[];
   selectedResidue: Residue | null;
+  selectedResidues: ResidueWithDetails[] | null;
   selectedVariant: ResidueVariant | null;
   pricePerKg: number | null;
   minWeightKg: number | null;
@@ -77,14 +99,8 @@ interface CollectFlowState {
   setCollectFlowData: (data: Partial<CollectFlowState>) => void;
   resetCollectFlow: () => void;
   resetAddressData: () => void;
-  getResiduePayload: () => {
-    name: string;
-    weight: string;
-    condition: string;
-    pkg: string;
-    photo: string | null;
-    variant: string | null;
-  } | null;
+  getResiduePayload: () => ResiduePayload | null;
+  getResiduesPayloadArray: () => ResiduePayload[];
 }
 
 interface WasteProducerContextProps {
@@ -108,5 +124,7 @@ export {
   CollectFlowState,
   WasteProducerContextProps,
   GoogleProfile,
+  ResidueWithDetails,
+  ResiduePayload,
   // Add other types here as needed
 };

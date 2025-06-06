@@ -6,6 +6,7 @@ import { useCollectFlow } from "@/context/CollectFlowContext";
 
 export const useResidue = () => {
   const {
+    residues,
     selectedVariant,
     selectedResidue,
     weight,
@@ -19,6 +20,7 @@ export const useResidue = () => {
     estimatedValue,
     setCollectFlowData,
     getResiduePayload,
+    getResiduesPayloadArray,
   } = useCollectFlow();
 
   const setVariant = (variant: ResidueVariant | null) =>
@@ -54,6 +56,10 @@ export const useResidue = () => {
     selectedHour &&
     selectedDate;
 
+  const setResidues = (r: Residue[]) => setCollectFlowData({ residues: r });
+
+  const getResiduesAsArray = (): Residue[] => residues ?? [];
+
   return {
     selectedVariant,
     selectedResidue,
@@ -66,6 +72,7 @@ export const useResidue = () => {
     pricePerKg,
     minWeightKg,
     estimatedValue,
+    setResidues, // função para definir os resíduos
     setVariant,
     setResidue,
     setWeight,
@@ -76,5 +83,7 @@ export const useResidue = () => {
     setPhoto,
     isResidueValid,
     payloadResidue: getResiduePayload(), // inclui pricePerKg, estimatedValue...
+    payloadResiduesArray: getResiduesPayloadArray(),
+    getResiduesAsArray, // função para obter os resíduos como array
   };
 };

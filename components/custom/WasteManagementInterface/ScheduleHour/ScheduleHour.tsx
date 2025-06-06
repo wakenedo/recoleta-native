@@ -102,9 +102,9 @@ const ScheduleHour: FC<ScheduleHourProps> = ({
 
   return (
     <View className={`${Platform.OS !== "windows" ? "mt-6" : ""}`}>
-      <Heading size="xs" className="mb-2">
+      <Text className="text-md font-bold mb-2  text-orange-600">
         Hora Preferida para Coleta
-      </Heading>
+      </Text>
 
       <TouchableOpacity
         className="flex-row items-center bg-white"

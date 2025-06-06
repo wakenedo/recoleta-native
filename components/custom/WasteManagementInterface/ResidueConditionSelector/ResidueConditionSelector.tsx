@@ -1,4 +1,4 @@
-import { Heading } from "@/components/ui/heading";
+import React from "react";
 import { CircleIcon } from "@/components/ui/icon";
 import {
   Radio,
@@ -8,8 +8,7 @@ import {
   RadioLabel,
 } from "@/components/ui/radio";
 import { VStack } from "@/components/ui/vstack";
-import React from "react";
-import { Platform, View } from "react-native";
+import { Text, View } from "react-native";
 import { ResidueConditionSelectorProps } from "../types";
 import { RESIDUE_CONDITIONS } from "../utils/enum";
 
@@ -18,8 +17,10 @@ const ResidueConditionSelector: React.FC<ResidueConditionSelectorProps> = ({
   setSelectedCondition,
 }) => {
   return (
-    <View className={`${Platform.OS != "windows" ? "mt-6" : ""}`}>
-      <Heading size="xs">Condição do Resído</Heading>
+    <View className="mt-4">
+      <Text className="text-md font-bold text-orange-600">
+        Condição do Resído
+      </Text>
       <RadioGroup
         className="mt-2"
         value={selectedCondition}
@@ -28,7 +29,7 @@ const ResidueConditionSelector: React.FC<ResidueConditionSelectorProps> = ({
         <VStack space="sm">
           {RESIDUE_CONDITIONS.map((condition) => (
             <Radio key={condition} value={condition}>
-              <RadioIndicator className="border-zinc-300">
+              <RadioIndicator className="border-orange-300">
                 <RadioIcon as={CircleIcon} />
               </RadioIndicator>
               <RadioLabel>{condition}</RadioLabel>

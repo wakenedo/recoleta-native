@@ -11,6 +11,7 @@ type PackageAvailableSelectorProps = {
 type QuantityInputProps = {
   weight: string;
   setWeight: (value: string) => void;
+  inputBackgroundColor?: string; // opcional, para personalização
 };
 
 type ResidueVariant = {
@@ -30,18 +31,32 @@ type Residue = {
   apiName: string;
   image: string;
   alt: string;
+  photo?: string | null; // <-- opcional, pode ser preenchido pelo usuário
   weight?: number;
+  condition?: string;
+  pkg?: string;
   _id?: string;
 
   // Campos calculados (opcionais, preenchidos pelo backend)
+  variant?: ResidueVariant | null; // <-- opcional, pode ser preenchido pelo usuário
   variants?: ResidueVariant[]; // <-- novo
 };
 
 type SelectableResidueIconsProps = {
+  photo: string | null;
   selectedResidue: Residue | null;
-  setSelectedResidue: (residue: Residue) => void;
-  selectedVariant?: ResidueVariant | null;
-  setSelectedVariant?: (variant: ResidueVariant | null) => void;
+  weight: string;
+  selectedCondition: string;
+  selectedPackage: string;
+  selectedVariant: ResidueVariant | null;
+  setPhoto: (photo: string | null) => void;
+  setPackage: (pkg: string) => void;
+  setCondition: (condition: string) => void;
+  setWeight: (w: string) => void;
+  setResidue: (residue: Residue | null) => void;
+  setVariant: (variant: ResidueVariant | null) => void;
+  getResiduesAsArray: () => Residue[];
+  setResidues: (residues: Residue[]) => void;
 };
 
 type AvailableDateProps = {
@@ -60,6 +75,34 @@ type TakeResiduePhotoProps = {
   setPhoto: (photo: string) => void;
 };
 
+type SavedResiduesSectionProps = {
+  residues: Residue[] | undefined;
+  handleRemove: (name: string) => void;
+  calculatePrice: (variant: ResidueVariant | null, weight: string) => string;
+};
+
+type ResidueAndVariantsSelectorProps = {
+  photo: string | null;
+  variants: ResidueVariant[];
+  weight: string;
+  selectedCondition: string;
+  selectedPackage: string;
+  selectedVariant: ResidueVariant | null;
+  selectedResidue: Residue | null;
+  setPackage: (pkg: string) => void;
+  setCondition: (condition: string) => void;
+  setResidue: (residue: Residue | null) => void;
+  setResidues?: (residues: Residue[]) => void;
+  setWeight: (w: string) => void;
+  setPhoto: (photo: string | null) => void;
+  setVariant: (variant: ResidueVariant | null) => void;
+};
+
+type WasteManagementHeadingSectionProps = {
+  title: string;
+  description: string;
+};
+
 export {
   TakeResiduePhotoProps,
   ScheduleHourProps,
@@ -71,4 +114,7 @@ export {
   SelectableResidueIconsProps,
   ResidueVariant,
   ResidueVariantsResponse,
+  SavedResiduesSectionProps,
+  ResidueAndVariantsSelectorProps,
+  WasteManagementHeadingSectionProps,
 };

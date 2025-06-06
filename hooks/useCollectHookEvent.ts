@@ -20,6 +20,7 @@ export const useCollectEvent = () => {
     postalCode,
     previousRegisteredAddressSelectedId,
     getResiduePayload,
+    getResiduesPayloadArray,
     resetCollectFlow,
   } = useCollectFlow();
 
@@ -39,7 +40,9 @@ export const useCollectEvent = () => {
       }
 
       const residuePayload = getResiduePayload?.();
-      if (!residuePayload) throw new Error("Resíduo incompleto");
+      const residuesPayloadArray = getResiduesPayloadArray?.();
+      if (!residuePayload && !residuesPayloadArray)
+        throw new Error("Resíduo incompleto");
 
       const newDate = new Date(selectedDate || "");
       const [hour, minute] = (selectedHour || "00:00").split(":").map(Number);
@@ -95,20 +98,10 @@ export const useCollectEvent = () => {
         }
       }
 
-      // 🧪 Create residue
-      const createResidueRes = await axios.post(
-        `${API_URL}/residues`,
-        residuePayload,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      const finalResidueId = createResidueRes.data._id;
-      console.log("✅ Created residue:", finalResidueId);
+      let residueIds: string[] = [];
+      let dynamicEventName = "";
+      let dynamicDescription = "";
 
-      const formattedResidue = residuePayload?.name || "Coleta";
-      const formattedSingleResidueVariant =
-        residuePayload?.variant || "Sem variante";
       const shortDate = newDate.toLocaleDateString("pt-BR");
       const shortTime = newDate.toLocaleTimeString("pt-BR", {
         hour: "2-digit",
@@ -116,16 +109,39 @@ export const useCollectEvent = () => {
       });
       const userName = user?.firstName?.split(" ")[0] || "Usuário";
 
-      const dynamicEventName = `Coleta de ${formattedResidue}: ${formattedSingleResidueVariant} - ${userName}`;
-      const dynamicDescription = `Coleta agendada por ${
-        userName || "usuário"
-      } para ${street}, ${number} - ${neighborhood}, ${city}, ${state} em ${shortDate} às ${shortTime}`;
+      if (residuesPayloadArray && residuesPayloadArray.length > 0) {
+        // 🔁 Multiple residues (batch)
+        const batchRes = await axios.post(
+          `${API_URL}/residues/batch`,
+          { residues: residuesPayloadArray },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        residueIds = batchRes.data.map((r: any) => r._id);
+        const residueNames = residuesPayloadArray.map((r) => r.name).join(", ");
+        dynamicEventName = `Coleta de ${residueNames} - ${userName}`;
+      } else if (residuePayload) {
+        // 🧪 Single residue
+        const createResidueRes = await axios.post(
+          `${API_URL}/residues`,
+          residuePayload,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        residueIds = [createResidueRes.data._id];
+        const formattedResidue = residuePayload?.name || "Coleta";
+        const formattedSingleResidueVariant =
+          residuePayload?.variant || "Sem variante";
+        dynamicEventName = `Coleta de ${formattedResidue}: ${formattedSingleResidueVariant} - ${userName}`;
+      }
+
+      dynamicDescription = `Coleta agendada por ${userName} para ${street}, ${number} - ${neighborhood}, ${city}, ${state} em ${shortDate} às ${shortTime}`;
 
       // 🗓 Create collect event
       const res = await axios.post(
         `${API_URL}/collect-event/create`,
         {
-          residueIds: [finalResidueId],
+          residueIds,
           addressId,
           dateTime: isoDateTime,
           eventName: dynamicEventName,
@@ -163,8 +179,10 @@ export const useCollectEvent = () => {
     postalCode,
     previousRegisteredAddressSelectedId,
     getResiduePayload,
+    getResiduesPayloadArray,
     resetCollectFlow,
     API_URL,
+    user,
   ]);
 
   return { handleSubmit, loading };

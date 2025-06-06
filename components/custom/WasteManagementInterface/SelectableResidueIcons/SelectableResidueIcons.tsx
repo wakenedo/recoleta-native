@@ -3,34 +3,36 @@ import {
   ActivityIndicator,
   View,
   Image as RNImage,
-  TouchableOpacity,
+  ScrollView,
 } from "react-native";
-import { Card } from "@/components/ui/card";
-import { Heading } from "@/components/ui/heading";
-import { Image } from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
-import { Residue, ResidueVariant } from "../types";
+import { ResidueVariant, SelectableResidueIconsProps } from "../types";
 import { RESIDUE_CARDS } from "../utils/enum";
 import { useAuth } from "@/context/AuthContext";
-
-import Animated, { FadeIn, FadeOut, Layout } from "react-native-reanimated";
-import { ArrowLeftIcon } from "lucide-react-native";
 import { usePriceTable } from "@/hooks/usePriceTable";
-
-type SelectableResidueIconsProps = {
-  selectedResidue: Residue | null;
-  setResidue: (residue: Residue | null) => void;
-  selectedVariant: ResidueVariant | null;
-  setVariant: (variant: ResidueVariant | null) => void;
-};
+import { InterfaceSwitch } from "../../InterfaceSwitch";
+import { useCollectFlow } from "@/context/CollectFlowContext";
+import { SingleResidueSelector } from "./SingleResidueSelector";
+import { MultipleResidueSelector } from "./MultipleResidueSelector";
 
 const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
+  photo,
+  setPhoto,
   selectedResidue,
+  weight,
+  setWeight,
   setResidue,
   selectedVariant,
+  selectedCondition,
+  selectedPackage,
+  setCondition,
+  setPackage,
   setVariant,
+  setResidues,
 }) => {
+  const [toggleDefault, setToggleDefault] = useState(false);
   const { authState } = useAuth();
+  const { resetCollectFlow } = useCollectFlow();
   const { loading, priceTable } = usePriceTable(authState?.token ?? "", "sp");
 
   // Preload das imagens dos resíduos
@@ -66,6 +68,11 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
     }
   }, [selectedResidue]);
 
+  const handleSwitchChange = (isToggled: boolean) => {
+    setToggleDefault(isToggled); // Update state based on user action
+    resetCollectFlow();
+  };
+
   if (loading) {
     return (
       <View className="items-center justify-center h-48">
@@ -77,100 +84,49 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
 
   return (
     <View>
-      <Heading size="xs">Tipo de Resíduo</Heading>
-
-      {/* Seleção de resíduo */}
-      {!selectedResidue && (
-        <Animated.View
-          entering={FadeIn.duration(200)}
-          exiting={FadeOut.duration(200)}
-          layout={Layout.springify()}
-          className="flex justify-between mt-2 w-full"
-        >
-          {RESIDUE_CARDS.map((card) => (
-            <TouchableOpacity
-              key={card.id}
-              onPress={() => setResidue(card)}
-              className="mb-2"
-            >
-              <Card className="flex flex-row items-center border w-full border-zinc-300">
-                <Image
-                  source={{ uri: card.image }}
-                  size="xs"
-                  alt={`Imagem de ${card.alt}`}
-                  className="h-12"
-                />
-                <View className="mx-auto">
-                  <Text>{card.name}</Text>
-                </View>
-              </Card>
-            </TouchableOpacity>
-          ))}
-        </Animated.View>
-      )}
-
-      {/* Tela de variantes do resíduo selecionado */}
-      {selectedResidue && (
-        <Animated.View
-          entering={FadeIn.duration(200)}
-          exiting={FadeOut.duration(200)}
-          layout={Layout.springify()}
-          className="mt-2"
-        >
-          <TouchableOpacity
-            onPress={() => {
-              setResidue(null);
-              setVariant(null);
-            }}
-            className="mb-4"
-          >
-            <View className="flex flex-row items-center">
-              <View className="mr-1">
-                <ArrowLeftIcon size={16} color="#4B9CD3" className="mb-2" />
-              </View>
-              <Text className="text-blue-500 underline items-center">
-                Voltar a seleção de resíduo
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          <Card className="flex flex-row items-center border border-blue-500 w-full">
-            <Image
-              source={{ uri: selectedResidue.image }}
-              size="xs"
-              alt={`Imagem de ${selectedResidue.alt}`}
-              className="h-10"
+      <InterfaceSwitch
+        leftLabel="Resíduo Único"
+        rightLabel="Multiplos Resíduos"
+        onToggleChange={handleSwitchChange}
+        value={toggleDefault}
+        leftComponent={
+          <SingleResidueSelector
+            photo={photo}
+            weight={weight}
+            variants={variants}
+            selectedResidue={selectedResidue}
+            selectedVariant={selectedVariant}
+            selectedCondition={selectedCondition}
+            selectedPackage={selectedPackage}
+            setPhoto={setPhoto}
+            setVariant={setVariant}
+            setResidue={setResidue}
+            setWeight={setWeight}
+            setCondition={setCondition}
+            setPackage={setPackage}
+          />
+        }
+        rightComponent={
+          <ScrollView>
+            <MultipleResidueSelector
+              photo={photo}
+              setPhoto={setPhoto}
+              weight={weight}
+              variants={variants}
+              selectedResidue={selectedResidue}
+              selectedVariant={selectedVariant}
+              selectedCondition={selectedCondition}
+              selectedPackage={selectedPackage}
+              setVariant={setVariant}
+              setResidue={setResidue}
+              setResidues={setResidues}
+              setWeight={setWeight}
+              setCondition={setCondition}
+              setPackage={setPackage}
             />
-            <View className=" mx-auto">
-              <Text className="font-bold text-blue-500">
-                {selectedResidue.name}
-              </Text>
-            </View>
-          </Card>
-
-          {variants.length > 0 && (
-            <View className="mt-4 pl-2">
-              <Text className="mb-2 font-semibold">Tipo específico</Text>
-              {variants.map((variant, idx) => (
-                <TouchableOpacity
-                  key={idx}
-                  onPress={() => setVariant(variant)}
-                  className={`p-3 rounded-md mb-2 border ${
-                    selectedVariant?.label === variant.label
-                      ? "border-blue-500 bg-blue-100"
-                      : "border-gray-300"
-                  }`}
-                >
-                  <Text className="text-base font-medium">{variant.label}</Text>
-                  <Text className="text-xs text-gray-500">
-                    R$ {variant.pricePerKg}/kg • Mín: {variant.minWeightKg}kg
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          )}
-        </Animated.View>
-      )}
+          </ScrollView>
+        }
+      />
     </View>
   );
 };
