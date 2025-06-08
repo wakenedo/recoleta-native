@@ -30,7 +30,7 @@ const SavedResiduesSection: React.FC<SavedResiduesSectionProps> = ({
             {residues?.map((r) => (
               <Card
                 className="shadow rounded-none border-l border-orange-500"
-                key={r.apiName}
+                key={r.variant?.label}
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
@@ -101,7 +101,7 @@ const SavedResiduesSection: React.FC<SavedResiduesSectionProps> = ({
                 </View>
                 <TouchableOpacity
                   className="absolute top-1 right-1"
-                  onPress={() => handleRemove(r.name)}
+                  onPress={() => handleRemove(r.variant?.label)}
                 >
                   <XIcon size={18} color="red" style={{ marginLeft: 8 }} />
                 </TouchableOpacity>

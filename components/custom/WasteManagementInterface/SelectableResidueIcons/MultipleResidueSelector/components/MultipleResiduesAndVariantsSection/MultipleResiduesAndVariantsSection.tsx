@@ -5,33 +5,13 @@ import { PackageAvailableSelector } from "@/components/custom/WasteManagementInt
 import { QuantityInput } from "@/components/custom/WasteManagementInterface/QuantityInput";
 import { ResidueConditionSelector } from "@/components/custom/WasteManagementInterface/ResidueConditionSelector";
 import { TakeResiduePhoto } from "@/components/custom/WasteManagementInterface/TakeResiduePhoto";
-import {
-  Residue,
-  ResidueVariant,
-} from "@/components/custom/WasteManagementInterface/types";
+import { ResidueAndVariantsSelectorProps } from "@/components/custom/WasteManagementInterface/types";
 import { RESIDUE_CARDS } from "@/components/custom/WasteManagementInterface/utils/enum";
 import { Card } from "@/components/ui/card";
 import { Image } from "@/components/ui/image";
 
-type MultipleResiduesAndVariantsSectionProps = {
-  handleSave: () => void;
-  selectedResidue: Residue | null;
-  variants: ResidueVariant[];
-  photo: string | null;
-  weight: string;
-  selectedCondition: string;
-  selectedPackage: string;
-  selectedVariant: ResidueVariant | null;
-  setPhoto: (photo: string | null) => void;
-  setResidue: (residue: Residue | null) => void;
-  setPackage: (pkg: string) => void;
-  setCondition: (condition: string) => void;
-  setVariant: (variant: ResidueVariant | null) => void;
-  setWeight: (w: string) => void;
-};
-
 const MultipleResiduesAndVariantsSection: React.FC<
-  MultipleResiduesAndVariantsSectionProps
+  ResidueAndVariantsSelectorProps
 > = ({
   handleSave,
   selectedResidue,

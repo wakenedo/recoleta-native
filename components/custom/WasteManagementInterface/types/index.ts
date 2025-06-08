@@ -77,7 +77,7 @@ type TakeResiduePhotoProps = {
 
 type SavedResiduesSectionProps = {
   residues: Residue[] | undefined;
-  handleRemove: (name: string) => void;
+  handleRemove: (variantLabel: string | undefined) => void;
   calculatePrice: (variant: ResidueVariant | null, weight: string) => string;
 };
 
@@ -93,6 +93,7 @@ type ResidueAndVariantsSelectorProps = {
   setCondition: (condition: string) => void;
   setResidue: (residue: Residue | null) => void;
   setResidues?: (residues: Residue[]) => void;
+  handleSave?: () => void;
   setWeight: (w: string) => void;
   setPhoto: (photo: string | null) => void;
   setVariant: (variant: ResidueVariant | null) => void;

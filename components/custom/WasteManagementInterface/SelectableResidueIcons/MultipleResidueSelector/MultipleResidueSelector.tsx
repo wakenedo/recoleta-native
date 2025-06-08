@@ -56,14 +56,16 @@ const MultipleResidueSelector: React.FC<ResidueAndVariantsSelectorProps> = ({
     if (setResidues) {
       setResidues([...(residues ?? []), newResidue]);
     }
-
+    setWeight("");
     setResidue(null);
     setVariant(null);
   };
 
-  const handleRemove = (name: string) => {
+  const handleRemove = (variantLabel: string | undefined) => {
     if (setResidues) {
-      setResidues((residues ?? []).filter((r) => r.name !== name));
+      setResidues(
+        (residues ?? []).filter((r) => r.variant?.label !== variantLabel)
+      );
     }
   };
 
