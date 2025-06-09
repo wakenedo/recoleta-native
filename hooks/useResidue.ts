@@ -56,6 +56,21 @@ export const useResidue = () => {
     selectedHour &&
     selectedDate;
 
+  const isResiduesValid = (residues: Residue[] | undefined): boolean => {
+    if (!residues || residues.length === 0) return false;
+
+    return residues.every(
+      (r) =>
+        !!r.name &&
+        !!r.variant?.label &&
+        !!r.variant?.pricePerKg &&
+        !!r.variant?.minWeightKg &&
+        !!r.weight &&
+        !!r.condition &&
+        !!r.pkg
+    );
+  };
+
   const setResidues = (r: Residue[]) => setCollectFlowData({ residues: r });
 
   const getResiduesAsArray = (): Residue[] => residues ?? [];
@@ -82,6 +97,7 @@ export const useResidue = () => {
     setHour,
     setPhoto,
     isResidueValid,
+    isResiduesValid,
     payloadResidue: getResiduePayload(), // inclui pricePerKg, estimatedValue...
     payloadResiduesArray: getResiduesPayloadArray(),
     getResiduesAsArray, // função para obter os resíduos como array

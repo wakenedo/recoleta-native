@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   View,
@@ -29,17 +29,28 @@ const ResidueModalFlow: React.FC<ResidueModalFlowProps> = ({
   onClose,
 }) => {
   const [step, setStep] = useState<1 | 2>(1);
-  const { isResidueValid, payloadResidue } = useResidue();
+  const {
+    isResidueValid,
+    payloadResidue,
+    payloadResiduesArray,
+    isResiduesValid,
+  } = useResidue();
   const { isAddressValid } = useAddress();
   const { handleSubmit, loading } = useCollectEvent();
-  const { previousRegisteredAddressSelectedId } = useCollectFlow();
+  const { resetCollectFlow, previousRegisteredAddressSelectedId, residues } =
+    useCollectFlow();
   const handleClose = () => {
     setStep(1);
     onClose();
+    resetCollectFlow();
   };
 
   const handleNext = async () => {
-    if (step === 1 && isResidueValid) setStep(2);
+    if (
+      (step === 1 && isResidueValid) ||
+      (step === 1 && isResiduesValid(residues))
+    )
+      setStep(2);
   };
 
   const handleBack = () => {
@@ -48,7 +59,12 @@ const ResidueModalFlow: React.FC<ResidueModalFlowProps> = ({
 
   const canSubmit = isAddressValid || !!previousRegisteredAddressSelectedId;
 
-  console.log("Residue Payload", payloadResidue);
+  useEffect(() => {
+    console.log("is Residues Valid", isResiduesValid(residues));
+  }, [residues]);
+
+  console.log("Single Residue Payload", payloadResidue);
+  console.log("Residues Payload Array", payloadResiduesArray);
 
   return (
     <Modal
@@ -86,6 +102,7 @@ const ResidueModalFlow: React.FC<ResidueModalFlowProps> = ({
               <ScrollView
                 className="flex-1"
                 keyboardShouldPersistTaps="handled"
+                nestedScrollEnabled={true}
                 showsVerticalScrollIndicator={false}
               >
                 {step === 1 ? (
@@ -106,15 +123,31 @@ const ResidueModalFlow: React.FC<ResidueModalFlowProps> = ({
                   </TouchableOpacity>
                 )}
                 {step === 1 && (
-                  <TouchableOpacity
-                    onPress={handleNext}
-                    className={`px-4 py-2 rounded-lg ${
-                      isResidueValid ? "bg-green-500" : "bg-gray-300"
-                    }`}
-                    disabled={!isResidueValid}
-                  >
-                    <Text className="text-white">Continuar</Text>
-                  </TouchableOpacity>
+                  <>
+                    {residues && residues.length > 0 ? (
+                      <TouchableOpacity
+                        onPress={handleNext}
+                        className={`px-4 py-2 rounded-lg ${
+                          isResiduesValid(residues)
+                            ? "bg-green-500"
+                            : "bg-gray-300"
+                        }`}
+                        disabled={!isResiduesValid}
+                      >
+                        <Text className="text-white">Continuar</Text>
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity
+                        onPress={handleNext}
+                        className={`px-4 py-2 rounded-lg ${
+                          isResidueValid ? "bg-green-500" : "bg-gray-300"
+                        }`}
+                        disabled={!isResidueValid}
+                      >
+                        <Text className="text-white">Continuar</Text>
+                      </TouchableOpacity>
+                    )}
+                  </>
                 )}
                 {step === 2 && (
                   <TouchableOpacity

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { CollectFlowState, ResiduePayload, ResidueWithDetails } from "./types";
+import { CollectFlowState } from "./types";
+import { Residue } from "@/components/custom/WasteManagementInterface/types";
 
 const CollectFlowContext = createContext<CollectFlowState | undefined>(
   undefined
@@ -137,9 +138,9 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
     };
   };
 
-  const getResiduesPayloadArray = (): ResiduePayload[] => {
+  const getResiduesPayloadArray = (residues: any) => {
     return (
-      state.selectedResidues?.map((r) => ({
+      residues?.map((r: Residue) => ({
         name: r.name,
         apiName: r.apiName,
         variant: r.variant?.label || null,
@@ -160,7 +161,7 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
         setCollectFlowData,
         resetCollectFlow,
         getResiduePayload: () => getResiduePayload(),
-        getResiduesPayloadArray: () => getResiduesPayloadArray(),
+        getResiduesPayloadArray: () => getResiduesPayloadArray(state.residues),
         resetAddressData, // 👈 exposed here
       }}
     >

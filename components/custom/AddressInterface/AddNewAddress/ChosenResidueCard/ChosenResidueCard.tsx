@@ -17,49 +17,44 @@ const ChosenResidueCard = () => {
   if (!selectedResidue) return null;
 
   return (
-    <Card className=" mb-4 p-2  bg-green-200 shadow-lg text-slate-800">
-      <View className=" flex-row items-center  bg-zinc-50 rounded">
+    <Card className=" mb-4 p-2 rounded-none  bg-slate-100 border-orange-600 border-l shadow text-slate-800">
+      <View className=" flex-row items-center">
         {/* Image + Name */}
-        <View className="flex items-center justify-center p-5 ml-[3px] border-green-200 bg-green-100 border-r-2 rounded-l">
-          {selectedResidue.image && (
-            <Image
-              source={{ uri: selectedResidue.image }}
-              style={{
-                width: 75,
-                height: 75,
-              }}
-            />
-          )}
-        </View>
 
-        <View className=" p-3  ">
-          <View className="mb-2">
-            <Text className="text-lg  font-bold text-green-500">
-              {selectedResidue.name.toUpperCase()}
+        <View>
+          <Text className="text-xs uppercase font-bold text-orange-500 ">
+            {selectedResidue.name.toUpperCase()}
+          </Text>
+
+          <View className="flex flex-row items-center  ">
+            <Text className="font-medium mr-1 text-slate-700 mt-1">
+              {selectedVariant?.label}
+            </Text>
+            <Text className="font-medium text-xs text-slate-400 mt-1">
+              | R$ {selectedVariant?.pricePerKg}/kg
             </Text>
           </View>
-          <Text className="text-xs">
-            <Text className="font-normal">Tipo:</Text>{" "}
-            <Text className="font-medium">{selectedVariant?.label}</Text>
-          </Text>
-          <Text className="text-xs">
-            <Text className="font-normal">Valor estimado:</Text>{" "}
-            <Text className="font-medium">
-              R$ {estimatedValue?.toFixed(2) || "0.00"}
+          <View className="flex flex-row items-center ">
+            <Text className="text-xs text-slate-400 mr-1">
+              {selectedCondition}
             </Text>
-          </Text>
-          <Text className="text-xs">
-            <Text className="font-normal">Condição:</Text>{" "}
-            <Text className="font-medium">{selectedCondition}</Text>
-          </Text>
-          <Text className="text-xs">
-            <Text className="font-normal">Quantidade:</Text>{" "}
-            <Text className="font-medium">{weight} Kg</Text>
-          </Text>
-          <Text className="text-xs">
-            <Text className="font-normal">Embalagem:</Text>{" "}
-            <Text className="font-medium">{selectedPackage}</Text>
-          </Text>
+            <Text className="text-xs text-slate-400">| {selectedPackage}</Text>
+          </View>
+          <View className="flex flex-row items-center mr-1 ">
+            <View className="flex flex-row items-center ">
+              <Text className="text-xs text-slate-400 mr-1 mt-1">
+                Quantidade:
+              </Text>
+              <Text className="font-semibold text-slate-600">{weight} Kg</Text>
+            </View>
+            <View className="flex flex-row items-center mb-1  ml-20">
+              <Text className="text-xs text-slate-400 mr-1 mt-1">Preço:</Text>
+              <Text className="text-slate-600 text-sm font-semibold">R$ </Text>
+              <Text className="font-semibold text-slate-600">
+                {estimatedValue?.toFixed(2) || "0.00"}
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
     </Card>

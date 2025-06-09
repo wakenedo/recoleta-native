@@ -116,7 +116,7 @@ export const useCollectEvent = () => {
           { residues: residuesPayloadArray },
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        residueIds = batchRes.data.map((r: any) => r._id);
+        residueIds = batchRes.data.created.map((r: any) => r._id);
         const residueNames = residuesPayloadArray.map((r) => r.name).join(", ");
         dynamicEventName = `Coleta de ${residueNames} - ${userName}`;
       } else if (residuePayload) {

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { useAddress } from "@/hooks/useAddress";
 import { Card } from "@/components/ui/card";
-import { Heading } from "@/components/ui/heading";
-import { Text } from "@/components/ui/text";
+
 import { InterfaceSwitch } from "../InterfaceSwitch";
 import AddNewAddress from "./AddNewAddress/AddNewAddress";
 import { ChosenResidueCard } from "./AddNewAddress/ChosenResidueCard";
@@ -13,13 +12,14 @@ import { Address } from "./types";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 import { useCollectFlow } from "@/context/CollectFlowContext";
+import { ChosenResiduesInterface } from "./AddNewAddress/ChosenResiduesInterface";
 
 const AddressInterface: React.FC = ({}) => {
   const [hasRegisteredAddresses, setHasRegisteredAddresses] = useState(false);
   const [toggleDefault, setToggleDefault] = useState(false);
   const { authState } = useAuth();
   const { API_URL } = Constants.expoConfig?.extra || {};
-  const { setCollectFlowData, resetAddressData } = useCollectFlow();
+  const { setCollectFlowData, resetAddressData, residues } = useCollectFlow();
   const {
     latitude,
     longitude,
@@ -74,19 +74,39 @@ const AddressInterface: React.FC = ({}) => {
   };
 
   return (
-    <Card className="border border-zinc-300">
-      <View className="mb-6">
-        <Heading size="xs">Gerenciamento de Endereços para Coleta</Heading>
-        <Text size="xs" className="mt-2">
-          Visualize seus endereços cadastrados e adicione novos endereços para
-          coleta
+    <Card className="space-y-6 border-l rounded-md p-4 bg-white border-orange-300 shadow">
+      <View className="mb-4">
+        <Text className="text-base font-bold text-orange-600">
+          Gerenciamento de Endereços para Coleta
         </Text>
+        {hasRegisteredAddresses && (
+          <Text className="text-xs text-slate-600">
+            Visualize seus endereços cadastrados ou adicione novos endereços
+            para coleta
+          </Text>
+        )}
+        {!hasRegisteredAddresses && (
+          <Text className="text-xs text-slate-600">
+            Adicione novos endereços para coleta
+          </Text>
+        )}
       </View>
-      <View>
-        <Heading className="mb-2" size="xs">
-          Resido a cadastrar:
-        </Heading>
-        <ChosenResidueCard />
+      <View className="mb-2">
+        {residues != undefined && residues.length > 0 ? (
+          <>
+            <Text className=" mb-2 text-base font-bold text-orange-600">
+              Residuos a cadastrar
+            </Text>
+            <ChosenResiduesInterface residues={residues} />
+          </>
+        ) : (
+          <>
+            <Text className=" mb-2 text-base font-bold text-orange-600">
+              Residuo a cadastrar
+            </Text>
+            <ChosenResidueCard />
+          </>
+        )}
       </View>
 
       {hasRegisteredAddresses && (
