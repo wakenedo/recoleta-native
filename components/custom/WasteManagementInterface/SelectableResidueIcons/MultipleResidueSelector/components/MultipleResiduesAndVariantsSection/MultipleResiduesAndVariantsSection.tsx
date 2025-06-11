@@ -136,7 +136,7 @@ const MultipleResiduesAndVariantsSection: React.FC<
                 selectedPackage={selectedPackage}
                 setSelectedPackage={setPackage}
               />
-              <TakeResiduePhoto photo={photo || null} setPhoto={setPhoto} />
+              {/*<TakeResiduePhoto photo={photo || null} setPhoto={setPhoto} />*/}
             </View>
 
             <TouchableOpacity
