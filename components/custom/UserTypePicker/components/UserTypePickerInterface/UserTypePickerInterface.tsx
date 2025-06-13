@@ -1,13 +1,10 @@
 import React, { FC } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
+import { GoogleUserTypePickerProps } from "../types";
 
-interface UserTypePickerProps {
-  handleSelect: (userType: "COLLECTS_WASTE" | "PRODUCES_WASTE") => void;
-  handleConfirm: () => void;
-  handleCancel: () => void;
-}
-
-const UserTypePickerInterface: FC<UserTypePickerProps> = ({ handleSelect }) => {
+const UserTypePickerInterface: FC<GoogleUserTypePickerProps> = ({
+  handleSelect,
+}) => {
   return (
     <View className="p-6 bg-white rounded shadow-lg w-full">
       <Text className="text-lg font-semibold mb-6 text-slate-800 uppercase">

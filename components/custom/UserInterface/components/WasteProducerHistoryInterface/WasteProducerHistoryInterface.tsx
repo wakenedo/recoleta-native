@@ -1,17 +1,12 @@
 import React, { useEffect } from "react";
 import { FlatList, Text, View } from "react-native";
-
-import { User } from "@/types";
 import { ScheduledCollects } from "./components/ScheduledCollects";
 import { CompleteCollects } from "./components/CompleteCollects";
 import { ExpiredCollects } from "./components/ExpiredCollects";
 import { CanceledCollects } from "./components/CanceledCollects";
 import { useWasteProducer } from "@/context/WasteProducerContext";
 import { Calendar } from "lucide-react-native";
-
-interface WasteProducerHistoryProps {
-  user: User | null;
-}
+import { WasteProducerHistoryProps } from "../types";
 
 const WasteProducerHistoryInterface: React.FC<WasteProducerHistoryProps> = ({
   user,

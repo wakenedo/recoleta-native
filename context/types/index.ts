@@ -119,8 +119,19 @@ interface GoogleProfile {
   photo?: string | null;
 }
 
+interface UserContextProps {
+  user: User | null;
+  loading: boolean;
+  refreshUser: () => Promise<void>;
+  updateUser: (data: Partial<User>) => Promise<void>;
+  deleteUser: () => Promise<void>;
+  changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
+  loadUser: () => Promise<void>;
+}
+
 export {
   AuthProps,
+  UserContextProps,
   CollectFlowState,
   WasteProducerContextProps,
   GoogleProfile,

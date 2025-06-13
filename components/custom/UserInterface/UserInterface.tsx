@@ -4,12 +4,7 @@ import { UserActionsInterface } from "./components/UserActionsInterface";
 import { UserArea } from "./components/UserArea";
 import { UserCenter } from "./components/UserCenter";
 import { WasteProducerProvider } from "@/context/WasteProducerContext";
-import { User } from "@/types";
-
-interface UserInterfaceProps {
-  user: User;
-  onLogout: (() => Promise<any>) | undefined;
-}
+import { UserInterfaceProps } from "@/components/types";
 
 const UserInterface: FC<UserInterfaceProps> = ({ user, onLogout }) => {
   return (

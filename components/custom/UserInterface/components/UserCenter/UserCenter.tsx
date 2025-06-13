@@ -1,15 +1,10 @@
 import React, { FC, useState } from "react";
 import { View, Text } from "react-native";
-import { User } from "@/types";
 import { WasteProducerCenterInterface } from "./components/WasteProducerCenterInterface";
 import { UseCenterGearMenu } from "./components/UserCenterGearMenu";
 import { UserCenterHeading } from "./components/UserCenterHeading";
 import { WasteProducerProvider } from "@/context/WasteProducerContext";
-
-interface UserCenterProps {
-  user: User;
-  onLogout: (() => Promise<any>) | undefined;
-}
+import { UserCenterProps } from "../types";
 
 const UserCenter: FC<UserCenterProps> = ({ user, onLogout }) => {
   const isProducesWaste = user.userType === "PRODUCES_WASTE";

@@ -1,29 +1,18 @@
 import React, { FC, useEffect } from "react";
 import { ScrollView, Text, View } from "react-native";
-import { User } from "@/types";
 import { ChartColumn } from "lucide-react-native";
 import { ResiduesSection } from "./components/ResiduesSection";
 import { CollectsSection } from "./components/CollectsSection";
-
 import {
   EventDetail,
   useWasteProducerStats,
 } from "@/context/WasteProducerStatsContext";
 import { CollectStats } from "./components/CollectsSection/CollectsSection";
 import { AccountSection } from "./components/AccountSection";
-
-interface WasteProducerStatsInterfaceProps {
-  user: User | null;
-}
-
-interface ResidueStatsByStatus {
-  [status: string]: {
-    [name: string]: {
-      count: number;
-      totalQuantity: number;
-    };
-  };
-}
+import {
+  ResidueStatsByStatus,
+  WasteProducerStatsInterfaceProps,
+} from "../types";
 
 const WasteProducerStatsInterface: FC<WasteProducerStatsInterfaceProps> = ({
   user,

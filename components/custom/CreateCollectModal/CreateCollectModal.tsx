@@ -18,11 +18,7 @@ import { useResidue } from "@/hooks/useResidue";
 import { useAddress } from "@/hooks/useAddress";
 import { useCollectEvent } from "@/hooks/useCollectHookEvent";
 import { useCollectFlow } from "@/context/CollectFlowContext";
-
-interface ResidueModalFlowProps {
-  visible: boolean;
-  onClose: () => void;
-}
+import { ResidueModalFlowProps } from "@/components/types";
 
 const ResidueModalFlow: React.FC<ResidueModalFlowProps> = ({
   visible,

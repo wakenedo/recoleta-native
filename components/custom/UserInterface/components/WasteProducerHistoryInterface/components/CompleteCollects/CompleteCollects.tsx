@@ -1,4 +1,3 @@
-import { User } from "@/types";
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -10,12 +9,7 @@ import {
 } from "react-native";
 import { HistoryCollectsCard } from "../HistoryCollectsCard";
 import { CalendarCheck, Flower } from "lucide-react-native";
-
-interface CompleteCollectsProps {
-  user: User | null;
-  collects: any[];
-  loading: boolean;
-}
+import { CompleteCollectsProps } from "../types";
 
 const CompleteCollects: FC<CompleteCollectsProps> = ({
   user,

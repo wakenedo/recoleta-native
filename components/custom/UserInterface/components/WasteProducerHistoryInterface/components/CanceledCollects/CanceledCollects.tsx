@@ -1,4 +1,3 @@
-import { User } from "@/types";
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -10,12 +9,7 @@ import {
 } from "react-native";
 import { HistoryCollectsCard } from "../HistoryCollectsCard";
 import { CalendarX } from "lucide-react-native";
-
-interface CanceledCollectsProps {
-  user: User | null;
-  collects: any[];
-  loading: boolean;
-}
+import { CanceledCollectsProps } from "../types";
 
 const CanceledCollects: FC<CanceledCollectsProps> = ({
   user,

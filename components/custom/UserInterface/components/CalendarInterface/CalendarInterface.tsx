@@ -2,11 +2,7 @@ import React, { FC } from "react";
 import { Calendar } from "./components/Calendar";
 import { Text, View } from "react-native";
 import { CalendarCheck } from "lucide-react-native";
-import { User } from "@/types";
-
-interface CalendarInterfaceProps {
-  user: User | null;
-}
+import { CalendarInterfaceProps } from "../types";
 
 const CalendarInterface: FC<CalendarInterfaceProps> = ({ user }) => {
   const isProducesWaste = user?.userType === "PRODUCES_WASTE";

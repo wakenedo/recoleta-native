@@ -1,12 +1,8 @@
-import { Residue } from "@/components/custom/WasteManagementInterface/types";
 import { Card } from "@/components/ui/card";
 import { useCollectFlow } from "@/context/CollectFlowContext";
 import React, { useEffect } from "react";
 import { ScrollView, Text, View } from "react-native";
-
-type ChosenResiduesInterfaceProps = {
-  residues: Residue[];
-};
+import { ChosenResiduesInterfaceProps } from "./types";
 
 const ChosenResiduesInterface: React.FC<ChosenResiduesInterfaceProps> = ({
   residues,

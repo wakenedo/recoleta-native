@@ -1,12 +1,6 @@
 import React, { FC } from "react";
 import { Text, Pressable } from "react-native";
-import { Address } from "../../types";
-
-interface RegisteredAddressCardProps {
-  item: Address;
-  onSelect: (id: string) => void;
-  selected: boolean;
-}
+import { RegisteredAddressCardProps } from "./types";
 
 const RegisteredAddressCard: FC<RegisteredAddressCardProps> = ({
   item,

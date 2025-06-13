@@ -1,11 +1,7 @@
 import React from "react";
 import { usePriceTable } from "@/hooks/usePriceTable";
 import { View, Text, ActivityIndicator, ScrollView } from "react-native";
-
-type RegionPriceTableProps = {
-  token: string | undefined | null;
-  region: string;
-};
+import { RegionPriceTableProps } from "@/components/types";
 
 export const RegionPriceTable: React.FC<RegionPriceTableProps> = ({
   token,

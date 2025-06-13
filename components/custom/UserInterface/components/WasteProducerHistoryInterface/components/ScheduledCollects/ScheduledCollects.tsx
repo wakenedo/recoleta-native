@@ -1,4 +1,3 @@
-import { User } from "@/types";
 import { Calendar1, CalendarClock } from "lucide-react-native";
 import React, { FC, useState, useRef, useEffect, useCallback } from "react";
 import {
@@ -10,12 +9,7 @@ import {
   FlatList,
 } from "react-native";
 import { HistoryCollectsCard } from "../HistoryCollectsCard";
-
-interface ScheduledCollectsProps {
-  user: User | null;
-  collects: any[];
-  loading: boolean;
-}
+import { ScheduledCollectsProps } from "../types";
 
 const ScheduledCollects: FC<ScheduledCollectsProps> = ({
   user,

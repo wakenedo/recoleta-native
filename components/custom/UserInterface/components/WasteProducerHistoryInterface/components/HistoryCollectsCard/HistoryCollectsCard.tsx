@@ -1,11 +1,7 @@
 import React, { FC } from "react";
 import { View, Image, Text } from "react-native";
 import { Card } from "@/components/ui/card";
-import { Collect } from "../../../UserArea/components/UserAreaWasteProducerActions/types";
-
-interface HistoryCollectsCardProps {
-  item: Collect;
-}
+import { HistoryCollectsCardProps } from "../types";
 
 const HistoryCollectsCard: FC<HistoryCollectsCardProps> = ({ item }) => {
   if (!item.residues?.[0] || !item.address) return null;

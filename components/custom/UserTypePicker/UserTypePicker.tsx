@@ -1,23 +1,12 @@
 import React, { useState } from "react";
-import {
-  View,
-  TouchableOpacity,
-  Modal,
-  Text as RNText,
-  Button,
-} from "react-native";
-import { Text } from "@/components/ui/text"; // assuming you have a custom Text component
 import { GoogleUserWelcome } from "./components/GoogleUserWelcome";
 import { AddPersonalInfo } from "./components/AddPersonalInfo";
 import { useUser } from "@/context/UserContext";
 import { UserTypePickerInterface } from "./components/UserTypePickerInterface";
 import { UserTypeConfirmModal } from "./components/UserTypeConfirmModal";
+import { UserTypePickerProps } from "@/components/types";
 
-type Props = {
-  onSelect: (userType: "COLLECTS_WASTE" | "PRODUCES_WASTE") => void;
-};
-
-const UserTypePicker = ({ onSelect }: Props) => {
+const UserTypePicker = ({ onSelect }: UserTypePickerProps) => {
   const { updateUser, user } = useUser();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedUserType, setSelectedUserType] = useState<

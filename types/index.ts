@@ -9,5 +9,6 @@ interface User {
   lastName: string;
   userType: string;
 }
+//CreateCollectModal
 
 export { User };

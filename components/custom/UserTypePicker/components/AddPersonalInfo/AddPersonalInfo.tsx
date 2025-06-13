@@ -1,14 +1,9 @@
-import { User } from "@/types";
 import React, { FC, useRef, useState } from "react";
 import { View, Text, Alert, TextInput, Button } from "react-native";
 import { CPF, CNPJ } from "@brasil-interface/utils";
 import PhoneInput from "react-native-phone-number-input";
 import { CheckCircle } from "lucide-react-native";
-
-interface AddPersonalInfoProps {
-  updateUser: (data: Partial<User>) => Promise<void>;
-  user: User | null;
-}
+import { AddPersonalInfoProps } from "../types";
 
 const AddPersonalInfo: FC<AddPersonalInfoProps> = ({ updateUser, user }) => {
   const phoneInputRef = useRef<PhoneInput>(null);

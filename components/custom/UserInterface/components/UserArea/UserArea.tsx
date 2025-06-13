@@ -1,13 +1,9 @@
-import { User } from "@/types";
 import React, { FC } from "react";
 import { View, Text, Button } from "react-native";
 import { UserAreaWasteProducerActions } from "./components/UserAreaWasteProducerActions";
 import { UserAreaWasteCollectorActions } from "./components/UserAreaWasteCollectorActions";
 import { useRouter } from "expo-router";
-
-interface UserAreaProps {
-  user: User;
-}
+import { UserAreaProps } from "../types";
 
 const UserArea: FC<UserAreaProps> = ({ user }) => {
   const router = useRouter();
