@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { BarChart } from "react-native-gifted-charts";
 import { ArchiveIcon } from "lucide-react-native";
-import { User } from "@/app/Home";
+import { User } from "@/types";
 
 export interface CollectStats {
   status: string;

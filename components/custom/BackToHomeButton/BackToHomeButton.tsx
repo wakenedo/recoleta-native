@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { useRouter } from "expo-router";
 import { Pressable, View } from "react-native";
 import { HomeIcon } from "lucide-react-native";
-import { User } from "@/app/Home";
+import { User } from "@/types";
 
 interface BackToHomeButtonProps {
   user: User | null;

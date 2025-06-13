@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { User } from "@/app/Home";
+import { User } from "@/types";
 import { useAuth } from "./AuthContext";
 import axios from "axios";
 import Constants from "expo-constants";

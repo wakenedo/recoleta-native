@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Text, View } from "react-native";
-import { User } from "@/app/Home";
+import { User } from "@/types";
 import { WasteProducerActions } from "./components/WasteProducerActions";
 
 interface UserActionsInterfaceProps {

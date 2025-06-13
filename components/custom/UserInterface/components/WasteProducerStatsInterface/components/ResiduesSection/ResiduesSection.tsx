@@ -10,7 +10,7 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { BarChart } from "react-native-gifted-charts";
 import { Gem } from "lucide-react-native";
-import { User } from "@/app/Home";
+import { User } from "@/types";
 
 interface Residue {
   name: string;

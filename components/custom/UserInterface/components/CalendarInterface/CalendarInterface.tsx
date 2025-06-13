@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { Calendar } from "./components/Calendar";
 import { Text, View } from "react-native";
 import { CalendarCheck } from "lucide-react-native";
-import { User } from "@/app/Home";
+import { User } from "@/types";
 
 interface CalendarInterfaceProps {
   user: User | null;

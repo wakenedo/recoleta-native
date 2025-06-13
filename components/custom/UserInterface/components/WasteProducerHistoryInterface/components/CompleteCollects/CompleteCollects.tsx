@@ -1,4 +1,4 @@
-import { User } from "@/app/Home";
+import { User } from "@/types";
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,

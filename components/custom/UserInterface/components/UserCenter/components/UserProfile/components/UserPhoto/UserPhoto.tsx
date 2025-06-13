@@ -1,4 +1,4 @@
-import { User } from "@/app/Home";
+import { User } from "@/types";
 import React, { FC } from "react";
 import { View, Text } from "react-native";
 import { Image } from "@/components/ui/image";

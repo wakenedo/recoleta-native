@@ -1,4 +1,4 @@
-import { User } from "@/app/Home";
+import { User } from "@/types";
 import React, { FC, useRef, useState } from "react";
 import { View, Text, Alert, TextInput, Button } from "react-native";
 import { CPF, CNPJ } from "@brasil-interface/utils";

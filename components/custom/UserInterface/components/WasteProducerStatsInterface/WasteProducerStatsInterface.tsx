@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from "react";
 import { ScrollView, Text, View } from "react-native";
-import { User } from "@/app/Home";
+import { User } from "@/types";
 import { ChartColumn } from "lucide-react-native";
 import { ResiduesSection } from "./components/ResiduesSection";
 import { CollectsSection } from "./components/CollectsSection";

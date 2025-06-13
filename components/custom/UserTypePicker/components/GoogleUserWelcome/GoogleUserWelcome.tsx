@@ -1,4 +1,4 @@
-import { User } from "@/app/Home";
+import { User } from "@/types";
 import { UserPhoto } from "@/components/custom/UserInterface/components/UserCenter/components/UserProfile/components/UserPhoto";
 import React, { FC } from "react";
 import { View, Text } from "react-native";

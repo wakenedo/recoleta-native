@@ -1,4 +1,4 @@
-import { User } from "@/app/Home";
+import { User } from "@/types";
 import { Calendar1, CalendarClock } from "lucide-react-native";
 import React, { FC, useState, useRef, useEffect, useCallback } from "react";
 import {

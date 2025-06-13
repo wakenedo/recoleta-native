@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { FlatList, Text, View } from "react-native";
 
-import { User } from "@/app/Home";
+import { User } from "@/types";
 import { ScheduledCollects } from "./components/ScheduledCollects";
 import { CompleteCollects } from "./components/CompleteCollects";
 import { ExpiredCollects } from "./components/ExpiredCollects";

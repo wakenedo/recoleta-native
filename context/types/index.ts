@@ -1,4 +1,4 @@
-import { User } from "@/app/Home";
+import { User } from "@/types";
 import { Address } from "@/components/custom/AddressInterface/types";
 import {
   Residue,
