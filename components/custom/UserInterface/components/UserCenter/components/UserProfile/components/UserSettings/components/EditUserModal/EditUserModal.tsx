@@ -1,6 +1,6 @@
 import React, { FC, useState, useRef } from "react";
 import { Modal, View, Text, TextInput, Button, Alert } from "react-native";
-import { User } from "@/app/Home";
+import { User } from "@/types";
 import { BlurView } from "expo-blur";
 import PhoneInput from "react-native-phone-number-input";
 import { CPF, CNPJ } from "@brasil-interface/utils";

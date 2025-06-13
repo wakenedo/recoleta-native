@@ -5,20 +5,12 @@ import {
   BarChart3,
   CheckCircle2,
   Recycle,
-  ChevronDown,
-  ChevronUp,
   Clock3,
   ChartNoAxesColumn,
 } from "lucide-react-native";
 import { BarChart } from "react-native-gifted-charts";
 import { EventDetail } from "@/context/WasteProducerStatsContext";
-import { User } from "@/app/Home";
-
-interface AccountSectionProps {
-  user: User | null;
-  loading: boolean;
-  events: EventDetail[];
-}
+import { AccountSectionProps } from "../types";
 
 export const AccountSection: FC<AccountSectionProps> = ({
   user,

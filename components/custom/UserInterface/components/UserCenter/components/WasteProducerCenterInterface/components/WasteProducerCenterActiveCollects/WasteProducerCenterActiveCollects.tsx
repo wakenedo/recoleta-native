@@ -4,7 +4,7 @@ import axios from "axios";
 import { format } from "date-fns";
 import { useAuth } from "@/context/AuthContext"; // adjust to your context path
 import Constants from "expo-constants";
-import { User } from "@/app/Home";
+import { User } from "@/types";
 import { SnailIcon } from "lucide-react-native";
 
 interface WasteProducerCenterActiveCollectsProps {

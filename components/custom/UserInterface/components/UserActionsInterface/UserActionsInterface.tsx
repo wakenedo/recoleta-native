@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import { Text, View } from "react-native";
-import { User } from "@/app/Home";
 import { WasteProducerActions } from "./components/WasteProducerActions";
+import { UserActionsInterfaceProps } from "../types";
 
-interface UserActionsInterfaceProps {
-  user: User;
-}
-
-export const UserActionsInterface = ({ user }: UserActionsInterfaceProps) => {
+const UserActionsInterface = ({ user }: UserActionsInterfaceProps) => {
   const [showModal, setShowModal] = useState(false);
 
   const userType = user.userType;

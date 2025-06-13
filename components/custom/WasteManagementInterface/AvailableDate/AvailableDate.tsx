@@ -1,7 +1,6 @@
 import React, { FC, useState } from "react";
 import { View, Platform, TouchableOpacity, Text } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { Heading } from "@/components/ui/heading";
 import { Calendar } from "lucide-react-native";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -21,9 +20,9 @@ const AvailableDate: FC<AvailableDateProps> = () => {
 
   return (
     <View className={`${Platform.OS !== "windows" ? "mt-6" : ""}`}>
-      <Heading size="xs" className="mb-2">
+      <Text className="text-md font-bold mb-2 text-orange-600">
         Data Preferida para Coleta
-      </Heading>
+      </Text>
 
       <TouchableOpacity
         className="flex-row items-center bg-white"

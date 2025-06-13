@@ -10,35 +10,11 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { BarChart } from "react-native-gifted-charts";
 import { Gem } from "lucide-react-native";
-import { User } from "@/app/Home";
-
-interface Residue {
-  name: string;
-  totalQuantity: number;
-  count: number;
-}
-
-interface ResidueStatsByStatus {
-  [status: string]: {
-    [name: string]: {
-      count: number;
-      totalQuantity: number;
-    };
-  };
-}
-
-interface ResiduesSectionProps {
-  user: User | null;
-  loading: boolean;
-  residueStatsPerStatus: ResidueStatsByStatus;
-  summary: {
-    completed: number;
-    expired: number;
-    scheduled: number;
-    canceled: number;
-    total: number;
-  };
-}
+import {
+  ResiduesSectionProps,
+  ResidueStatsByStatus,
+  StatsResidue,
+} from "../types";
 
 const statusLabels: Record<string, string> = {
   completed: "Coletas Concluídas",
@@ -113,7 +89,7 @@ const ResiduesSection: FC<ResiduesSectionProps> = ({
       ? { [selectedStatus]: residueStatsPerStatus[selectedStatus] || {} }
       : {};
 
-  const allResidues: Residue[] = Object.entries(residuesMap).flatMap(
+  const allResidues: StatsResidue[] = Object.entries(residuesMap).flatMap(
     ([status, residues]) =>
       Object.entries(residues).map(([name, stats]) => ({
         name:

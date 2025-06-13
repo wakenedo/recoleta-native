@@ -35,7 +35,7 @@ const AddNewAddressForm: FC<AddNewAddressFormProps> = ({
     <View className="">
       <View className="flex-row gap-x-4 ">
         <View className="flex-1">
-          <Text className="text-md font-bold mb-2 text-slate-800">CEP</Text>
+          <Text className="text-base font-bold text-orange-600 mb-2">CEP</Text>
           <View style={styles.container}>
             <View style={styles.inputWrapper}>
               <PinIcon size={18} color="#9CA3AF" style={styles.icon} />
@@ -52,7 +52,9 @@ const AddNewAddressForm: FC<AddNewAddressFormProps> = ({
         </View>
 
         <View className="flex-1">
-          <Text className="text-md font-bold mb-2 text-slate-800">Número</Text>
+          <Text className="text-base font-bold text-orange-600 mb-2">
+            Número
+          </Text>
           <View style={styles.container}>
             <View style={styles.inputWrapper}>
               <Hash size={18} color="#9CA3AF" style={styles.icon} />
@@ -68,11 +70,10 @@ const AddNewAddressForm: FC<AddNewAddressFormProps> = ({
         </View>
       </View>
       <View className="flex flex-col">
-        <View className="mb-2">
-          <Text className="text-md font-bold text-slate-800">
-            Rua/Logradouro
-          </Text>
-        </View>
+        <Text className="text-base font-bold text-orange-600 mb-2">
+          Rua/Logradouro
+        </Text>
+
         <View style={styles.container}>
           <View style={styles.inputWrapper}>
             <HouseIcon size={18} color="#9CA3AF" style={styles.icon} />
@@ -86,9 +87,9 @@ const AddNewAddressForm: FC<AddNewAddressFormProps> = ({
         </View>
       </View>
       <View className="flex flex-col">
-        <View className="mb-2">
-          <Text className="text-md font-bold text-slate-800">Complemento</Text>
-        </View>
+        <Text className="text-base font-bold text-orange-600 mb-2">
+          Complemento
+        </Text>
         <View style={styles.container}>
           <View style={styles.inputWrapper}>
             <MapPinPlus size={18} color="#9CA3AF" style={styles.icon} />
@@ -103,9 +104,7 @@ const AddNewAddressForm: FC<AddNewAddressFormProps> = ({
       </View>
 
       <View className="flex flex-col">
-        <View className="mb-2">
-          <Text className="text-md font-bold text-slate-800">Bairro</Text>
-        </View>
+        <Text className="text-base font-bold text-orange-600 mb-2">Bairro</Text>
         <View style={styles.container}>
           <View style={styles.inputWrapper}>
             <MapPinHouseIcon size={18} color="#9CA3AF" style={styles.icon} />
@@ -120,7 +119,9 @@ const AddNewAddressForm: FC<AddNewAddressFormProps> = ({
       </View>
       <View className="flex-row gap-x-4">
         <View className="flex-1">
-          <Text className="text-md font-bold mb-2 text-slate-800">Cidade</Text>
+          <Text className="text-base font-bold text-orange-600 mb-2">
+            Cidade
+          </Text>
           <View style={styles.container}>
             <View style={styles.inputWrapper}>
               <Building2 size={18} color="#9CA3AF" style={styles.icon} />
@@ -135,7 +136,9 @@ const AddNewAddressForm: FC<AddNewAddressFormProps> = ({
         </View>
 
         <View className="flex-1">
-          <Text className="text-md font-bold mb-2 text-slate-800">Estado</Text>
+          <Text className="text-base font-bold text-orange-600 mb-2">
+            Estado
+          </Text>
           <View style={styles.container}>
             <View style={styles.inputWrapper}>
               <MapPinned size={18} color="#9CA3AF" style={styles.icon} />

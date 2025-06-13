@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { View } from "react-native";
 import { WasteProducerCenterActiveCollects } from "./components/WasteProducerCenterActiveCollects";
-import { User } from "@/app/Home";
+import { User } from "@/types";
 
 interface WasteProducerCenterInterfaceProps {
   user: User;

@@ -1,11 +1,7 @@
 import React, { FC } from "react";
-import { Text, View, Image } from "react-native";
+import { View, Image, Text } from "react-native";
 import { Card } from "@/components/ui/card";
-import { Collect } from "../../../UserArea/components/UserAreaWasteProducerActions/types";
-
-interface HistoryCollectsCardProps {
-  item: Collect;
-}
+import { HistoryCollectsCardProps } from "../types";
 
 const HistoryCollectsCard: FC<HistoryCollectsCardProps> = ({ item }) => {
   if (!item.residues?.[0] || !item.address) return null;
@@ -27,11 +23,20 @@ const HistoryCollectsCard: FC<HistoryCollectsCardProps> = ({ item }) => {
     });
   };
 
-  const residue = item.residues[0];
+  const singleResidue = item.residues[0];
   const formattedCreatedAt = formatDate(item.createdAt);
   const formattedCreatedTime = formatTime(item.createdAt);
   const formattedFinalDate = formatDate(item.dateTime);
   const formattedFinalTime = formatTime(item.dateTime);
+  const singleResidueVariant = item.residues[0].variant
+    ? item.residues[0].variant
+    : false;
+  const singleResidueVariantEstimatedValue = item.residues[0].estimatedValue
+    ? item.residues[0].estimatedValue
+    : null;
+  const singleResidueVariantPricePerKg = item.residues[0].pricePerKg
+    ? item.residues[0].pricePerKg
+    : null;
 
   return (
     <Card className="mb-4 p-4 rounded-2xl shadow bg-slate-100">
@@ -48,14 +53,13 @@ const HistoryCollectsCard: FC<HistoryCollectsCardProps> = ({ item }) => {
 
         {item.isSigned && item.signedBy && (
           <Text className="text-sm text-gray-500">
-            Por: {item.signedBy.firstName} ({item.signedBy.email})
+            Por: {item.signedBy.firstName} {item.signedBy.email}
           </Text>
         )}
 
         {item.completedBy && (
           <Text className="text-sm text-gray-500">
-            Coletado por: {item.completedBy.firstName} ({item.completedBy.email}
-            )
+            Coletado por: {item.completedBy.firstName} {item.completedBy.email}
           </Text>
         )}
 
@@ -72,15 +76,39 @@ const HistoryCollectsCard: FC<HistoryCollectsCardProps> = ({ item }) => {
 
       <View className="mb-3">
         <Text className="font-semibold text-gray-700 mb-1">Resíduo</Text>
-        <Text className="text-sm text-gray-500">Nome: {residue.name}</Text>
-        <Text className="text-sm text-gray-500">Peso: {residue.weight} kg</Text>
-        <Text className="text-sm text-gray-500">Embalagem: {residue.pkg}</Text>
         <Text className="text-sm text-gray-500">
-          Condição: {residue.condition}
+          Nome: {singleResidue.name}
         </Text>
-        {residue.photo && (
+        {singleResidueVariant && (
+          <Text className="text-sm text-gray-500">
+            Tipo: {singleResidue.variant}
+          </Text>
+        )}
+        <Text className="text-sm text-gray-500">
+          Peso: {singleResidue.weight} kg
+        </Text>
+        {singleResidueVariantEstimatedValue && (
+          <Text className="text-sm text-gray-500">
+            Preço total: R$ {singleResidue.estimatedValue?.toFixed(2) ?? "0.00"}
+          </Text>
+        )}
+        {singleResidueVariantPricePerKg && (
+          <Text className="text-sm text-gray-500">
+            Preço por kg: R${" "}
+            {singleResidue.pricePerKg != null
+              ? singleResidue.pricePerKg.toFixed(2)
+              : "0.00"}
+          </Text>
+        )}
+        <Text className="text-sm text-gray-500">
+          Embalagem: {singleResidue.pkg}
+        </Text>
+        <Text className="text-sm text-gray-500">
+          Condição: {singleResidue.condition}
+        </Text>
+        {singleResidue.photo && (
           <Image
-            source={{ uri: residue.photo }}
+            source={{ uri: singleResidue.photo }}
             style={{
               width: "100%",
               height: 150,

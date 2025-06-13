@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Text, View } from "react-native";
 import { UserPhoto } from "./components/UserPhoto";
-import { User } from "@/app/Home";
+import { User } from "@/types";
 import { User2Icon } from "lucide-react-native";
 import { UserInfo } from "./components/UserInfo";
 import { UserSettings } from "./components/UserSettings";

@@ -1,4 +1,4 @@
-import { User } from "@/app/Home";
+import { User } from "@/types";
 import React, { FC } from "react";
 import { Button, Text, View } from "react-native";
 import { useUser } from "@/context/UserContext";

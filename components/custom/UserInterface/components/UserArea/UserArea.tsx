@@ -1,14 +1,12 @@
-import { User } from "@/app/Home";
 import React, { FC } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Button } from "react-native";
 import { UserAreaWasteProducerActions } from "./components/UserAreaWasteProducerActions";
 import { UserAreaWasteCollectorActions } from "./components/UserAreaWasteCollectorActions";
-
-interface UserAreaProps {
-  user: User;
-}
+import { useRouter } from "expo-router";
+import { UserAreaProps } from "../types";
 
 const UserArea: FC<UserAreaProps> = ({ user }) => {
+  const router = useRouter();
   const isProducesWaste = user.userType === "PRODUCES_WASTE";
   const isCollectsWaste = user.userType === "COLLECTS_WASTE";
 
@@ -38,7 +36,12 @@ const UserArea: FC<UserAreaProps> = ({ user }) => {
             Pronto para organizar seus resíduos e coletas ?
           </Text>
         </View>
-
+        <View className="mb-2">
+          <Button
+            title="VER TABELA DE PREÇOS"
+            onPress={() => router.push("/RegionPriceTableScreen")}
+          />
+        </View>
         {isProducesWaste && <UserAreaWasteProducerActions />}
         {isCollectsWaste && <UserAreaWasteCollectorActions />}
       </View>

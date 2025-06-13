@@ -1,14 +1,6 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { Pressable, View, Text, StyleSheet } from "react-native";
-
-interface InterfaceSwitchProps {
-  rightLabel: string;
-  leftLabel: string;
-  rightComponent: ReactNode;
-  leftComponent: ReactNode;
-  value: boolean; // Controlled value
-  onToggleChange?: (value: boolean) => void;
-}
+import { InterfaceSwitchProps } from "@/components/types";
 
 const InterfaceSwitch: React.FC<InterfaceSwitchProps> = ({
   rightLabel,

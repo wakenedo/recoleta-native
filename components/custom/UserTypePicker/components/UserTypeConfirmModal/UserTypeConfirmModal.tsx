@@ -1,12 +1,7 @@
 import { BlurView } from "expo-blur";
 import React, { FC } from "react";
 import { Button, Modal, Text, View } from "react-native";
-
-interface UserTypeConfirmModalProps {
-  isModalVisible: boolean;
-  handleConfirm: () => void;
-  handleCancel: () => void;
-}
+import { UserTypeConfirmModalProps } from "../types";
 
 const UserTypeConfirmModal: FC<UserTypeConfirmModalProps> = ({
   isModalVisible,

@@ -1,7 +1,7 @@
 // components/EditUserButton.tsx
 import React, { FC, useState } from "react";
 import { Button, View } from "react-native";
-import { User } from "@/app/Home";
+import { User } from "@/types";
 import { EditUserModal } from "../EditUserModal";
 
 interface EditUserButtonProps {

@@ -42,6 +42,9 @@ interface Collect {
     {
       condition: string;
       createdAt: string;
+      estimatedValue: number | null;
+      pricePerKg: number | null;
+      variant: string;
       name: string;
       photo: string | null;
       pkg: string;

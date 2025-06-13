@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { CollectFlowState } from "./types";
+import { Residue } from "@/components/custom/WasteManagementInterface/types";
 
 const CollectFlowContext = createContext<CollectFlowState | undefined>(
   undefined
@@ -14,11 +15,18 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
       | "setCollectFlowData"
       | "resetCollectFlow"
       | "getResiduePayload"
+      | "getResiduesPayloadArray"
       | "resetAddressData"
     >
   >({
+    selectedResidues: [], // Initialize selectedResidues as an empty array
+    residues: [], // Initialize residues as null
     selectedResidue: null,
+    selectedVariant: null,
     weight: "",
+    pricePerKg: null,
+    minWeightKg: null,
+    estimatedValue: null,
     selectedCondition: "Limpo",
     selectedPackage: "Caixa de Papelão",
     selectedDate: null,
@@ -45,8 +53,14 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const resetCollectFlow = () => {
     setState({
+      residues: [],
+      selectedResidues: [], // Initialize selectedResidues as an empty array
       selectedResidue: null,
+      selectedVariant: null,
       weight: "",
+      pricePerKg: null,
+      minWeightKg: null,
+      estimatedValue: null,
       selectedCondition: "Limpo",
       selectedPackage: "Caixa de Papelão",
       selectedDate: null,
@@ -56,6 +70,8 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
       status: "",
       isSigned: false,
       signedBy: null,
+      latitude: undefined, // or null
+      longitude: undefined,
 
       city: "",
       neighborhood: "",
@@ -83,16 +99,57 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
     }));
   };
 
+  useEffect(() => {
+    if (state.selectedVariant && state.weight) {
+      const weightNum = parseFloat(state.weight);
+      if (!isNaN(weightNum)) {
+        const { pricePerKg, minWeightKg } = state.selectedVariant;
+        const estimatedValue =
+          weightNum >= minWeightKg ? weightNum * pricePerKg : 0;
+
+        setState((prev) => ({
+          ...prev,
+          pricePerKg,
+          minWeightKg,
+          estimatedValue: parseFloat(estimatedValue.toFixed(2)),
+        }));
+      }
+    } else {
+      setState((prev) => ({
+        ...prev,
+        pricePerKg: null,
+        minWeightKg: null,
+        estimatedValue: null,
+      }));
+    }
+  }, [state.selectedVariant, state.weight]);
+
   const getResiduePayload = () => {
     if (!state.selectedResidue) return null;
 
     return {
       name: state.selectedResidue.name,
+      apiName: state.selectedResidue.apiName,
+      variant: state.selectedVariant ? state.selectedVariant.label : null,
       weight: state.weight,
       condition: state.selectedCondition,
       pkg: state.selectedPackage,
       photo: state.photo,
     };
+  };
+
+  const getResiduesPayloadArray = (residues: any) => {
+    return (
+      residues?.map((r: Residue) => ({
+        name: r.name,
+        apiName: r.apiName,
+        variant: r.variant?.label || null,
+        weight: r.weight,
+        condition: r.condition, // ensure these fields exist on ResidueWithDetails
+        pkg: r.pkg,
+        photo: r.photo || null,
+      })) ?? []
+    );
   };
 
   console.log("CollectFlowProvider state:", state);
@@ -103,7 +160,8 @@ export const CollectFlowProvider: React.FC<{ children: React.ReactNode }> = ({
         ...state,
         setCollectFlowData,
         resetCollectFlow,
-        getResiduePayload,
+        getResiduePayload: () => getResiduePayload(),
+        getResiduesPayloadArray: () => getResiduesPayloadArray(state.residues),
         resetAddressData, // 👈 exposed here
       }}
     >

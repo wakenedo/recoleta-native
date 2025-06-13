@@ -1,6 +1,9 @@
-import { User } from "@/app/Home";
+import { User } from "@/types";
 import { Address } from "@/components/custom/AddressInterface/types";
-import { Residue } from "@/components/custom/WasteManagementInterface/types";
+import {
+  Residue,
+  ResidueVariant,
+} from "@/components/custom/WasteManagementInterface/types";
 import { AxiosResponse } from "axios";
 
 interface AuthProps {
@@ -42,8 +45,34 @@ interface AuthProps {
   >;
 }
 
+type ResidueWithDetails = {
+  name: string;
+  apiName: string;
+  variant: ResidueVariant | null;
+  weight: string;
+  condition: string;
+  pkg: string;
+  photo: string | null;
+};
+
+type ResiduePayload = {
+  name: string;
+  apiName: string;
+  variant: string | null; // variant label
+  weight: string;
+  condition: string;
+  pkg: string;
+  photo: string | null;
+};
+
 interface CollectFlowState {
+  residues?: Residue[];
   selectedResidue: Residue | null;
+  selectedResidues: ResidueWithDetails[] | null;
+  selectedVariant: ResidueVariant | null;
+  pricePerKg: number | null;
+  minWeightKg: number | null;
+  estimatedValue: number | null;
   weight: string;
   selectedCondition: string;
   selectedPackage: string;
@@ -70,13 +99,8 @@ interface CollectFlowState {
   setCollectFlowData: (data: Partial<CollectFlowState>) => void;
   resetCollectFlow: () => void;
   resetAddressData: () => void;
-  getResiduePayload: () => {
-    name: string;
-    weight: string;
-    condition: string;
-    pkg: string;
-    photo: string | null;
-  } | null;
+  getResiduePayload: () => ResiduePayload | null;
+  getResiduesPayloadArray: () => ResiduePayload[];
 }
 
 interface WasteProducerContextProps {
@@ -95,10 +119,23 @@ interface GoogleProfile {
   photo?: string | null;
 }
 
+interface UserContextProps {
+  user: User | null;
+  loading: boolean;
+  refreshUser: () => Promise<void>;
+  updateUser: (data: Partial<User>) => Promise<void>;
+  deleteUser: () => Promise<void>;
+  changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
+  loadUser: () => Promise<void>;
+}
+
 export {
   AuthProps,
+  UserContextProps,
   CollectFlowState,
   WasteProducerContextProps,
   GoogleProfile,
+  ResidueWithDetails,
+  ResiduePayload,
   // Add other types here as needed
 };

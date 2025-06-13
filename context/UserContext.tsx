@@ -1,22 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { User } from "@/app/Home";
+import { User } from "@/types";
 import { useAuth } from "./AuthContext";
 import axios from "axios";
 import Constants from "expo-constants";
 import { router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
+import { UserContextProps } from "./types";
 
 const { API_URL, TOKEN_KEY } = Constants.expoConfig?.extra || {};
-
-interface UserContextProps {
-  user: User | null;
-  loading: boolean;
-  refreshUser: () => Promise<void>;
-  updateUser: (data: Partial<User>) => Promise<void>;
-  deleteUser: () => Promise<void>;
-  changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
-  loadUser: () => Promise<void>;
-}
 
 const UserContext = createContext<UserContextProps>({
   user: null,

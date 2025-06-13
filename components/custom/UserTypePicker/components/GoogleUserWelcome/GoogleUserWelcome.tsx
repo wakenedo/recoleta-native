@@ -1,11 +1,7 @@
-import { User } from "@/app/Home";
-import { UserPhoto } from "@/components/custom/UserInterface/components/UserCenter/components/UserProfile/components/UserPhoto";
 import React, { FC } from "react";
+import { UserPhoto } from "@/components/custom/UserInterface/components/UserCenter/components/UserProfile/components/UserPhoto";
 import { View, Text } from "react-native";
-
-interface GoogleUserWelcomeProps {
-  user: User | null;
-}
+import { GoogleUserWelcomeProps } from "../types";
 
 const GoogleUserWelcome: FC<GoogleUserWelcomeProps> = ({ user }) => {
   return (

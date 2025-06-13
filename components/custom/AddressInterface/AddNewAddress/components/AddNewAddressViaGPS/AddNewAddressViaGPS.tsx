@@ -67,7 +67,7 @@ const AddNewAddressViaGPS = () => {
 
   return (
     <View>
-      <Text className="text-md font-bold text-slate-800">
+      <Text className="text-orange-600 font-bold text-base mb-2">
         Usar localização atual
       </Text>
 

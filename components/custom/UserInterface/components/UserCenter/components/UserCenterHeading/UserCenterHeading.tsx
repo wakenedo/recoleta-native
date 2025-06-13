@@ -1,7 +1,6 @@
-import { User } from "@/app/Home";
 import { GearButton } from "@/components/custom/GearButton";
 import React, { FC } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 
 interface UserCenterHeadingProps {
   isProducesWaste: boolean;

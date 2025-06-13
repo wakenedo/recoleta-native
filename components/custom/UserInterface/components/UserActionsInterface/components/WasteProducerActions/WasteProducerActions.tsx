@@ -2,11 +2,7 @@ import { CreateCollectModal } from "@/components/custom/CreateCollectModal";
 import { CollectFlowProvider } from "@/context/CollectFlowContext";
 import React, { FC } from "react";
 import { ScrollView, Button, View } from "react-native";
-
-interface WasteProducerActionsProps {
-  showModal: boolean;
-  setShowModal: (show: boolean) => void;
-}
+import { WasteProducerActionsProps } from "../../../types";
 
 const WasteProducerActions: FC<WasteProducerActionsProps> = ({
   showModal,

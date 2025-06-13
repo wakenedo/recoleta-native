@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { BarChart } from "react-native-gifted-charts";
 import { ArchiveIcon } from "lucide-react-native";
-import { User } from "@/app/Home";
+import { CollectsSectionProps } from "../types";
 
 export interface CollectStats {
   status: string;
@@ -20,12 +20,6 @@ export interface CollectStats {
   canceledRate: number;
   scheduled: number;
   completed: number;
-}
-
-interface CollectsSectionProps {
-  user: User | null;
-  loading: boolean;
-  collectStats: CollectStats[];
 }
 
 const CollectsSection: FC<CollectsSectionProps> = ({

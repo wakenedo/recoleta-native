@@ -1,13 +1,7 @@
-import { Settings } from "lucide-react-native";
 import React, { FC } from "react";
+import { GearButtonProps } from "@/components/types";
+import { Settings } from "lucide-react-native";
 import { TouchableOpacity } from "react-native";
-
-interface GearButtonProps {
-  setShowActions: (showActions: boolean) => void;
-  showActions: boolean;
-  isProducesWaste: boolean;
-  isCollectsWaste: boolean;
-}
 
 const GearButton: FC<GearButtonProps> = ({
   setShowActions,

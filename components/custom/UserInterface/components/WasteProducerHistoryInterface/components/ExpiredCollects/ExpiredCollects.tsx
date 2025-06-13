@@ -1,4 +1,3 @@
-import { User } from "@/app/Home";
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -10,12 +9,7 @@ import {
 } from "react-native";
 import { HistoryCollectsCard } from "../HistoryCollectsCard";
 import { AlarmClock, CalendarClock } from "lucide-react-native";
-
-interface ExpiredCollectsProps {
-  user: User | null;
-  collects: any[];
-  loading: boolean;
-}
+import { ExpiredCollectsProps } from "../types";
 
 const ExpiredCollects: FC<ExpiredCollectsProps> = ({
   user,
@@ -23,21 +17,27 @@ const ExpiredCollects: FC<ExpiredCollectsProps> = ({
   loading,
 }) => {
   const [expanded, setExpanded] = useState(false);
-  const animatedHeight = useRef(new Animated.Value(0)).current;
+  const animatedOpacity = useRef(new Animated.Value(0)).current;
 
   const toggleExpanded = () => {
     setExpanded((prev) => !prev);
   };
-
   useEffect(() => {
-    Animated.timing(animatedHeight, {
+    Animated.timing(animatedOpacity, {
       toValue: expanded ? 1 : 0,
       duration: 200,
-      useNativeDriver: false,
+      useNativeDriver: true,
     }).start();
   }, [expanded]);
 
-  const iconColor = "#eab308";
+  const isProducesWaste = user?.userType === "PRODUCES_WASTE";
+  const isCollectsWaste = user?.userType === "COLLECTS_WASTE";
+
+  const iconColor = isProducesWaste
+    ? "#eab308"
+    : isCollectsWaste
+    ? "#eab308"
+    : "#000000";
 
   const renderCollectItem = useCallback(({ item }: any) => {
     return <HistoryCollectsCard item={item} />;
@@ -71,32 +71,34 @@ const ExpiredCollects: FC<ExpiredCollectsProps> = ({
         </View>
       </Pressable>
 
-      <Animated.View style={{ overflow: "hidden" }}>
-        {loading ? (
-          <View className="flex-1 justify-center items-center ">
-            <ActivityIndicator size="large" color={iconColor} />
-          </View>
-        ) : expiredCollects.length === 0 ? (
-          <View className="flex-1 justify-center items-center">
-            <View className="flex-col items-center">
-              <AlarmClock size={50} color={iconColor} />
-              <Text className="text-yellow-500 mt-2 text-center font-semibold">
-                Nenhuma coleta expirada ainda.
-              </Text>
+      {expanded && (
+        <Animated.View style={{ overflow: "hidden" }}>
+          {loading ? (
+            <View className="flex-1 justify-center items-center ">
+              <ActivityIndicator size="large" color={iconColor} />
             </View>
-          </View>
-        ) : (
-          <FlatList
-            data={expiredCollects}
-            renderItem={renderCollectItem}
-            keyExtractor={(item) => item._id.toString()}
-            getItemLayout={getItemLayout}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 10 }}
-            className="flex-1"
-          />
-        )}
-      </Animated.View>
+          ) : expiredCollects.length === 0 ? (
+            <View className="flex-1 justify-center items-center">
+              <View className="flex-col items-center">
+                <AlarmClock size={50} color={iconColor} />
+                <Text className="text-yellow-500 mt-2 text-center font-semibold">
+                  Nenhuma coleta expirada ainda.
+                </Text>
+              </View>
+            </View>
+          ) : (
+            <FlatList
+              data={expiredCollects}
+              renderItem={renderCollectItem}
+              keyExtractor={(item) => item._id.toString()}
+              getItemLayout={getItemLayout}
+              showsVerticalScrollIndicator={false}
+              scrollEnabled={false} // Let parent scroll instead
+              contentContainerStyle={{ paddingBottom: 10 }}
+            />
+          )}
+        </Animated.View>
+      )}
     </View>
   );
 };

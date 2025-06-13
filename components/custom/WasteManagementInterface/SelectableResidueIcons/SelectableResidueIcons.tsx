@@ -1,23 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
-  Platform,
   View,
   Image as RNImage,
+  ScrollView,
 } from "react-native";
-import { Card } from "@/components/ui/card";
-import { Heading } from "@/components/ui/heading";
-import { Image } from "@/components/ui/image";
 import { Text } from "@/components/ui/text";
-import { SelectableResidueIconsProps } from "../types";
+import { ResidueVariant, SelectableResidueIconsProps } from "../types";
 import { RESIDUE_CARDS } from "../utils/enum";
+import { useAuth } from "@/context/AuthContext";
+import { usePriceTable } from "@/hooks/usePriceTable";
+import { InterfaceSwitch } from "../../InterfaceSwitch";
+import { useCollectFlow } from "@/context/CollectFlowContext";
+import { SingleResidueSelector } from "./SingleResidueSelector";
+import { MultipleResidueSelector } from "./MultipleResidueSelector";
 
 const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
+  photo,
+  setPhoto,
   selectedResidue,
-  setSelectedResidue,
+  weight,
+  setWeight,
+  setResidue,
+  selectedVariant,
+  selectedCondition,
+  selectedPackage,
+  setCondition,
+  setPackage,
+  setVariant,
+  setResidues,
+  isMultipleResidues,
 }) => {
-  const [loading, setLoading] = useState(true);
+  const [toggleDefault, setToggleDefault] = useState(false);
+  const { authState } = useAuth();
+  const { resetCollectFlow } = useCollectFlow();
+  const { loading, priceTable } = usePriceTable(authState?.token ?? "", "sp");
 
+  // Preload das imagens dos resíduos
   useEffect(() => {
     const preloadImages = async () => {
       try {
@@ -27,13 +46,35 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
         await Promise.all(promises);
       } catch (err) {
         console.warn("[ResidueIcons] Error preloading images:", err);
-      } finally {
-        setLoading(false);
       }
     };
 
     preloadImages();
   }, []);
+
+  // Busca da tabela de preços
+
+  // Variantes calculadas via useMemo
+  const variants: ResidueVariant[] = useMemo(() => {
+    if (selectedResidue?.apiName) {
+      return priceTable?.[selectedResidue.apiName]?.variants || [];
+    }
+    return [];
+  }, [selectedResidue, priceTable]);
+
+  // Limpa variante ao mudar de resíduo
+  useEffect(() => {
+    if (selectedVariant && selectedResidue) {
+      setVariant(null);
+    }
+  }, [selectedResidue]);
+
+  console.log("isMultipleResidues Selectable Icons ", isMultipleResidues);
+
+  const handleSwitchChange = (isToggled: boolean) => {
+    setToggleDefault(isToggled); // Update state based on user action
+    resetCollectFlow();
+  };
 
   if (loading) {
     return (
@@ -46,39 +87,49 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
 
   return (
     <View>
-      <Heading size="xs">Tipo de Resíduo</Heading>
-      <View className="flex-row flex-wrap justify-between mt-2">
-        {RESIDUE_CARDS.map((card) => {
-          const isSelected = selectedResidue?.id === card.id;
-          return (
-            <Card
-              onTouchStart={() => setSelectedResidue(card)}
-              key={card.id}
-              className={`items-center my-2 border ${
-                Platform.OS === "android" ? "w-[165px]" : "w-[150px]"
-              } ${isSelected ? "border-blue-500" : "border-zinc-300"}`}
-            >
-              <Image
-                source={{ uri: card.image }}
-                style={{
-                  width: "100%",
-                  aspectRatio: 1,
-                  resizeMode: "contain",
-                }}
-                alt={`Imagem de ${card.alt}`}
-                className="h-24"
-              />
-              <View className="mt-5">
-                <Text
-                  className={`${isSelected ? "font-bold text-blue-500" : ""}`}
-                >
-                  {card.name}
-                </Text>
-              </View>
-            </Card>
-          );
-        })}
-      </View>
+      <InterfaceSwitch
+        leftLabel="Resíduo Único"
+        rightLabel="Multiplos Resíduos"
+        onToggleChange={handleSwitchChange}
+        value={isMultipleResidues ? !toggleDefault : toggleDefault}
+        leftComponent={
+          <SingleResidueSelector
+            photo={photo}
+            weight={weight}
+            variants={variants}
+            selectedResidue={selectedResidue}
+            selectedVariant={selectedVariant}
+            selectedCondition={selectedCondition}
+            selectedPackage={selectedPackage}
+            setPhoto={setPhoto}
+            setVariant={setVariant}
+            setResidue={setResidue}
+            setWeight={setWeight}
+            setCondition={setCondition}
+            setPackage={setPackage}
+          />
+        }
+        rightComponent={
+          <ScrollView>
+            <MultipleResidueSelector
+              photo={photo}
+              setPhoto={setPhoto}
+              weight={weight}
+              variants={variants}
+              selectedResidue={selectedResidue}
+              selectedVariant={selectedVariant}
+              selectedCondition={selectedCondition}
+              selectedPackage={selectedPackage}
+              setVariant={setVariant}
+              setResidue={setResidue}
+              setResidues={setResidues}
+              setWeight={setWeight}
+              setCondition={setCondition}
+              setPackage={setPackage}
+            />
+          </ScrollView>
+        }
+      />
     </View>
   );
 };

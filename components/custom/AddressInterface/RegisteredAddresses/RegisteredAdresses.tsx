@@ -47,11 +47,6 @@ const RegisteredAddresses = () => {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 6 }}>
-      <Text className="text-lg font-bold mb-2">Endereços Cadastrados</Text>
-      <Text className="text-sm text-gray-600 mb-4">
-        Aqui estão os endereços que você cadastrou.
-      </Text>
-
       {error && <Text className="text-red-500 mb-4">{error}</Text>}
 
       {loading ? (

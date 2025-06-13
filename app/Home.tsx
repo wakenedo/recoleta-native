@@ -5,18 +5,6 @@ import { UserTypePicker } from "@/components/custom/UserTypePicker";
 import { UserInterface } from "@/components/custom/UserInterface";
 import { useUser } from "@/context/UserContext";
 
-export interface User {
-  email?: string;
-  photo?: string;
-  phone?: string;
-  document?: string;
-  status?: string;
-  accountType?: string;
-  firstName: string;
-  lastName: string;
-  userType: string;
-}
-
 const Home = () => {
   const { onLogout } = useAuth();
   const { user, updateUser } = useUser();
