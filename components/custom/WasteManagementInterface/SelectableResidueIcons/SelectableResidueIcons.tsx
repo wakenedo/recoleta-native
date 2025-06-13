@@ -29,6 +29,7 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
   setPackage,
   setVariant,
   setResidues,
+  isMultipleResidues,
 }) => {
   const [toggleDefault, setToggleDefault] = useState(false);
   const { authState } = useAuth();
@@ -68,6 +69,8 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
     }
   }, [selectedResidue]);
 
+  console.log("isMultipleResidues Selectable Icons ", isMultipleResidues);
+
   const handleSwitchChange = (isToggled: boolean) => {
     setToggleDefault(isToggled); // Update state based on user action
     resetCollectFlow();
@@ -88,7 +91,7 @@ const SelectableResidueIcons: React.FC<SelectableResidueIconsProps> = ({
         leftLabel="Resíduo Único"
         rightLabel="Multiplos Resíduos"
         onToggleChange={handleSwitchChange}
-        value={toggleDefault}
+        value={isMultipleResidues ? !toggleDefault : toggleDefault}
         leftComponent={
           <SingleResidueSelector
             photo={photo}

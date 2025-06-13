@@ -29,6 +29,7 @@ const ResidueModalFlow: React.FC<ResidueModalFlowProps> = ({
   onClose,
 }) => {
   const [step, setStep] = useState<1 | 2>(1);
+  const [isMultipleResidues, setIsMultipleResidues] = useState<boolean>(false);
   const {
     isResidueValid,
     payloadResidue,
@@ -54,7 +55,10 @@ const ResidueModalFlow: React.FC<ResidueModalFlowProps> = ({
   };
 
   const handleBack = () => {
-    if (step === 2) setStep(1);
+    if (residues != undefined && residues.length > 0) {
+      setStep(1);
+      setIsMultipleResidues(!isMultipleResidues);
+    } else if (step === 2) setStep(1);
   };
 
   const canSubmit = isAddressValid || !!previousRegisteredAddressSelectedId;
@@ -106,7 +110,9 @@ const ResidueModalFlow: React.FC<ResidueModalFlowProps> = ({
                 showsVerticalScrollIndicator={false}
               >
                 {step === 1 ? (
-                  <WasteManagementInterface />
+                  <WasteManagementInterface
+                    isReturnToMultipleResidues={isMultipleResidues}
+                  />
                 ) : (
                   <AddressInterface />
                 )}

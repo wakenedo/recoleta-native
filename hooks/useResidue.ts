@@ -67,7 +67,9 @@ export const useResidue = () => {
         !!r.variant?.minWeightKg &&
         !!r.weight &&
         !!r.condition &&
-        !!r.pkg
+        !!r.pkg &&
+        !!selectedHour &&
+        !!selectedDate
     );
   };
 

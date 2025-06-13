@@ -5,11 +5,13 @@ import { ScheduleHour } from "./ScheduleHour";
 import { FormControl } from "@/components/ui/form-control";
 import { useResidue } from "@/hooks/useResidue";
 
-interface WasteManagementInterfaceProps {}
+interface WasteManagementInterfaceProps {
+  isReturnToMultipleResidues?: boolean;
+}
 
 export const WasteManagementInterface: React.FC<
   WasteManagementInterfaceProps
-> = ({}) => {
+> = ({ isReturnToMultipleResidues }) => {
   const {
     selectedResidue,
     selectedVariant,
@@ -48,6 +50,7 @@ export const WasteManagementInterface: React.FC<
         selectedVariant={selectedVariant}
         setVariant={setVariant}
         getResiduesAsArray={getResiduesAsArray}
+        isMultipleResidues={isReturnToMultipleResidues}
       />
       <AvailableDate selectedDate={selectedDate} setSelectedDate={setDate} />
       <ScheduleHour

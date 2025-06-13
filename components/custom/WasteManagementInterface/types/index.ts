@@ -49,6 +49,7 @@ type SelectableResidueIconsProps = {
   selectedCondition: string;
   selectedPackage: string;
   selectedVariant: ResidueVariant | null;
+  isMultipleResidues?: boolean;
   setPhoto: (photo: string | null) => void;
   setPackage: (pkg: string) => void;
   setCondition: (condition: string) => void;
