@@ -46,8 +46,16 @@ const ResidueModalFlow: React.FC<ResidueModalFlowProps> = ({
     if (
       (step === 1 && isResidueValid) ||
       (step === 1 && isResiduesValid(residues))
-    )
+    ) {
       setStep(2);
+    } else if (
+      step === 1 &&
+      isResiduesValid(residues) &&
+      residues != undefined &&
+      residues.length >= 2
+    ) {
+      setStep(2);
+    }
   };
 
   const handleBack = () => {
@@ -59,12 +67,16 @@ const ResidueModalFlow: React.FC<ResidueModalFlowProps> = ({
 
   const canSubmit = isAddressValid || !!previousRegisteredAddressSelectedId;
 
-  useEffect(() => {
-    console.log("is Residues Valid", isResiduesValid(residues));
-  }, [residues]);
+  const residuesValid = isResiduesValid(residues);
+  const residuesCount = residues?.length ?? 0;
+  const isConfirmDisabled = !(residuesValid && residuesCount >= 2);
 
-  console.log("Single Residue Payload", payloadResidue);
-  console.log("Residues Payload Array", payloadResiduesArray);
+  console.log(
+    "isResidueConfirmDisabled",
+    isConfirmDisabled,
+
+    !isResiduesValid
+  );
 
   return (
     <Modal
@@ -130,11 +142,9 @@ const ResidueModalFlow: React.FC<ResidueModalFlowProps> = ({
                       <TouchableOpacity
                         onPress={handleNext}
                         className={`px-4 py-2 rounded-lg ${
-                          isResiduesValid(residues)
-                            ? "bg-green-500"
-                            : "bg-gray-300"
+                          !isConfirmDisabled ? "bg-green-500" : "bg-gray-300"
                         }`}
-                        disabled={!isResiduesValid}
+                        disabled={isConfirmDisabled}
                       >
                         <Text className="text-white">Continuar</Text>
                       </TouchableOpacity>
