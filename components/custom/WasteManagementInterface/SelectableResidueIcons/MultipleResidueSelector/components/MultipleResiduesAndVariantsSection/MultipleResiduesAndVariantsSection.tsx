@@ -4,11 +4,12 @@ import Animated, { FadeIn, FadeOut, Layout } from "react-native-reanimated";
 import { PackageAvailableSelector } from "@/components/custom/WasteManagementInterface/PackageAvailableSelector";
 import { QuantityInput } from "@/components/custom/WasteManagementInterface/QuantityInput";
 import { ResidueConditionSelector } from "@/components/custom/WasteManagementInterface/ResidueConditionSelector";
-import { TakeResiduePhoto } from "@/components/custom/WasteManagementInterface/TakeResiduePhoto";
+
 import { ResidueAndVariantsSelectorProps } from "@/components/custom/WasteManagementInterface/types";
 import { RESIDUE_CARDS } from "@/components/custom/WasteManagementInterface/utils/enum";
 import { Card } from "@/components/ui/card";
 import { Image } from "@/components/ui/image";
+import { TakeResiduePhoto } from "@/components/custom/WasteManagementInterface/TakeResiduePhoto";
 
 const MultipleResiduesAndVariantsSection: React.FC<
   ResidueAndVariantsSelectorProps
@@ -136,7 +137,7 @@ const MultipleResiduesAndVariantsSection: React.FC<
                 selectedPackage={selectedPackage}
                 setSelectedPackage={setPackage}
               />
-              {/*<TakeResiduePhoto photo={photo || null} setPhoto={setPhoto} />*/}
+              <TakeResiduePhoto photo={photo || null} setPhoto={setPhoto} />
             </View>
 
             <TouchableOpacity

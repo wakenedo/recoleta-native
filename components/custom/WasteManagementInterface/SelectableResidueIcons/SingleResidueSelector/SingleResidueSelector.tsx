@@ -47,7 +47,7 @@ const SingleResidueSelector: React.FC<ResidueAndVariantsSelectorProps> = ({
           selectedPackage={selectedPackage}
           setSelectedPackage={setPackage}
         />
-        {/*<TakeResiduePhoto photo={photo || null} setPhoto={setPhoto} />*/}
+        <TakeResiduePhoto photo={photo || null} setPhoto={setPhoto} />
       </View>
     </View>
   );

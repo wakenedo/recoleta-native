@@ -5,7 +5,7 @@ import { UserTypePicker } from "@/components/custom/UserTypePicker";
 import { UserInterface } from "@/components/custom/UserInterface";
 import { useUser } from "@/context/UserContext";
 
-const Home = () => {
+const Home: React.FC = () => {
   const { onLogout } = useAuth();
   const { user, updateUser } = useUser();
   const [loading, setLoading] = useState(true);
